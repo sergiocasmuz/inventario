@@ -15,9 +15,8 @@ class ArticuloController extends AbstractController
 {
 
 
-
     /**
-     * @Route("/articulo", name="articulo_list")
+     * @Route("/articulo/list", name="articulo_list")
      */
     public function list()
     {

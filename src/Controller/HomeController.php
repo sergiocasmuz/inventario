@@ -13,7 +13,7 @@ class HomeController extends AbstractController
     public function index()
     {
 
-        return $this->render('templateAdminLte.html.twig', [
+        return $this->render('base.html.twig', [
             'controller_name' => 'HomeController',
         ]);
     }

@@ -145,6 +145,7 @@
       <path value="$PROJECT_DIR$/vendor/pages/mailbox" />
       <path value="$PROJECT_DIR$/vendor/pages/forms" />
       <path value="$PROJECT_DIR$/vendor/pages/UI" />
+      <path value="$PROJECT_DIR$/vendor/symfony/webpack-encore-pack" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />
