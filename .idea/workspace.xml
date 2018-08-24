@@ -2,23 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d1a3874b-3d45-45de-8fa5-70af9b7f205b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/css/global.css" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../prueba1/.idea/misc.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../prueba1/.idea/modules.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../prueba1/.idea/php.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../prueba1/.idea/prueba1.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../prueba1/.idea/vcs.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../prueba1/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/twig.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/twig.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/articulo/art.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/articulo/art.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/articulo/art_list.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/articulo/art_list.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -51,7 +41,7 @@
           <entry key="json" value="1" />
           <entry key="lock" value="2" />
           <entry key="php" value="26" />
-          <entry key="twig" value="20" />
+          <entry key="twig" value="21" />
           <entry key="yaml" value="1" />
         </counts>
       </usages-collector>
@@ -63,7 +53,7 @@
           <entry key="JSON" value="3" />
           <entry key="JavaScript" value="4" />
           <entry key="PHP" value="26" />
-          <entry key="Twig" value="20" />
+          <entry key="Twig" value="21" />
           <entry key="YAML" value="1" />
         </counts>
       </usages-collector>
@@ -74,7 +64,7 @@
           <entry key="js" value="167" />
           <entry key="json" value="1" />
           <entry key="php" value="1259" />
-          <entry key="twig" value="831" />
+          <entry key="twig" value="846" />
           <entry key="yaml" value="48" />
         </counts>
       </usages-collector>
@@ -85,7 +75,7 @@
           <entry key="JSON" value="1" />
           <entry key="JavaScript" value="167" />
           <entry key="PHP" value="1259" />
-          <entry key="Twig" value="831" />
+          <entry key="Twig" value="846" />
           <entry key="YAML" value="48" />
         </counts>
       </usages-collector>
@@ -123,11 +113,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/articulo/art_list.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="10" column="30" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="30" />
+            <state relative-caret-position="400">
+              <caret line="20" column="32" selection-start-line="20" selection-start-column="32" selection-end-line="20" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/base.html.twig">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="380">
+              <caret line="19" column="7" lean-forward="true" selection-start-line="19" selection-start-column="7" selection-end-line="19" selection-end-column="7" />
             </state>
           </provider>
         </entry>
@@ -168,9 +167,9 @@
         <option value="$PROJECT_DIR$/webpack.config.js" />
         <option value="$PROJECT_DIR$/config/packages/twig.yaml" />
         <option value="$PROJECT_DIR$/assets/css/global.css" />
-        <option value="$PROJECT_DIR$/templates/base.html.twig" />
         <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/templates/articulo/art_list.html.twig" />
+        <option value="$PROJECT_DIR$/templates/base.html.twig" />
       </list>
     </option>
   </component>
@@ -431,18 +430,18 @@
       <workItem from="1534934226010" duration="22157000" />
       <workItem from="1535046416001" duration="3075000" />
       <workItem from="1535049982882" duration="4323000" />
-      <workItem from="1535130241201" duration="9932000" />
+      <workItem from="1535130241201" duration="10602000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="56110000" />
+    <option name="totallyTimeSpent" value="56780000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2603834" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2603834" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -455,7 +454,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.49946752" visible="true" weight="0.37" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.49946752" visible="true" weight="0.37" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5005325" side_tool="true" weight="0.37" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -603,13 +602,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/base.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="7" column="224" selection-start-line="7" selection-start-column="224" selection-end-line="7" selection-end-column="224" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/articulo/art.html.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -643,8 +635,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/articulo/art_list.html.twig">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="10" column="30" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="30" />
+        <state relative-caret-position="400">
+          <caret line="20" column="32" selection-start-line="20" selection-start-column="32" selection-end-line="20" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/base.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="19" column="7" lean-forward="true" selection-start-line="19" selection-start-column="7" selection-end-line="19" selection-end-column="7" />
         </state>
       </provider>
     </entry>
