@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+
+<br>
+<br>
+	
+<div class="container-fluid	">	
+	<div class="row">
+		<div class="col-sm-3">
+	    	<div class="card">
+	      		<div class="card-body">
+	        		<h5 class="card-title">Agregar Artículo</h5>
+	        		<p class="card-text">Incrementá el stock existente.</p>
+	        		<a href="#" class="btn btn-danger">Agregar</a>
+	      		</div>
+	    	</div>
+	    </div>
+
+	    <div class="col-sm-3">
+	    	<div class="card">
+	      		<div class="card-body">
+	        		<h5 class="card-title">Nuevo paquete</h5>
+	        		<p class="card-text">Creá un conjunto de articulos.</p>
+	        		<a href="#" class="btn btn-primary">Crear</a>
+	      		</div>
+	    	</div>
+	    </div>
+
+	    <div class="col-sm-3">
+	    	<div class="card">
+	      		<div class="card-body">
+	        		<h5 class="card-title">Nueva familia</h5>
+	        		<p class="card-text">Creá una categoría para los artículos.</p>
+	        		<a href="#" class="btn btn-primary">Crear</a>
+	      		</div>
+	    	</div>
+	    </div>
+
+	    <div class="col-sm-3">
+	    	<div class="card">
+	      		<div class="card-body">
+	        		<h5 class="card-title">Nuevo Artículo</h5>
+	        		<p class="card-text">Creá un nuevo artículo para el stock.</p>
+	        		<a href="articulo/n" class="btn btn-primary">Crear</a>
+	      		</div>
+	    	</div>
+	    </div>
+	</div>
+</div>    
+
+{% endblock %}

@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class EntregaController extends AbstractController
 {
     /**
-     * @Route("/entrega", name="entrega")
+     * @Route("/egreso", name="entrega")
      */
     public function index()
     {

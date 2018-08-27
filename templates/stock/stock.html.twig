@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+
+<br>
+<br>
+
+	<div class="alert alert-info" role="alert">
+	  Detalle de los artículos en depósito	
+	</div>
+
+   
+
+    <table class="table">
+            <tr>
+                <th>#</th>                
+                <th>Nro. Serie</th>
+                <th>Cod. Barra</th>
+                <th>Familia</th>
+                <th>Artículo</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Cantidad</th>
+            </tr>
+
+            {% for art in art %}
+                <tr>
+                    <th>{{ art.id }}</th>
+                    <td>{{ art.nroSerie }}</td>
+                    <td>{{ art.codBarra }}</td>
+                    <td>{{ art.familia }}</td>
+                    <td>{{ art.articulo }}</td>
+                    <td>{{ art.marca }}</td>
+                    <td>{{ art.modelo }}</td>
+                    <td >0</td>
+                    
+                </tr>
+            {% endfor %}
+        </table>
+
+    
+{% endblock %}
