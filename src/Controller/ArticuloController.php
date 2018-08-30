@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Articulos;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,16 +19,10 @@ class ArticuloController extends AbstractController
      */
     public function list()
     {
-
         $repository = $this->getDoctrine()->getRepository(Articulos::class);
-
         $art = $repository->findAll();
-
-
         return $this->render('articulo/art_list.html.twig', ['art' => $art]);
-
-
-}
+    }
 
 
     /**
@@ -39,19 +32,16 @@ class ArticuloController extends AbstractController
     public function new(Request $request)
     {
 
-        $art = new Articulos();
 
-        $formulario = $this->createFormBuilder($art)
-            ->add('fecha', DateType::class)
-            ->add('nroSerie', IntegerType::class)
-            ->add('codBarra', IntegerType::class)
-            ->add('familia',TextType::class)
-            ->add('articulo',TextType::class)
-            ->add('marca',TextType::class)
-            ->add('modelo',TextType::class)
-            ->add('detalle',TextType::class)
-            ->add('save', SubmitType::class, array('label' => 'Guardar'))
-            ->getForm();
+        $formulario = $this->createFormBuilder();
+
+        $formulario->add('familia',TextType::class);
+        $formulario->add('articulo',TextType::class);
+        $formulario->add('marca',TextType::class);
+        $formulario->add('modelo',TextType::class);
+        $formulario->add('detalle',TextType::class);
+        $formulario->add('save', SubmitType::class, array('label' => 'Guardar'));
+        $formulario->getForm();
 
         $formulario->handleRequest($request);
 

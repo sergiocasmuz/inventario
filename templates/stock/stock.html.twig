@@ -7,17 +7,49 @@
 <br>
 <br>
 
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Solicitar Artículo/s</h5>
+                    <p class="card-text">Incrementá el stock existente.</p>
+                    <a href="solicitud" class="btn btn-danger">Solicitar</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Reservar artículos</h5>
+                    <p class="card-text">Reservá parte del stock.</p>
+                    <a href="articulo/n" class="btn btn-primary">Reservar</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Recibir Artículos</h5>
+                    <p class="card-text">Incrementá el stock existente.</p>
+                    <a href="articulo/n" class="btn btn-primary">Agregar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
 	<div class="alert alert-info" role="alert">
 	  Detalle de los artículos en depósito	
 	</div>
 
-   
+
 
     <table class="table">
             <tr>
-                <th>#</th>                
-                <th>Nro. Serie</th>
-                <th>Cod. Barra</th>
+                <th>#</th>
                 <th>Familia</th>
                 <th>Artículo</th>
                 <th>Marca</th>
@@ -28,15 +60,13 @@
             {% for art in art %}
                 <tr>
                     <th>{{ art.id }}</th>
-                    <td>{{ art.nroSerie }}</td>
-                    <td>{{ art.codBarra }}</td>
                     <td>{{ art.familia }}</td>
                     <td>{{ art.articulo }}</td>
                     <td>{{ art.marca }}</td>
                     <td>{{ art.modelo }}</td>
-                    <td >0</td>
-                    
+                    <td>0</td>
                 </tr>
+
             {% endfor %}
         </table>
 

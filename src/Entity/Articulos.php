@@ -16,20 +16,6 @@ class Articulos
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $fecha;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $nroSerie;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $codBarra;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -56,6 +42,20 @@ class Articulos
      * @ORM\Column(type="string", length=255)
      */
     private $detalle;
+
+
+
+
+    /**
+     * @OneToMany(targetEntity="ELineas", mappedBy="product")
+     */
+    private $articulos;
+
+
+
+
+
+
 
     /**
      * @return mixed
@@ -157,27 +157,5 @@ class Articulos
         return $this;
     }
 
-    public function getNroSerie(): ?int
-    {
-        return $this->nroSerie;
-    }
 
-    public function setNroSerie(int $nroSerie): self
-    {
-        $this->nroSerie = $nroSerie;
-
-        return $this;
-    }
-
-    public function getCodBarra(): ?string
-    {
-        return $this->codBarra;
-    }
-
-    public function setCodBarra(string $codBarra): self
-    {
-        $this->codBarra = $codBarra;
-
-        return $this;
-    }
 }

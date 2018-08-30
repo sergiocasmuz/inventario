@@ -12,7 +12,7 @@ class IngresoController extends AbstractController
      */
     public function index()
     {
-        return $this->render('ingreso/index.html.twig', [
+        return $this->render('ingreso/entr_cabecera.html.twig', [
             'controller_name' => 'IngresoController',
         ]);
     }
