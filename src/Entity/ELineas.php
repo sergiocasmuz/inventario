@@ -28,12 +28,6 @@ class ELineas
 
 
 
-    /**
-     * @ManyToOne(targetEntity="Articulos", inversedBy=".....")
-     * @JoinColumn(name="id_eCabecera", referencedColumnName="id")
-     */
-    private $articulos;
-
 
 
 

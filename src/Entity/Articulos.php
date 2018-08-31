@@ -46,16 +46,6 @@ class Articulos
 
 
 
-    /**
-     * @OneToMany(targetEntity="ELineas", mappedBy="product")
-     */
-    private $articulos;
-
-
-
-
-
-
 
     /**
      * @return mixed

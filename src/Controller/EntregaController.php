@@ -21,30 +21,30 @@ class EntregaController extends AbstractController
     public function index(Request $request)
     {
 
-        $formulario = new ECabecera();
+        $formularioCabecera = new ECabecera();
 
-        $formulario = $this->createFormBuilder($formulario)
+        $formularioCabecera = $this->createFormBuilder($formularioCabecera)
             ->add('fecha', DateType::class)
             ->add('destino', TextType::class)
             ->add('save', SubmitType::class, array('label' => 'Siguiente'))
             ->getForm();
 
-        $formulario->handleRequest($request);
+        $formularioCabecera->handleRequest($request);
 
-        if ($formulario->isSubmitted() && $formulario->isValid()) {
+        if ($formularioCabecera->isSubmitted() && $formularioCabecera->isValid()) {
 
-            $art = $formulario->getData();
+            $articulo = $formularioCabecera->getData();
 
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($art);
+            $entityManager->persist($articulo);
             $entityManager->flush();
-            $id_eCabecera = $art->getId();
+            $id_eCabecera = $articulo->getId();
 
 
             return $this->redirect("/orden/{$id_eCabecera}");
         }
 
-        return $this->render('entrega/entr_cabecera.html.twig', ['formulario' => $formulario->createView()]);
+        return $this->render('entrega/entr_cabecera.html.twig', ['formularioCabecera' => $formularioCabecera->createView()]);
 
 
     }
@@ -58,14 +58,16 @@ class EntregaController extends AbstractController
     {
 
 
+
         $repository = $this->getDoctrine()->getRepository(Articulos::class);
-        $artList = $repository->findAll();
+        $listaArticulos = $repository->findAll();
 
 
         ///////////////////formulario de orden
         $formulario = $this->createFormBuilder();
 
-        foreach($artList as $articulo ) {
+        foreach($listaArticulos as $articulo ) {
+
 
             $formulario->add($articulo->getId(), IntegerType::class);
 
@@ -78,23 +80,22 @@ class EntregaController extends AbstractController
         $formulario->handleRequest($request);
 
 
-        ////////////
+
+        ////////////respuesta del formulario de articulos
 
         if ($formulario->isSubmitted() && $formulario->isValid()) {
-            // $formulario->getData()
 
-            $rta = $formulario->getData();
-
-           // print_r($rta);
+            $respuesta = $formulario->getData();
 
 
-            foreach ($rta as $clave => $valor) {
+            foreach ($respuesta as $id_articulo => $cantidad) {
 
 
                 $eLineas = new ELineas();
+
                 $eLineas->setIdECabecera($id_eCabecera);
-                $eLineas->setIdArticulo($clave);
-                $eLineas->setCantidad($valor);
+                $eLineas->setIdArticulo($id_articulo);
+                $eLineas->setCantidad($cantidad);
 
                 $entityManager = $this->getDoctrine()->getManager();
 
@@ -106,17 +107,58 @@ class EntregaController extends AbstractController
 
 
 
-            return $this->redirect("/stock");
+            return $this->redirect("/orden/id_eCabecera");
         }
 
 
-        $repOrden = $this->getDoctrine()->getRepository(ELineas::class);
-        $artOrden = $repOrden->findBy(
+
+        ///////////////////formulario editar cabecera
+        $formularioCabecera = new ECabecera();
+
+        $formularioCabecera = $this->createFormBuilder($formularioCabecera)
+            ->add('fecha', DateType::class)
+            ->add('destino', TextType::class)
+            ->add('save', SubmitType::class, array('label' => 'Siguiente'))
+            ->getForm();
+
+        $formularioCabecera->handleRequest($request);
+
+        if ($formularioCabecera->isSubmitted() && $formularioCabecera->isValid()) {
+
+            $cabe1 = $formularioCabecera->getData();
+
+            $cambio = $cabe1-> getDestino();
+            $entityManager = $this->getDoctrine()->getManager();
+
+
+            $cabe = $entityManager->getRepository(ECabecera::class)->find($id_eCabecera);
+
+
+            $cabe->setDestino($cambio);
+            $cabe->setFecha(new \DateTime());
+
+            $entityManager->persist($cabe);
+            $entityManager->flush();
+
+
+
+
+
+            return $this->redirect("/orden/{$id_eCabecera}");
+        }
+
+
+
+
+
+
+
+        $orden = $this->getDoctrine()->getRepository(ELineas::class);
+        $orden = $orden->findBy(
                 ['id_eCabecera' => $id_eCabecera]
             );
 
 
-        print_r($artOrden);
 
 
 
@@ -129,9 +171,10 @@ class EntregaController extends AbstractController
 
         return $this->render('entrega/entr_linea.html.twig', [
                 'formulario' => $formulario->createView(),
-                'artList' => $artList,
+                'formularioCabecera' => $formularioCabecera->createView(),
+                'listaArticulo' => $listaArticulos,
                 'cabe' => $cabe,
-                'orden' => $artOrden
+                'orden' => $orden
             ]);
 
 
