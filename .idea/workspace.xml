@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/Controller/EntregaController.php" line="189" />
-    <bookmark url="file://$PROJECT_DIR$/templates/entrega/entr_linea.html.twig" line="109" />
+    <bookmark url="file://$PROJECT_DIR$/src/Controller/EntregaController.php" line="191" />
+    <bookmark url="file://$PROJECT_DIR$/templates/entrega/entr_linea.html.twig" line="132" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d1a3874b-3d45-45de-8fa5-70af9b7f205b" name="Default Changelist" comment="">
@@ -73,8 +73,8 @@
           <entry key="env" value="48" />
           <entry key="js" value="169" />
           <entry key="json" value="1" />
-          <entry key="php" value="5503" />
-          <entry key="twig" value="3335" />
+          <entry key="php" value="5604" />
+          <entry key="twig" value="3380" />
           <entry key="yaml" value="48" />
         </counts>
       </usages-collector>
@@ -84,8 +84,8 @@
           <entry key="CSS" value="49" />
           <entry key="JSON" value="1" />
           <entry key="JavaScript" value="169" />
-          <entry key="PHP" value="5503" />
-          <entry key="Twig" value="3335" />
+          <entry key="PHP" value="5604" />
+          <entry key="Twig" value="3380" />
           <entry key="YAML" value="48" />
         </counts>
       </usages-collector>
@@ -96,7 +96,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Entity/Articulos.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="379">
+            <state relative-caret-position="79">
               <caret line="68" column="31" selection-start-line="68" selection-start-column="20" selection-end-line="68" selection-end-column="31" />
             </state>
           </provider>
@@ -129,11 +129,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Controller/EntregaController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="259">
-              <caret line="159" column="53" selection-start-line="159" selection-start-column="53" selection-end-line="159" selection-end-column="53" />
+            <state relative-caret-position="280">
+              <caret line="161" column="12" selection-start-line="161" selection-start-column="12" selection-end-line="161" selection-end-column="12" />
               <folding>
                 <element signature="e#34#59#0#PHP" expanded="true" />
               </folding>
@@ -150,13 +150,14 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/entrega/entr_linea.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="83" selection-start-line="83" selection-end-line="87" selection-end-column="58" />
+            <state relative-caret-position="320">
+              <caret line="103" column="89" selection-start-line="103" selection-start-column="89" selection-end-line="103" selection-end-column="89" />
               <folding>
                 <element signature="e#2834#2853#0#HTML" expanded="true" />
+                <element signature="e#4392#4411#0#HTML" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -219,8 +220,8 @@
         <option value="$PROJECT_DIR$/src/Entity/ELineas.php" />
         <option value="$PROJECT_DIR$/templates/base.html.twig" />
         <option value="$PROJECT_DIR$/templates/entrega/entr_cabecera.html.twig" />
-        <option value="$PROJECT_DIR$/templates/entrega/entr_linea.html.twig" />
         <option value="$PROJECT_DIR$/src/Controller/EntregaController.php" />
+        <option value="$PROJECT_DIR$/templates/entrega/entr_linea.html.twig" />
       </list>
     </option>
   </component>
@@ -480,12 +481,12 @@
       <workItem from="1535450957263" duration="35653000" />
       <workItem from="1535545680933" duration="29247000" />
       <workItem from="1535734352153" duration="17283000" />
-      <workItem from="1535991137515" duration="9591000" />
+      <workItem from="1535991137515" duration="11337000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="156193000" />
+    <option name="totallyTimeSpent" value="157939000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -713,16 +714,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/entrega/entr_linea.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="83" selection-start-line="83" selection-end-line="87" selection-end-column="58" />
-          <folding>
-            <element signature="e#2834#2853#0#HTML" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/base.html.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -732,17 +723,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Entity/Articulos.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="379">
+        <state relative-caret-position="79">
           <caret line="68" column="31" selection-start-line="68" selection-start-column="20" selection-end-line="68" selection-end-column="31" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Controller/EntregaController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
-          <caret line="159" column="53" selection-start-line="159" selection-start-column="53" selection-end-line="159" selection-end-column="53" />
+        <state relative-caret-position="280">
+          <caret line="161" column="12" selection-start-line="161" selection-start-column="12" selection-end-line="161" selection-end-column="12" />
           <folding>
             <element signature="e#34#59#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/entrega/entr_linea.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="103" column="89" selection-start-line="103" selection-start-column="89" selection-end-line="103" selection-end-column="89" />
+          <folding>
+            <element signature="e#2834#2853#0#HTML" expanded="true" />
+            <element signature="e#4392#4411#0#HTML" expanded="true" />
           </folding>
         </state>
       </provider>

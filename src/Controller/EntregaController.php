@@ -156,8 +156,10 @@ class EntregaController extends AbstractController
             $idAr = $a ->getIdArticulo();
 
             $pedidoList = $this->getDoctrine()->getRepository(Articulos::class);
-            $pedidoList = $pedidoList->find($idAr);
-            $formPedido->add($pedidoList->getArticulo(), TextType::class);
+            $rtaList = $pedidoList->find($idAr);
+
+            $formPedido->add($rtaList->getMarca(), TextType::class);
+            $formPedido->add('save', SubmitType::class, array('label' => 'Eliminar'));
 
         }
 
