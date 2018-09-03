@@ -54,10 +54,8 @@ class EntregaController extends AbstractController
      * @Route("/orden/{id_eCabecera}", name="entrega")
      */
 
-    public function linea(Request $request,$id_eCabecera)
+    public function linea(Request $request,$id_eCabecera,Request $request2)
     {
-
-
 
         $repository = $this->getDoctrine()->getRepository(Articulos::class);
         $listaArticulos = $repository->findAll();
@@ -68,8 +66,9 @@ class EntregaController extends AbstractController
 
         foreach($listaArticulos as $articulo ) {
 
+            $idArt = $articulo->getId();
 
-            $formulario->add($articulo->getId(), IntegerType::class);
+            $formulario->add($idArt, TextType::class);
 
         }
 
@@ -79,17 +78,13 @@ class EntregaController extends AbstractController
 
         $formulario->handleRequest($request);
 
-
-
         ////////////respuesta del formulario de articulos
 
         if ($formulario->isSubmitted() && $formulario->isValid()) {
 
             $respuesta = $formulario->getData();
 
-
             foreach ($respuesta as $id_articulo => $cantidad) {
-
 
                 $eLineas = new ELineas();
 
@@ -107,7 +102,7 @@ class EntregaController extends AbstractController
 
 
 
-            return $this->redirect("/orden/id_eCabecera");
+            return $this->redirect("/orden/".$id_eCabecera."");
         }
 
 
@@ -141,16 +136,8 @@ class EntregaController extends AbstractController
             $entityManager->flush();
 
 
-
-
-
             return $this->redirect("/orden/{$id_eCabecera}");
         }
-
-
-
-
-
 
 
         $orden = $this->getDoctrine()->getRepository(ELineas::class);
@@ -161,6 +148,22 @@ class EntregaController extends AbstractController
 
 
 
+        $formPedido = $this->createFormBuilder();
+
+
+        foreach ($orden as $a ) {
+
+            $idAr = $a ->getIdArticulo();
+
+            $pedidoList = $this->getDoctrine()->getRepository(Articulos::class);
+            $pedidoList = $pedidoList->find($idAr);
+            $formPedido->add($pedidoList->getArticulo(), TextType::class);
+
+        }
+
+        $formPedido = $formPedido->getForm();
+
+        $formPedido->handleRequest($request2);
 
 
 
@@ -169,12 +172,14 @@ class EntregaController extends AbstractController
         $cabe = $repCabecera->find($id_eCabecera);
 
 
+
         return $this->render('entrega/entr_linea.html.twig', [
                 'formulario' => $formulario->createView(),
                 'formularioCabecera' => $formularioCabecera->createView(),
                 'listaArticulo' => $listaArticulos,
                 'cabe' => $cabe,
-                'orden' => $orden
+                'orden' => $orden,
+                'formPedido' => $formPedido->createView()
             ]);
 
 
