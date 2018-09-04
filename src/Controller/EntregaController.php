@@ -7,6 +7,7 @@ use App\Entity\ECabecera;
 use App\Entity\ELineas;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -38,10 +39,11 @@ class EntregaController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($articulo);
             $entityManager->flush();
-            $id_eCabecera = $articulo->getId();
 
+            ///////el nro de orden corresponde con el id de la cabecera
+            $orden = $articulo->getId();
 
-            return $this->redirect("/orden/{$id_eCabecera}");
+            return $this->redirect("/orden/{$orden}");
         }
 
         return $this->render('entrega/entr_cabecera.html.twig', ['formularioCabecera' => $formularioCabecera->createView()]);
@@ -51,10 +53,10 @@ class EntregaController extends AbstractController
 
 
     /**
-     * @Route("/orden/{id_eCabecera}", name="entrega")
+     * @Route("/orden/{orden}", name="entrega")
      */
 
-    public function linea(Request $request,$id_eCabecera,Request $request2)
+    public function linea(Request $request,$orden)
     {
 
         $repository = $this->getDoctrine()->getRepository(Articulos::class);
@@ -68,7 +70,16 @@ class EntregaController extends AbstractController
 
             $idArt = $articulo->getId();
 
+
             $formulario->add($idArt, TextType::class);
+            $formulario->add('articulo'.$idArt, HiddenType::class,
+                array('attr' => array('value' => $articulo->getArticulo())));
+
+            $formulario->add('marca'.$idArt, HiddenType::class,
+                array('attr' => array('value' => $articulo->getMarca())));
+
+            $formulario->add('modelo'.$idArt, HiddenType::class,
+                array('attr' => array('value' => $articulo->getModelo())));
 
         }
 
@@ -78,31 +89,51 @@ class EntregaController extends AbstractController
 
         $formulario->handleRequest($request);
 
+
+
+
         ////////////respuesta del formulario de articulos
 
-        if ($formulario->isSubmitted() && $formulario->isValid()) {
+        if ($formulario->isSubmitted()) {
 
             $respuesta = $formulario->getData();
 
-            foreach ($respuesta as $id_articulo => $cantidad) {
+            $contador = 0;
+            foreach($respuesta as $dato => $cosas){
+
+
+
+                echo $dato."-------------".$contador."<br>";
+                $contador++;
+            }
+
+
+
+            foreach ($respuesta as $valor ) {
+
 
                 $eLineas = new ELineas();
 
-                $eLineas->setIdECabecera($id_eCabecera);
-                $eLineas->setIdArticulo($id_articulo);
-                $eLineas->setCantidad($cantidad);
 
-                $entityManager = $this->getDoctrine()->getManager();
+                    $eLineas->setOrden($orden);
+                    $eLineas->setIdArticulo($id_articulo);
+                    $eLineas->setMarca("abc");
+                    $eLineas->setModelo("abc");
+                    $eLineas->setArticulo("abc");
+                    $eLineas->setCantidad($cantidad);
 
-                $entityManager->persist($eLineas);
-                $entityManager->flush();
+                    $entityManager = $this->getDoctrine()->getManager();
+
+                    $entityManager->persist($eLineas);
+                    $entityManager->flush();
+
 
 
             }
 
 
 
-            return $this->redirect("/orden/".$id_eCabecera."");
+            return $this->redirect("/orden/".$orden."");
         }
 
 
@@ -126,7 +157,7 @@ class EntregaController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
 
 
-            $cabe = $entityManager->getRepository(ECabecera::class)->find($id_eCabecera);
+            $cabe = $entityManager->getRepository(ECabecera::class)->find($orden);
 
 
             $cabe->setDestino($cambio);
@@ -136,52 +167,45 @@ class EntregaController extends AbstractController
             $entityManager->flush();
 
 
-            return $this->redirect("/orden/{$id_eCabecera}");
+            return $this->redirect("/orden/{$orden}");
         }
 
 
-        $orden = $this->getDoctrine()->getRepository(ELineas::class);
-        $orden = $orden->findBy(
-                ['id_eCabecera' => $id_eCabecera]
-            );
+        //////formulario para quitar lineas
 
 
+        $lineas = $this->getDoctrine()->getRepository(ELineas::class);
+        $lineas = $lineas->findBy( ['orden' => $orden] );
 
 
         $formPedido = $this->createFormBuilder();
 
 
-        foreach ($orden as $a ) {
+        foreach ($lineas as $a ) {
 
-            $idAr = $a ->getIdArticulo();
 
-            $pedidoList = $this->getDoctrine()->getRepository(Articulos::class);
-            $rtaList = $pedidoList->find($idAr);
-
-            $formPedido->add($rtaList->getMarca(), TextType::class);
-            $formPedido->add('save', SubmitType::class, array('label' => 'Eliminar'));
+            $formPedido->add("btn_".$a->getId(), SubmitType::class, array('label' => 'Eliminar línea'));
 
         }
 
         $formPedido = $formPedido->getForm();
 
-        $formPedido->handleRequest($request2);
-
-
+        $formPedido->handleRequest($request);
 
 
         $repCabecera = $this->getDoctrine()->getRepository(ECabecera::class);
-        $cabe = $repCabecera->find($id_eCabecera);
-
-
+        $cabe = $repCabecera->find($orden);
 
         return $this->render('entrega/entr_linea.html.twig', [
                 'formulario' => $formulario->createView(),
                 'formularioCabecera' => $formularioCabecera->createView(),
+                'formPedido' => $formPedido->createView(),
                 'listaArticulo' => $listaArticulos,
                 'cabe' => $cabe,
-                'orden' => $orden,
-                'formPedido' => $formPedido->createView()
+                'lineas' => $lineas
+
+
+
             ]);
 
 

@@ -19,7 +19,7 @@ class ELineas
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $id_eCabecera;
+    private $orden;
 
     /**
      * @ORM\Column(type="integer")
@@ -27,7 +27,67 @@ class ELineas
     private $id_Articulo;
 
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
 
+    private $articulo;
+
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+
+    private $marca;
+
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+
+    private $modelo;
+
+
+/////////////////////////////////////
+
+
+
+    public function getArticulo()
+    {
+        return $this->articulo;
+    }
+
+    public function getMarca()
+    {
+        return $this->marca;
+    }
+
+    public function getModelo()
+    {
+        return $this->modelo;
+    }
+
+
+    public function setArticulo($articulo)
+    {
+        $this->articulo = $articulo;
+
+        return $this;
+    }
+
+    public function setMarca($marca)
+    {
+        $this->marca = $marca;
+
+        return $this;
+    }
+
+    public function setModelo($modelo): self
+    {
+        $this->modelo = $modelo;
+
+        return $this;
+    }
 
 
 
@@ -42,17 +102,19 @@ class ELineas
         return $this->id;
     }
 
-    public function getIdECabecera(): ?int
+    public function getOrden(): ?int
     {
-        return $this->id_eCabecera;
+        return $this->orden;
     }
 
-    public function setIdECabecera(?int $id_eCabecera): self
+    public function setOrden(?int $orden): self
     {
-        $this->id_eCabecera = $id_eCabecera;
+        $this->orden = $orden;
 
         return $this;
     }
+
+
 
     public function getIdArticulo(): ?int
     {
