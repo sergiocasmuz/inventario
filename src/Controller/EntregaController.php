@@ -46,7 +46,8 @@ class EntregaController extends AbstractController
             return $this->redirect("/orden/{$orden}");
         }
 
-        return $this->render('entrega/entr_cabecera.html.twig', ['formularioCabecera' => $formularioCabecera->createView()]);
+        return $this->render('entrega/entr_cabecera.html.twig',
+            ['formularioCabecera' => $formularioCabecera->createView()]);
 
 
     }
@@ -71,7 +72,11 @@ class EntregaController extends AbstractController
             $idArt = $articulo->getId();
 
 
-            $formulario->add($idArt, TextType::class);
+            $formulario->add('idArticulo'.$idArt, HiddenType::class,
+                array('attr' => array('value' => $idArt )));
+
+            $formulario->add('cantidad'.$idArt, TextType::class);
+
             $formulario->add('articulo'.$idArt, HiddenType::class,
                 array('attr' => array('value' => $articulo->getArticulo())));
 
@@ -98,39 +103,36 @@ class EntregaController extends AbstractController
 
             $respuesta = $formulario->getData();
 
-            $contador = 0;
-            foreach($respuesta as $dato => $cosas){
+            $c1 = 1;
+            foreach($respuesta as $id_articulo => $cantidad){
 
-
-
-                echo $dato."-------------".$contador."<br>";
-                $contador++;
-            }
-
-
-
-            foreach ($respuesta as $valor ) {
-
+                $idArt =  $respuesta["idArticulo".$c1];
+                $cantidad =  $respuesta["cantidad".$c1];
+                $marca =  $respuesta["marca".$c1];
+                $modelo =  $respuesta["modelo".$c1];
+                $articulo =  $respuesta["articulo".$c1];
 
                 $eLineas = new ELineas();
 
+                $eLineas->setOrden($orden);
+                $eLineas->setIdArticulo($idArt);
+                $eLineas->setMarca($marca);
+                $eLineas->setModelo($modelo);
+                $eLineas->setArticulo($articulo);
+                $eLineas->setCantidad($cantidad);
 
-                    $eLineas->setOrden($orden);
-                    $eLineas->setIdArticulo($id_articulo);
-                    $eLineas->setMarca("abc");
-                    $eLineas->setModelo("abc");
-                    $eLineas->setArticulo("abc");
-                    $eLineas->setCantidad($cantidad);
+                $entityManager = $this->getDoctrine()->getManager();
 
-                    $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($eLineas);
+                $entityManager->flush();
 
-                    $entityManager->persist($eLineas);
-                    $entityManager->flush();
 
+
+                if( $c1 % 3 == 0){$c1=1;}
+                else{$c1++;}
 
 
             }
-
 
 
             return $this->redirect("/orden/".$orden."");

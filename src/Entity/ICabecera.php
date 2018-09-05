@@ -5,9 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\RecepcionRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ICabeceraRepository")
  */
-class Recepcion
+class ICabecera
 {
     /**
      * @ORM\Id()
@@ -24,7 +24,7 @@ class Recepcion
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $dto;
+    private $proveedor;
 
     public function getId(): ?int
     {
@@ -43,14 +43,14 @@ class Recepcion
         return $this;
     }
 
-    public function getDto(): ?string
+    public function getProveedor(): ?string
     {
-        return $this->dto;
+        return $this->proveedor;
     }
 
-    public function setDto(string $dto): self
+    public function setProveedor(string $proveedor): self
     {
-        $this->dto = $dto;
+        $this->proveedor = $proveedor;
 
         return $this;
     }
