@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ingreso {{ controller_name }}!{% endblock %}
+{% block title %}Hello {{ controller_name }}!{% endblock %}
 
 
 {% block body %}
@@ -46,7 +46,7 @@
                             </div>
 
 
-                            {{ form_start(formulario) }}
+                            {{ form_start(formularioIngreso) }}
                             <table class="table">
                                 <tr>
                                     <th>#</th>
@@ -76,7 +76,7 @@
                                 {% endfor %}
 
                             </table>
-                            {{ form_end(formulario) }}
+                            {{ form_end(formularioIngreso) }}
 
                         </div>
 
