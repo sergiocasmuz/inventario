@@ -25,6 +25,7 @@ class IngresoController extends AbstractController
     public function index(Request $request)
     {
 
+
         $formularioCabecera = $this->createFormBuilder();
         $formularioCabecera ->add('nombreForm', HiddenType::class,array('attr' => array('value' => 'editarCabecera')));
         $formularioCabecera ->add('fecha', DateType::class);
@@ -55,9 +56,10 @@ class IngresoController extends AbstractController
                 ///////el nro de orden corresponde con el id de la cabecera
                 $orden = $Cabecera->getId();
 
-                 return $this->redirect("/ingr_linea/{$orden}");
+                 return $this->redirect("/ingr_linea/{$orden}/agregar");
             }
         }
+
 
 
         return $this->render('ingreso/ingr_cabecera.html.twig',
@@ -68,11 +70,12 @@ class IngresoController extends AbstractController
 
 
     /**
-     * @Route("/ingr_linea/{orden}", name="entrega")
+     * @Route("/ingr_linea/{orden}/{activar}", name="entrega")
      */
 
-    public function linea(Request $request, $orden)
+    public function linea(Request $request, $orden, $activar)
     {
+
 
         $repository = $this->getDoctrine()->getRepository(Articulos::class);
         $listaArticulos = $repository->findAll();
@@ -81,7 +84,7 @@ class IngresoController extends AbstractController
         ///////////////////formulario de orden
         $formularioIngreso = $this->createFormBuilder();
 
-        foreach($listaArticulos as $articulo ) {
+        foreach($listaArticulos as $articulo) {
 
             $idArt = $articulo->getId();
 
@@ -117,14 +120,35 @@ class IngresoController extends AbstractController
 
             $respuesta = $formularioIngreso->getData();
 
+            $entityManager = $this->getDoctrine()->getManager();
+            $iLineas = $entityManager->getRepository(ILineas::class)->findBy(['orden'=>5]);
+
+            $c0=0;
+            foreach ($iLineas as $item) {
+
+                echo $iLineas->getId();
+
+                $c0++;
+            }
+
+
+
+
+
             $c1 = 1;
             foreach($respuesta as $id_articulo => $cantidad){
+
+
+                print_r($iLineas);
 
                 $idArt =  $respuesta["idArticulo".$c1];
                 $cantidad =  $respuesta["cantidad".$c1];
                 $marca =  $respuesta["marca".$c1];
                 $modelo =  $respuesta["modelo".$c1];
                 $articulo =  $respuesta["articulo".$c1];
+
+
+
 
                 $iLineas = new ILineas();
 
@@ -135,21 +159,19 @@ class IngresoController extends AbstractController
                 $iLineas->setArticulo($articulo);
                 $iLineas->setCantidad($cantidad);
 
-                $entityManager = $this->getDoctrine()->getManager();
 
-                $entityManager->persist($iLineas);
-                $entityManager->flush();
+                //$entityManager->persist($iLineas);
+                //$entityManager->flush();
 
 
 
                 if( $c1 % 3 == 0){$c1=1;}
                 else{$c1++;}
-
-
             }
 
 
-            return $this->redirect("/ingr_linea/{$orden}");
+            //return $this->redirect("/ingr_linea/{$orden}/agregar");
+
         }
 
 
@@ -159,7 +181,7 @@ class IngresoController extends AbstractController
         /////////formulario cabecera
 
         $formularioCabecera = $this->createFormBuilder()
-            ->add('nombreForm', TextType::class,array('attr' => array('value' => 'editarCabecera')))
+            ->add('nombreForm', HiddenType::class,array('attr' => array('value' => 'editarCabecera')))
             ->add('fecha', DateType::class)
             ->add('proveedor', TextType::class)
             ->add('save', SubmitType::class, array('label' => 'Siguiente'))
@@ -195,11 +217,10 @@ class IngresoController extends AbstractController
                 $orden = $Cabecera->getId();
 
 
-                return $this->redirect("/ingr_linea/{$orden}");
+                return $this->redirect("/ingr_linea/{$orden}/cabecera");
             }
 
 
-            return $this->redirect("/ingr_linea/{$orden}");
         }
 
 
@@ -213,25 +234,35 @@ class IngresoController extends AbstractController
         $lineas = $lineas->findBy( ['orden' => $orden] );
 
 
-        $formPedido = $this->createFormBuilder();
 
+        $formPedido = $this->createFormBuilder();
 
         foreach ($lineas as $a ) {
 
-            $formPedido->add("btn_".$a->getId(), SubmitType::class, array('label' => 'Eliminar línea'));
+
+            $formPedido->add($a->getId(), SubmitType::class, array('label' => 'Eliminar línea'));
         }
 
         $formPedido = $formPedido->getForm();
 
         $formPedido->handleRequest($request);
 
-
-
         if ($formPedido->isSubmitted() && $formPedido->isValid()) {
 
             $rta = $formPedido -> getData();
 
-ECHO "HOLA";
+            $idBorrar=$formPedido->getClickedButton()->getName();
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $iLineas = $entityManager->getRepository(ILineas::class)->find($idBorrar);
+
+            $entityManager->remove($iLineas);
+            $entityManager->flush();
+
+            $activar = "quitar";
+            return $this->redirect("/ingr_linea/{$orden}/quitar");
+
+
         }
 
 
@@ -241,7 +272,10 @@ ECHO "HOLA";
             'formularioCabecera' => $formularioCabecera->createView(),
             'formPedido' => $formPedido->createView(),
             'listaArticulo' => $listaArticulos,
-            'lineas' => $lineas
+            'lineas' => $lineas,
+            'activar' => $activar,
+            'orden' => $orden
+
 
         ]);
 
