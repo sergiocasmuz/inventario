@@ -84,24 +84,28 @@ class IngresoController extends AbstractController
         ///////////////////formulario de orden
         $formularioIngreso = $this->createFormBuilder();
 
-        foreach($listaArticulos as $articulo) {
-
-            $idArt = $articulo->getId();
+       $articulosTotales = count($listaArticulos);
 
 
-            $formularioIngreso->add('idArticulo'.$idArt, HiddenType::class,
-                array('attr' => array('value' => $idArt )));
+       // print_r($listaArticulos);
 
-            $formularioIngreso->add('cantidad'.$idArt, TextType::class);
 
-            $formularioIngreso->add('articulo'.$idArt, HiddenType::class,
-                array('attr' => array('value' => $articulo->getArticulo())));
+        for($i=0; $i < $articulosTotales; $i++) {
 
-            $formularioIngreso->add('marca'.$idArt, HiddenType::class,
-                array('attr' => array('value' => $articulo->getMarca())));
 
-            $formularioIngreso->add('modelo'.$idArt, HiddenType::class,
-                array('attr' => array('value' => $articulo->getModelo())));
+            $formularioIngreso->add('idArticulo'.$i, HiddenType::class,
+                array('attr' => array('value' => $listaArticulos[$i]->getId() )));
+
+            $formularioIngreso->add('cantidad'.$i, TextType::class);
+
+            $formularioIngreso->add('articulo'.$i, HiddenType::class,
+                array('attr' => array('value' => $listaArticulos[$i]->getArticulo() )));
+
+            $formularioIngreso->add('marca'.$i, HiddenType::class,
+                array('attr' => array('value' => $listaArticulos[$i]->getMarca() )));
+
+            $formularioIngreso->add('modelo'.$i, HiddenType::class,
+                array('attr' => array('value' => $listaArticulos[$i]->getModelo() )));
 
         }
 
@@ -120,37 +124,29 @@ class IngresoController extends AbstractController
 
             $respuesta = $formularioIngreso->getData();
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $iLineas = $entityManager->getRepository(ILineas::class)->findBy(['orden'=>5]);
+            $em = $this->getDoctrine()->getManager();
 
-            $c0=0;
-            foreach ($iLineas as $item) {
+            $ar = $this->getDoctrine()
+            -> getRepository(Articulos::class)
+            -> findAll();
 
-                echo $iLineas->getId();
+            $cantArt = count($ar);
 
-                $c0++;
-            }
-
+            for($f=0; $f < $cantArt; $f++){
 
 
-
-
-            $c1 = 1;
-            foreach($respuesta as $id_articulo => $cantidad){
-
-
-                print_r($iLineas);
-
-                $idArt =  $respuesta["idArticulo".$c1];
-                $cantidad =  $respuesta["cantidad".$c1];
-                $marca =  $respuesta["marca".$c1];
-                $modelo =  $respuesta["modelo".$c1];
-                $articulo =  $respuesta["articulo".$c1];
-
+                $idArt =  $respuesta["idArticulo".$f];
+                $cantidad =  $respuesta["cantidad".$f];
+                $marca =  $respuesta["marca".$f];
+                $modelo =  $respuesta["modelo".$f];
+                $articulo =  $respuesta["articulo".$f];
+                
 
 
 
                 $iLineas = new ILineas();
+
+              //  echo $respuesta->getOrden();
 
                 $iLineas->setOrden($orden);
                 $iLineas->setIdArticulo($idArt);
@@ -159,14 +155,39 @@ class IngresoController extends AbstractController
                 $iLineas->setArticulo($articulo);
                 $iLineas->setCantidad($cantidad);
 
+                
+                $il = $this -> getDoctrine()
+                    -> getRepository(ILineas::class);
 
-                //$entityManager->persist($iLineas);
-                //$entityManager->flush();
+                $query = $em->createQuery("SELECT u FROM App\Entity\ILineas u WHERE u.orden = '$orden' and u.idArticulo= '$idArt' ");
+
+                $rtaDQL = $query->getResult();
+
+                $existencia = count($rtaDQL); 
+
+                if($existencia == 0){
+
+                     $em->persist($iLineas);
+                     $em->flush();
+
+                }
+                else{
+                        
+                             
+                        $canDQL = $rtaDQL[$f]->getCantidad();
+                        if($cantidad != 0){
+
+                            $suma = $cantidad + $canDQL;
+                            
+                            $il ->find($rtaDQL[$f]->getId())
+                            ->setCantidad(7);
+                            $em->flush();
+                        }
 
 
+                }      
+                
 
-                if( $c1 % 3 == 0){$c1=1;}
-                else{$c1++;}
             }
 
 

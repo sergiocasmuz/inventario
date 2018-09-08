@@ -77,17 +77,17 @@
 
                                 {% for datos in listaArticulo %}
                                     <tr>
-                                        <td>{{ datos.id }}</td>
+                                        <td>{{ datos.id }} </td>
                                         <td>{{ datos.familia }}</td>
                                         <td>{{ datos.articulo }}</td>
                                         <td>{{ datos.marca }}</td>
                                         <td>{{ datos.modelo }}</td>
                                         <td style="width:30px;">
-                                            {{ form_widget(formularioIngreso["cantidad"~datos.id],{'attr':{'value':0} }  ) }}
-                                            {{ form_widget(formularioIngreso["articulo"~datos.id],{'attr':{'type':'hidden'} }) }}
-                                            {{ form_widget(formularioIngreso["marca"~datos.id]) }}
-                                            {{ form_widget(formularioIngreso["modelo"~datos.id]) }}
-                                            {{ form_widget(formularioIngreso["idArticulo"~datos.id]) }}
+                                            {{ form_widget(formularioIngreso["cantidad"~loop.index0],{'attr':{'value':0} }  ) }}
+                                            {{ form_widget(formularioIngreso["articulo"~loop.index0],{'attr':{'type':'hidden'} }) }}
+                                            {{ form_widget(formularioIngreso["marca"~loop.index0]) }}
+                                            {{ form_widget(formularioIngreso["modelo"~loop.index0]) }}
+                                            {{ form_widget(formularioIngreso["idArticulo"~loop.index0]) }}
                                         </td>
                                     </tr>
                                 {% endfor %}
