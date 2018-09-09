@@ -134,7 +134,6 @@ class IngresoController extends AbstractController
 
             for($f=0; $f < $cantArt; $f++){
 
-
                 $idArt =  $respuesta["idArticulo".$f];
                 $cantidad =  $respuesta["cantidad".$f];
                 $marca =  $respuesta["marca".$f];
@@ -167,23 +166,26 @@ class IngresoController extends AbstractController
 
                 if($existencia == 0){
 
-                     $em->persist($iLineas);
-                     $em->flush();
-
-                }
-                else{
-                        
-                             
-                        $canDQL = $rtaDQL[$f]->getCantidad();
                         if($cantidad != 0){
 
-                            $suma = $cantidad + $canDQL;
-                            
-                            $il ->find($rtaDQL[$f]->getId())
-                            ->setCantidad(7);
+                            $em->persist($iLineas);
                             $em->flush();
                         }
+                }
+                else{
+                             
+                        $canDQL = $rtaDQL[0]->getCantidad();
+                        $idDQL = $rtaDQL[0]->getId();
+                     
+                        $suma = $cantidad + $canDQL;
 
+                        if($cantidad != 0){
+                            
+                            $il ->find($idDQL)
+                            ->setCantidad($suma);
+                            $em->flush();
+                        }
+                               
 
                 }      
                 
