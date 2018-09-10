@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-use App\Entity\Articulos;
+use App\Entity\stock;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -11,13 +11,13 @@ use Symfony\Component\HttpFoundation\Request;
 class StockController extends AbstractController
 {
 	/**
-     * @Route("/stock", name="stock")
+     * @Route("/", name="stock")
      */
 
 	public function list()
     {
 
-        $repository = $this->getDoctrine()->getRepository(Articulos::class);
+        $repository = $this->getDoctrine()->getRepository(stock::class);
 
         $art = $repository->findAll();
 

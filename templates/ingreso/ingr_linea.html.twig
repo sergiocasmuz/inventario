@@ -38,7 +38,13 @@
         <br>
         <section id="tabs">
             <h6 class="section-title h1">Orden # {{ orden }}</h6>
-            <br>
+
+            <dvi>
+                {{ form_start(formularioOrden) }}
+                {{ form_widget(formularioOrden) }}
+                {{ form_end(formularioOrden) }}
+            </dvi>
+                <br>
             <div class="row">
                 <div class="col-lg-12 ">
                     <nav>
@@ -88,6 +94,7 @@
                                             {{ form_widget(formularioIngreso["marca"~loop.index0]) }}
                                             {{ form_widget(formularioIngreso["modelo"~loop.index0]) }}
                                             {{ form_widget(formularioIngreso["idArticulo"~loop.index0]) }}
+                                            {{ form_widget(formularioIngreso["familia"~loop.index0]) }}
                                         </td>
                                     </tr>
                                 {% endfor %}

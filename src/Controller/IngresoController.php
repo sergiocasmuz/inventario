@@ -7,6 +7,7 @@ use App\Entity\ECabecera;
 use App\Entity\ELineas;
 use App\Entity\ICabecera;
 use App\Entity\ILineas;
+use App\Entity\stock;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -39,7 +40,6 @@ class IngresoController extends AbstractController
 
             $rta = $formularioCabecera ->getData();
             $nombreForm = $rta["nombreForm"];
-
             $Cabecera = new ICabecera();
 
             if($nombreForm == "editarCabecera") {
@@ -87,9 +87,6 @@ class IngresoController extends AbstractController
        $articulosTotales = count($listaArticulos);
 
 
-       // print_r($listaArticulos);
-
-
         for($i=0; $i < $articulosTotales; $i++) {
 
 
@@ -106,6 +103,9 @@ class IngresoController extends AbstractController
 
             $formularioIngreso->add('modelo'.$i, HiddenType::class,
                 array('attr' => array('value' => $listaArticulos[$i]->getModelo() )));
+
+            $formularioIngreso->add('familia'.$i, HiddenType::class,
+                array('attr' => array('value' => $listaArticulos[$i]->getFamilia() )));
 
         }
 
@@ -139,8 +139,7 @@ class IngresoController extends AbstractController
                 $marca =  $respuesta["marca".$f];
                 $modelo =  $respuesta["modelo".$f];
                 $articulo =  $respuesta["articulo".$f];
-                
-
+                $familia =  $respuesta["familia".$f];
 
 
                 $iLineas = new ILineas();
@@ -153,6 +152,7 @@ class IngresoController extends AbstractController
                 $iLineas->setModelo($modelo);
                 $iLineas->setArticulo($articulo);
                 $iLineas->setCantidad($cantidad);
+                $iLineas->setFamilia($familia);
 
                 
                 $il = $this -> getDoctrine()
@@ -198,9 +198,6 @@ class IngresoController extends AbstractController
         }
 
 
-
-
-
         /////////formulario cabecera
 
         $formularioCabecera = $this->createFormBuilder()
@@ -210,7 +207,7 @@ class IngresoController extends AbstractController
             ->add('save', SubmitType::class, array('label' => 'Siguiente'))
             ->getForm();
 
-
+        /////////respuesta formulario cabecera
         $formularioCabecera->handleRequest($request);
 
         if ( $formularioCabecera->isSubmitted() && $formularioCabecera->isValid() ) {
@@ -256,19 +253,18 @@ class IngresoController extends AbstractController
         $lineas = $this->getDoctrine()->getRepository(ILineas::class);
         $lineas = $lineas->findBy( ['orden' => $orden] );
 
-
-
         $formPedido = $this->createFormBuilder();
 
         foreach ($lineas as $a ) {
-
-
             $formPedido->add($a->getId(), SubmitType::class, array('label' => 'Eliminar línea'));
         }
 
         $formPedido = $formPedido->getForm();
 
         $formPedido->handleRequest($request);
+
+
+        /////////respuesta formulario quitar lineas
 
         if ($formPedido->isSubmitted() && $formPedido->isValid()) {
 
@@ -289,17 +285,55 @@ class IngresoController extends AbstractController
         }
 
 
+        //////////////formulario enviar orden
+
+        $formularioOrden = $this -> createFormBuilder();
+
+        $formularioOrden -> add('nombreForm', TextType::class, array( 'attr' => array('value' => 'formularioOrden' ) ) );
+        $formularioOrden -> add('envOrden', SubmitType::class, array( 'label' => 'Enviar orden' ) );
+
+        $formularioOrden = $formularioOrden -> getForm();
+        $formularioOrden -> handleRequest($request);
+
+
+        /////////////////respuesta de formulario enviar orden
+        if ($formularioOrden->isSubmitted() && $formularioOrden->isValid() ) {
+
+
+            $emLines = $this->getDoctrine() -> getManager();
+            $ilines = $emLines -> getRepository(ILineas::class)->findByOrden($orden);
+
+
+            $emStock = $this -> getDoctrine() -> getManager();
+
+
+           foreach ($ilines as $line){
+
+
+               $stock = $emStock -> getRepository(stock::class) -> findByIdArticulo($line->getIdArticulo());
+
+               $suma = $stock[0]->getCantidad() + $line -> getCantidad();
+
+               $stock[0] -> setCantidad($suma);
+               $emStock->flush();
+
+           }
+
+            return $this->redirect("/");
+
+
+        }
+
 
         return $this->render('ingreso/ingr_linea.html.twig', [
             'formularioIngreso' => $formularioIngreso->createView(),
             'formularioCabecera' => $formularioCabecera->createView(),
             'formPedido' => $formPedido->createView(),
+            'formularioOrden' => $formularioOrden -> createView(),
             'listaArticulo' => $listaArticulos,
             'lineas' => $lineas,
             'activar' => $activar,
             'orden' => $orden
-
-
         ]);
 
 

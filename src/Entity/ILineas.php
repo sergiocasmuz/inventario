@@ -46,6 +46,12 @@ class ILineas
      */
     private $modelo;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $familia;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -119,6 +125,19 @@ class ILineas
     public function setModelo(string $modelo): self
     {
         $this->modelo = $modelo;
+
+        return $this;
+    }
+
+
+    public function getFamilia(): ?string
+    {
+        return $this->familia;
+    }
+
+    public function setFamilia(string $familia): self
+    {
+        $this->familia = $familia;
 
         return $this;
     }

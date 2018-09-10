@@ -33,7 +33,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Recibir Artículos</h5>
                     <p class="card-text">Incrementá el stock existente.</p>
-                    <a href="articulo/n" class="btn btn-primary">Agregar</a>
+                    <a href="/ordenIngreso" class="btn btn-primary">Agregar</a>
                 </div>
             </div>
         </div>
@@ -64,7 +64,7 @@
                     <td>{{ art.articulo }}</td>
                     <td>{{ art.marca }}</td>
                     <td>{{ art.modelo }}</td>
-                    <td>0</td>
+                    <td>{{ art.cantidad }}</td>
                 </tr>
 
             {% endfor %}
