@@ -17,7 +17,7 @@ class ICabecera
     private $id;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private $fecha;
 
@@ -25,6 +25,12 @@ class ICabecera
      * @ORM\Column(type="string", length=255)
      */
     private $proveedor;
+
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $estado;
 
     public function getId(): ?int
     {
@@ -51,6 +57,19 @@ class ICabecera
     public function setProveedor(string $proveedor): self
     {
         $this->proveedor = $proveedor;
+
+        return $this;
+    }
+
+
+    public function getEstado(): ?string
+    {
+        return $this->estado;
+    }
+
+    public function setEstado(string $estado): self
+    {
+        $this->estado = $estado;
 
         return $this;
     }

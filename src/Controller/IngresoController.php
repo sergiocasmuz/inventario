@@ -26,10 +26,9 @@ class IngresoController extends AbstractController
     public function index(Request $request)
     {
 
-
         $formularioCabecera = $this->createFormBuilder();
         $formularioCabecera ->add('nombreForm', HiddenType::class,array('attr' => array('value' => 'editarCabecera')));
-        $formularioCabecera ->add('fecha', DateType::class);
+        $formularioCabecera ->add('fecha', DateType::class,array('attr' => array('value' => date("Y-m-d"))));
         $formularioCabecera ->add('proveedor', TextType::class);
         $formularioCabecera ->add('save', SubmitType::class, array('label' => 'Siguiente'));
         $formularioCabecera = $formularioCabecera ->getForm();
@@ -60,12 +59,9 @@ class IngresoController extends AbstractController
             }
         }
 
-
-
         return $this->render('ingreso/ingr_cabecera.html.twig',
             ['formularioCabecera' => $formularioCabecera->createView()]);
     }
-
 
 
 
@@ -115,9 +111,6 @@ class IngresoController extends AbstractController
 
         $formularioIngreso->handleRequest($request);
 
-
-
-
         ////////////respuesta del formulario de articulos
 
         if ($formularioIngreso->isSubmitted() && $formularioIngreso->isValid()) {
@@ -146,15 +139,14 @@ class IngresoController extends AbstractController
 
                 $iLineas->setOrden($orden);
                 $iLineas->setIdArticulo($idArt);
+                $iLineas->setCantidad($cantidad);
+                $iLineas->setArticulo($articulo);
                 $iLineas->setMarca($marca);
                 $iLineas->setModelo($modelo);
-                $iLineas->setArticulo($articulo);
-                $iLineas->setCantidad($cantidad);
                 $iLineas->setFamilia($familia);
 
                 
-                $il = $this -> getDoctrine()
-                    -> getRepository(ILineas::class);
+                $il = $this -> getDoctrine() -> getRepository(ILineas::class);
 
                 $query = $em->createQuery("SELECT u FROM App\Entity\ILineas u WHERE u.orden = '$orden' and u.idArticulo= '$idArt' ");
 
@@ -190,7 +182,7 @@ class IngresoController extends AbstractController
             }
 
 
-            //return $this->redirect("/ingr_linea/{$orden}/agregar");
+            return $this->redirect("/ingr_linea/{$orden}/agregar");
 
         }
 
@@ -199,7 +191,7 @@ class IngresoController extends AbstractController
 
         $formularioCabecera = $this->createFormBuilder()
             ->add('nombreForm', HiddenType::class,array('attr' => array('value' => 'editarCabecera')))
-            ->add('fecha', DateType::class)
+            ->add('fecha', DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd','attr' => array("value" => date("Y-m-d") ) ))
             ->add('proveedor', TextType::class)
             ->add('save', SubmitType::class, array('label' => 'Siguiente'))
             ->getForm();
@@ -245,8 +237,6 @@ class IngresoController extends AbstractController
         $cabe = $repCabecera->find($orden);
 
 
-
-
         //////formulario para quitar lineas
 
         $lineas = $this->getDoctrine()->getRepository(ILineas::class);
@@ -279,8 +269,6 @@ class IngresoController extends AbstractController
 
             $activar = "quitar";
             return $this->redirect("/ingr_linea/{$orden}/quitar");
-
-
         }
 
 
@@ -288,8 +276,8 @@ class IngresoController extends AbstractController
 
         $formularioOrden = $this -> createFormBuilder();
 
-        $formularioOrden -> add('nombreForm', TextType::class, array( 'attr' => array('value' => 'formularioOrden' ) ) );
-        $formularioOrden -> add('envOrden', SubmitType::class, array( 'label' => 'Enviar orden' ) );
+        $formularioOrden -> add('nombreForm', HiddenType::class, array( 'attr' => array('value' => 'formularioOrden' ) ) );
+        $formularioOrden -> add('envOrden', SubmitType::class, array( 'label' => 'Enviar orden', 'attr' => array('class' => 'btn btn-primary') ) );
 
         $formularioOrden = $formularioOrden -> getForm();
         $formularioOrden -> handleRequest($request);
@@ -300,29 +288,28 @@ class IngresoController extends AbstractController
 
 
             $emLines = $this->getDoctrine() -> getManager();
-            $ilines = $emLines -> getRepository(ILineas::class)->findByOrden($orden);
 
+            $iCabe = $emLines -> getRepository(ICabecera::class)->find($orden);
+            $iCabe -> setEstado(1);
+            $emLines->flush();
+
+
+            $ilines = $emLines -> getRepository(ILineas::class)->findByOrden($orden);
 
             $emStock = $this -> getDoctrine() -> getManager();
 
-
            foreach ($ilines as $line){
 
-
                $stock = $emStock -> getRepository(stock::class) -> findByIdArticulo($line->getIdArticulo());
-
                $suma = $stock[0]->getCantidad() + $line -> getCantidad();
 
-               $stock[0] -> setCantidad($suma);
-               $emStock->flush();
+              // $stock[0] -> setCantidad($suma);
+               //$emStock->flush();
 
            }
 
             return $this->redirect("/");
-
-
         }
-
 
 
         return $this->render('ingreso/ingr_linea.html.twig', [

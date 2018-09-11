@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+
+
+{% block body %}
+    <script>
+        $(document).ready(function(){
+
+
+
+            $("* .btn").click(function(){
+                var a = $(this).attr('id');
+                window.location.href = "/ingr_linea/"+a+"/quitar";
+            })
+
+
+        });
+    </script>
+ <div class="container  ">
+
+     <br>
+     <!-- ./Tabs -->
+     <section id="tabs">
+
+         <h6 class="section-title h1" style="float:left;">Ordenes</h6>
+
+         <br>
+         <br>
+         <br>
+         <br>
+
+         <div class="row">
+             <div class="col-lg-12 ">
+                 <nav>
+
+                     <!-------------------------- titulos de tabs ---------------------->
+                     <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                         <a class="nav-item nav-link active" id="nav-recepcion-tab" data-toggle="tab" href="#nav-recepcion" role="tab" aria-controls="nav-recepcion" aria-selected="true">Ordenes de recepción</a>
+                         <a class="nav-item nav-link" id="nav-envio-tab" data-toggle="tab" href="#nav-envio" role="tab" aria-controls="nav-envio" aria-selected="false">Ordenes de entrega</a>
+                         <a class="nav-item nav-link" id="nav-editarList-tab" data-toggle="tab" href="#nav-editarList" role="tab" aria-controls="nav-editarList" aria-selected="false">Modificar lista cabecera</a>
+                     </div>
+                 </nav>
+
+                 <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+
+
+                     <!-------------------------- tab 1 ---------------------->
+                     <div class="tab-pane fade show active" id="nav-recepcion" role="tabpanel" aria-labelledby="nav-rcepcion-tab">
+                         <div class="alert alert-info" role="alert">
+                             ...
+                         </div>
+
+
+                         <table class="table">
+                             <tr>
+                                 <th style="width:150px;">Fecha</th>
+                                 <th style="text-align:center;">Proveedor</th>
+                                 <th style="text-align:center;">Nro de orden</th>
+
+                             </tr>
+
+                             {{ form_start(formularioEstado) }}
+                             {% for orden in ordenes %}
+
+                                 {% set f = orden.fecha.date | split(" ") %}
+
+                                 <tr>
+                                     <td>{{ f[0]|date("m/d/Y") }}</td>
+                                     <td style="text-align:center;">{{ orden.proveedor }}</td>
+                                     <td style="text-align:center; font-weight: bold;"># {{ orden.id }}</td>
+
+                                     <td>
+                                         <!-- Button -->
+                                         <button type="button" id="{{ orden.id }}" class="btn btn-light btn-sm" data-toggle="modal" data-target="#exampleModal">
+                                             Ver detalle
+                                         </button>
+
+                                     </td>
+
+                                     <td>
+                                         {{ form_widget(formularioEstado[orden.id]) }}
+                                     </td>
+
+                                 </tr>
+
+                             {% endfor %}
+                             {{ form_end(formularioEstado) }}
+
+
+                         </table>
+
+
+                     </div>
+
+                     <!-------------------------- tab 2 ---------------------->
+                     <div class="tab-pane fade" id="nav-envio" role="tabpanel" aria-labelledby="nav-envio-tab">
+
+                         <div class="alert alert-info" role="alert">
+                             Quitar
+                         </div>
+
+
+                     </div>
+
+                     <!-------------------------- tab 3 ---------------------->
+                     <div class="tab-pane fade" id="nav-editarList" role="tabpanel" aria-labelledby="nav-editarList-tab">
+
+                     </div>
+
+                 </div>
+             </div>
+
+         </div>
+     </section>
+
+     <!-- ./Tabs -->
+
+ </div>
+
+
+
+{% endblock %}

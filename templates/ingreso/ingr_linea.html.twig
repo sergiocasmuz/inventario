@@ -34,19 +34,21 @@
 
 
     <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+<div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel"> Orden # {{ orden }}</h5>
+        <h3 class="modal-title" id="exampleModalLabel"> Orden de recepción # {{ orden }}</h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
 
-            Preoveedor: {{ cabecera.proveedor }}<br>
-            Fecha: {{ cabecera.fecha.date }}<br><br><br>    
+           {% set fecha = cabecera.fecha.date | split(' ') %}
+
+            <h5>Preoveedor: {{ cabecera.proveedor }}</h5>
+            <h5>Fecha: {{ fecha[0]|date("m/d/Y") }} </h5><br>
 
             <table class="table">
                                 <tr>
@@ -62,17 +64,17 @@
                 <td>{{ d.marca }}</td>
                 <td>{{ d.modelo }}</td>
                 <td>{{ d.cantidad }}</td>
-            </tr>            
+            </tr>
             {% endfor %}
         </table>
 
 
-
-
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          {{ form_start(formularioOrden) }}
+          {{ form_widget(formularioOrden) }}
+          {{ form_end(formularioOrden) }}
       </div>
     </div>
   </div>
@@ -80,21 +82,21 @@
 
     <div class="container">
 
-        <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Launch demo modal
-</button>           
-
 
         <br>
         <section id="tabs">
-            <h6 class="section-title h1">Orden # {{ orden }}</h6>
 
-            <dvi>
-                {{ form_start(formularioOrden) }}
-                {{ form_widget(formularioOrden) }}
-                {{ form_end(formularioOrden) }}
-            </dvi>
+            <h6 class="section-title h1" style="float:left;">Orden de recepción # {{ orden }}</h6>
+
+
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" style="float:right; clear:right;">
+                Enviar Orden
+            </button>
+
+            <br><br><br>
+
+
                 <br>
             <div class="row">
                 <div class="col-lg-12 ">
@@ -103,7 +105,7 @@
                         <!-------------------------- titulos de tabs ---------------------->
                         <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
                             <a class="nav-item nav-link active" id="nav-vistaPrevia-tab" data-toggle="tab" href="#nav-vistaPrevia" role="tab" aria-controls="nav-vistaPrevia" aria-selected="true">Agregar linea</a>
-                            <a class="nav-item nav-link" id="nav-cabecera-tab" data-toggle="tab" href="#nav-cabecera" role="tab" aria-controls="nav-cabecera" aria-selected="false">Quitar lineas</a>
+                            <a class="nav-item nav-link" id="nav-cabecera-tab" data-toggle="tab" href="#nav-cabecera" role="tab" aria-controls="nav-cabecera" aria-selected="false">lineas</a>
                             <a class="nav-item nav-link" id="nav-editarList-tab" data-toggle="tab" href="#nav-editarList" role="tab" aria-controls="nav-editarList" aria-selected="false">Modificar lista cabecera</a>
                         </div>
                     </nav>
@@ -198,7 +200,7 @@
                         <!-------------------------- tab 3 ---------------------->
                         <div class="tab-pane fade" id="nav-editarList" role="tabpanel" aria-labelledby="nav-editarList-tab">
                             {{ form_start(formularioCabecera) }}
-                            {{ form_widget(formularioCabecera) }}
+                            {{ form_widget(formularioCabecera )}}
                             {{ form_end(formularioCabecera) }}
                         </div>
 
