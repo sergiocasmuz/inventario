@@ -144,8 +144,6 @@ class IngresoController extends AbstractController
 
                 $iLineas = new ILineas();
 
-              //  echo $respuesta->getOrden();
-
                 $iLineas->setOrden($orden);
                 $iLineas->setIdArticulo($idArt);
                 $iLineas->setMarca($marca);
@@ -181,8 +179,7 @@ class IngresoController extends AbstractController
 
                         if($cantidad != 0){
                             
-                            $il ->find($idDQL)
-                            ->setCantidad($suma);
+                            $il ->find($idDQL)->setCantidad($suma);
                             $em->flush();
                         }
                                
@@ -246,6 +243,8 @@ class IngresoController extends AbstractController
 
         $repCabecera = $this->getDoctrine()->getRepository(ICabecera::class);
         $cabe = $repCabecera->find($orden);
+
+
 
 
         //////formulario para quitar lineas
@@ -325,6 +324,7 @@ class IngresoController extends AbstractController
         }
 
 
+
         return $this->render('ingreso/ingr_linea.html.twig', [
             'formularioIngreso' => $formularioIngreso->createView(),
             'formularioCabecera' => $formularioCabecera->createView(),
@@ -333,8 +333,10 @@ class IngresoController extends AbstractController
             'listaArticulo' => $listaArticulos,
             'lineas' => $lineas,
             'activar' => $activar,
-            'orden' => $orden
-        ]);
+            'orden' => $orden,
+            'cabecera' => $cabe,
+        
+                 ]);
 
 
     }
