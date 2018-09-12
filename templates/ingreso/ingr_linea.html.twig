@@ -20,11 +20,15 @@
                 $('#nav-vistaPrevia-tab').attr('class','nav-item nav-link');
                 $('#nav-editarList-tab').attr('class','nav-item nav-link');
 
-
                 $("#nav-vistaPrevia").attr('class','tab-pane fade');
                 $("#nav-cabecera").attr('class','tab-pane fade show active');
                 $("#nav-editarList").attr('class','tab-pane fade');
             }
+
+
+
+
+
 
         });
     </script>
@@ -80,6 +84,37 @@
   </div>
 </div>
 
+
+
+
+    <!-- Modal nuevo articulo-->
+    <div class="modal fade" id="articuloN" tabindex="-1" role="dialog" aria-labelledby="articuloNLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel"> Crear artículo</h3>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                    <div class="modal-body">
+
+                    {{ form_start(formularioArticuloN) }}
+                    {{ form_widget(formularioArticuloN) }}
+                    {{ form_end(formularioArticuloN) }}
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
     <div class="container">
 
 
@@ -90,7 +125,7 @@
 
 
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" style="float:right; clear:right;">
+            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModal" style="float:right; clear:right;">
                 Enviar Orden
             </button>
 
@@ -119,6 +154,12 @@
 
                             <div class="alert alert-info" role="alert">
                                 Lista de los artículos a solicitar
+
+                                <button type="button" class="btn btn-info" id="articuloN" data-toggle="modal" data-target="#articuloN" style="float:right; clear:right;">
+                                    Agregar elementos a la lista
+                                </button>
+                                <br>
+                                <br>
                             </div>
 
 

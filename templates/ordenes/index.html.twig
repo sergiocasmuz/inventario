@@ -8,8 +8,6 @@
     <script>
         $(document).ready(function(){
 
-
-
             $("* .btn").click(function(){
                 var a = $(this).attr('id');
                 window.location.href = "/ingr_linea/"+a+"/quitar";
@@ -18,8 +16,11 @@
 
         });
     </script>
- <div class="container  ">
 
+    <style>
+        .btnC{width:130px;}
+    </style>
+ <div class="container  ">
      <br>
      <!-- ./Tabs -->
      <section id="tabs">
@@ -37,9 +38,9 @@
 
                      <!-------------------------- titulos de tabs ---------------------->
                      <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                         <a class="nav-item nav-link active" id="nav-recepcion-tab" data-toggle="tab" href="#nav-recepcion" role="tab" aria-controls="nav-recepcion" aria-selected="true">Ordenes de recepción</a>
-                         <a class="nav-item nav-link" id="nav-envio-tab" data-toggle="tab" href="#nav-envio" role="tab" aria-controls="nav-envio" aria-selected="false">Ordenes de entrega</a>
-                         <a class="nav-item nav-link" id="nav-editarList-tab" data-toggle="tab" href="#nav-editarList" role="tab" aria-controls="nav-editarList" aria-selected="false">Modificar lista cabecera</a>
+                         <a class="nav-item nav-link active" id="nav-recepcion-tab" data-toggle="tab" href="nav-recepcion" role="tab" aria-controls="nav-recepcion" aria-selected="true">Ordenes de recepción</a>
+                         <a class="nav-item nav-link" id="nav-envio-tab" data-toggle="tab" href="nav-envio" role="tab" aria-controls="nav-envio" aria-selected="false">Ordenes de entrega</a>
+                         <a class="nav-item nav-link" id="nav-editarList-tab" data-toggle="tab" href="nav-editarList" role="tab" aria-controls="nav-editarList" aria-selected="false">Modificar lista cabecera</a>
                      </div>
                  </nav>
 
@@ -66,12 +67,30 @@
 
                                  {% set f = orden.fecha.date | split(" ") %}
 
+
+                                 {% set estado = "..." %}
+                                     {% if orden.estado == 0 %}
+                                         {% set estado = "En proceso" %}
+                                         {% set btn = "secondary" %}
+
+                                     {% elseif orden.estado == 1 %}
+                                         {% set estado = "Pendiente" %}
+                                         {% set btn = "danger" %}
+
+                                     {% elseif orden.estado == 2 %}
+                                         {% set estado = "Aprobado" %}
+                                         {% set btn = "success" %}
+
+                                 {% endif %}
+
                                  <tr>
                                      <td>{{ f[0]|date("m/d/Y") }}</td>
                                      <td style="text-align:center;">{{ orden.proveedor }}</td>
                                      <td style="text-align:center; font-weight: bold;"># {{ orden.id }}</td>
 
+
                                      <td>
+
                                          <!-- Button -->
                                          <button type="button" id="{{ orden.id }}" class="btn btn-light btn-sm" data-toggle="modal" data-target="#exampleModal">
                                              Ver detalle
@@ -79,7 +98,13 @@
 
                                      </td>
 
+                                     <td style="width:120px; text-align:right;">
+                                         <span class="badge badge-{{ btn }}">{{ estado }}</span>
+
+                                     </td>
+
                                      <td>
+
                                          {{ form_widget(formularioEstado[orden.id]) }}
                                      </td>
 

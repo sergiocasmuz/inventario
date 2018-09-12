@@ -28,7 +28,7 @@ class IngresoController extends AbstractController
 
         $formularioCabecera = $this->createFormBuilder();
         $formularioCabecera ->add('nombreForm', HiddenType::class,array('attr' => array('value' => 'editarCabecera')));
-        $formularioCabecera ->add('fecha', DateType::class,array('attr' => array('value' => date("Y-m-d"))));
+        $formularioCabecera ->add('fecha', DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd','attr' => array("value" => date("Y-m-d") )));
         $formularioCabecera ->add('proveedor', TextType::class);
         $formularioCabecera ->add('save', SubmitType::class, array('label' => 'Siguiente'));
         $formularioCabecera = $formularioCabecera ->getForm();
@@ -47,6 +47,7 @@ class IngresoController extends AbstractController
 
                 $Cabecera -> setFecha($rta["fecha"]);
                 $Cabecera -> setProveedor($rta["proveedor"]);
+                $Cabecera -> seteSTADO(0);
 
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($Cabecera);
@@ -55,7 +56,7 @@ class IngresoController extends AbstractController
                 ///////el nro de orden corresponde con el id de la cabecera
                 $orden = $Cabecera->getId();
 
-                 return $this->redirect("/ingr_linea/{$orden}/agregar");
+                 return $this->redirect("/ingr_linea/{$orden}/agregar/");
             }
         }
 
@@ -182,7 +183,7 @@ class IngresoController extends AbstractController
             }
 
 
-            return $this->redirect("/ingr_linea/{$orden}/agregar");
+            return $this->redirect("/ingr_linea/{$orden}/agregar/");
 
         }
 
@@ -312,10 +313,77 @@ class IngresoController extends AbstractController
         }
 
 
+
+
+
+
+
+
+        ////////////////////////////formulario de nuevo ARTICULO
+
+        $articulos = new Articulos();
+
+        $formulario = $this->createFormBuilder($articulos);
+
+        $formulario->add('familia',TextType::class);
+        $formulario->add('articulo',TextType::class);
+        $formulario->add('marca',TextType::class);
+        $formulario->add('modelo',TextType::class);
+        $formulario->add('detalle',TextType::class);
+        $formulario->add('save', SubmitType::class, array('label' => 'Guardar'));
+        $formulario = $formulario->getForm();
+
+        $formulario = $formulario->handleRequest($request);
+
+        if ($formulario->isSubmitted() && $formulario->isValid()) {
+
+
+            $em = $this -> getDoctrine() -> getManager();
+
+            ///////////////ingresar aticulo
+            $tablaArt = $em ->getRepository(Articulos::class);
+            $art = $formulario -> getData();
+
+            $em->persist($art);
+            $em->flush();
+
+            $idArt = $art->getId();
+            $familia = $art-> getFamilia();
+            $articulo = $art-> getArticulo();
+            $marca = $art-> getMarca();
+            $modelo = $art-> getModelo();
+            $detalle = $art-> getDetalle();
+
+
+            ///////////////ingresar stock
+            $tablaArt = $em ->getRepository(stock::class);
+
+            $stock = new stock();
+
+            $stock -> setFamilia($familia);
+            $stock -> setArticulo($articulo);
+            $stock -> setMarca($marca);
+            $stock -> setModelo($modelo);
+            $stock -> setDetalle($detalle);
+            $stock -> setCantidad(0);
+            $stock -> setIdArticulo($idArt);
+
+            $em->persist($stock);
+            $em->flush();
+
+            return $this->redirect("/ingr_linea/{$orden}/agregar");
+
+
+        }
+
+
+
+
         return $this->render('ingreso/ingr_linea.html.twig', [
             'formularioIngreso' => $formularioIngreso->createView(),
             'formularioCabecera' => $formularioCabecera->createView(),
             'formPedido' => $formPedido->createView(),
+            'formularioArticuloN' => $formulario->createView(),
             'formularioOrden' => $formularioOrden -> createView(),
             'listaArticulo' => $listaArticulos,
             'lineas' => $lineas,

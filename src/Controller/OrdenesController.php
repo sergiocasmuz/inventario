@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\ICabecera;
 use App\Entity\ILineas;
+use App\Entity\stock;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,36 +21,41 @@ class OrdenesController extends AbstractController
     {
 
         $em = $this -> getDoctrine() -> getManager();
-        $icabecera = $em -> getRepository(ICabecera::class) -> findAll();
-
+        $icabecera = $em -> getRepository(ICabecera::class) -> findBy(array(),array('id'=>'DESC'));
 
         $formularioEstado = $this -> createFormBuilder();
 
-
-
         foreach ($icabecera as $a){
+
+
+            $formularioEstado -> add('nombreForm', HiddenType::class, array('attr' => array("value" => 'estadoForm' )) );
+            $formularioEstado -> add('id_'.$a->getId(), HiddenType::class, array('attr' => array("value" => $a->getId(),  )));
 
             switch ($a->getEstado()){
 
-                case 0: $colorBTN="btn btn-secondary";
-                        $textoBTN="En proceso";
+                case 0:
+                    $formularioEstado -> add($a->getId(), HiddenType::class,
+                        array("label" => 'Aprobar',
+                            'attr' => array('class' => 'btnC btn-primary' )) );
                     break;
 
-                case 1: $colorBTN="btn btn-danger";
-                    $textoBTN="Pendiente";
+                case 1:
+                        $formularioEstado -> add($a->getId(), SubmitType::class,
+                        array("label" => 'Aprobar',
+                        'attr' => array('class' => 'btnC btn-primary' )) );
+
                     break;
 
-                case 2: $colorBTN="btn btn-success";
-                    $textoBTN="Aprobado";
+                case 2:
+                        $formularioEstado -> add($a->getId(), HiddenType::class,
+                        array("label" => 'Aprobar',
+                        'attr' => array('class' => 'btnC btn-primary' )) );
                     break;
 
             }
 
-            $formularioEstado -> add('nombreForm', HiddenType::class, array('attr' => array("value" => 'estadoForm' )) );
-            $formularioEstado -> add('id_'.$a->getId(), HiddenType::class, array('attr' => array("value" => $a->getId() )));
-            $formularioEstado -> add($a->getId(), SubmitType::class,
-                array("label" => $textoBTN,
-                    'attr' => array('class' => $colorBTN )) );
+
+
 
             $ilineas = $em -> getRepository(ILineas::class) -> findByOrden($a->getId());
 
@@ -57,7 +63,6 @@ class OrdenesController extends AbstractController
 
         $formularioEstado = $formularioEstado->getForm();
         $formularioEstado->handleRequest($request);
-
 
         if ($formularioEstado->isSubmitted() && $formularioEstado->isValid() ) {
 
@@ -75,21 +80,29 @@ class OrdenesController extends AbstractController
                 case 1:
                     $iCabe -> setEstado(2);
                     $emLines->flush();
+
+                    $ilines = $emLines -> getRepository(ILineas::class)->findByOrden($orden);
+
+                    $emStock = $this -> getDoctrine() -> getManager();
+
+                    foreach ($ilines as $line){
+
+                        $stock = $emStock -> getRepository(stock::class) -> findByIdArticulo($line->getIdArticulo());
+                        $suma = $stock[0]->getCantidad() + $line -> getCantidad();
+
+                        $stock[0] -> setCantidad($suma);
+                        $emStock->flush();
+                        header("Refresh:0");
+
+                    }
                     break;
 
                 case 2:
 
                     break;
-
-
             }
 
-
-
-
-
         }
-
 
         return $this->render('ordenes/index.html.twig', [
             'ordenes' => $icabecera,

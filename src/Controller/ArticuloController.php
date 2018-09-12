@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Articulos;
+use App\Entity\stock;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+
 
 class ArticuloController extends AbstractController
 {
@@ -29,11 +31,12 @@ class ArticuloController extends AbstractController
      * @Route("/articulo/n", name="articulo_n")
      */
 
-    public function new(Request $request)
+    public function nuevo(Request $request)
     {
 
+        $articulos = new Articulos();
 
-        $formulario = $this->createFormBuilder();
+        $formulario = $this->createFormBuilder($articulos);
 
         $formulario->add('familia',TextType::class);
         $formulario->add('articulo',TextType::class);
@@ -41,23 +44,50 @@ class ArticuloController extends AbstractController
         $formulario->add('modelo',TextType::class);
         $formulario->add('detalle',TextType::class);
         $formulario->add('save', SubmitType::class, array('label' => 'Guardar'));
-        $formulario->getForm();
+        $formulario = $formulario->getForm();
 
-        $formulario->handleRequest($request);
+        $formulario = $formulario->handleRequest($request);
 
         if ($formulario->isSubmitted() && $formulario->isValid()) {
-            // $formulario->getData()
-
-            $art = $formulario->getData();
 
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($art);
-            $entityManager->flush();
+            $em = $this -> getDoctrine() -> getManager();
+
+            ///////////////ingresar aticulo
+            $tablaArt = $em ->getRepository(Articulos::class);
+            $art = $formulario -> getData();
+
+            $em->persist($art);
+            $em->flush();
+
+            $idArt = $art->getId();
+            $familia = $art-> getFamilia();
+            $articulo = $art-> getArticulo();
+            $marca = $art-> getMarca();
+            $modelo = $art-> getModelo();
+            $detalle = $art-> getDetalle();
+
+
+            ///////////////ingresar stock
+            $tablaArt = $em ->getRepository(stock::class);
+
+            $stock = new stock();
+
+            $stock -> setFamilia($familia);
+            $stock -> setArticulo($articulo);
+            $stock -> setMarca($marca);
+            $stock -> setModelo($modelo);
+            $stock -> setDetalle($detalle);
+            $stock -> setCantidad(0);
+            $stock -> setIdArticulo($idArt);
+
+            $em->persist($stock);
+            $em->flush();
 
             return $this->render('articulo/art.html.twig', [
                 'formulario' => $formulario->createView(),
             ]);
+
         }
 
         return $this->render('articulo/art.html.twig', [
@@ -86,7 +116,6 @@ class ArticuloController extends AbstractController
         return $this->render('articulo/art_list.html.twig', ['art' => $art]);
 
     }
-
 
 
     /**
