@@ -4,11 +4,14 @@
 
 {% block body %}
 
+
 <br>
 <br>
 
+   <div class="container">
+
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Entrega de artículos</h5>
@@ -18,17 +21,9 @@
             </div>
         </div>
 
-        <div class="col-lg-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Reservar artículos</h5>
-                    <p class="card-text">Reservá parte del stock.</p>
-                    <a href="articulo/n" class="btn btn-primary">Reservar</a>
-                </div>
-            </div>
-        </div>
 
-        <div class="col-lg-4">
+
+        <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Recibir Artículos</h5>
@@ -69,6 +64,7 @@
 
             {% endfor %}
         </table>
+   </div>
 
     
 {% endblock %}

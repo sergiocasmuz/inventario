@@ -3,10 +3,71 @@
 {% block title %}Hello {{ controller_name }}!{% endblock %}
 
 {% block body %}
+    <style>
+        #chart_div{
+                    width:500px;
+                }
+    </style>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script>
+        google.charts.load('current', {packages: ['corechart', 'bar']});
+        google.charts.setOnLoadCallback(drawMaterial);
+
+        function drawMaterial() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', '');
+            data.addColumn('number', 'Cantidad de Artículos');
+
+            data.addRows([
+                ['CPU', 1],
+                ['Teclados', 2],
+                ['asa', 3],
+                [ '11 am', 4],
+                [ '12 pm', 5],
+                [ '1 pm', 6 ],
+                [ '2 pm', 7 ],
+                [ '3 pm', 8],
+                [ '4 pm', 9],
+                [ '5 pm', 10],
+            ]);
+
+            var options = {
+
+                title: null,
+                hAxis: {
+                    title: 'Artículos por familia',
+                    format: '',
+                    viewWindow: {
+                        min: [7, 30, 0],
+                        max: [17, 30, 0]
+                    }
+                },
+                vAxis: {
+                    title: ''
+                }
+            };
+
+            var materialChart = new google.charts.Bar(document.getElementById('chart_div'));
+            materialChart.draw(data, options);
+        }
+    </script>
+
+
+
+
 
     <div class="jumbotron">
         <h1 class="display-4">Stock</h1>
+
+
     </div>
+
+
+        <div id="chart_div" class="w-50 p-3" ></div>
+
+
+
 
     
 {% endblock %}

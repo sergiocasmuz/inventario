@@ -5,10 +5,13 @@ namespace App\Controller;
 use App\Entity\Articulos;
 use App\Entity\ECabecera;
 use App\Entity\ELineas;
+use App\Entity\Familia;
 use App\Entity\ICabecera;
 use App\Entity\ILineas;
+use App\Entity\Marca;
 use App\Entity\stock;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -26,14 +29,27 @@ class IngresoController extends AbstractController
     public function index(Request $request)
     {
 
+        /* *********************************************************************** */
+        /* *************** FORMULARIO NUEVA ORDEN (ENCABEZADO) ******************* */
+        /* *********************************************************************** */
+
         $formularioCabecera = $this->createFormBuilder();
         $formularioCabecera ->add('nombreForm', HiddenType::class,array('attr' => array('value' => 'editarCabecera')));
         $formularioCabecera ->add('fecha', DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd','attr' => array("value" => date("Y-m-d") )));
         $formularioCabecera ->add('proveedor', TextType::class);
+        $formularioCabecera ->add('receptor', TextType::class);
+        $formularioCabecera ->add('remito', TextType::class);
+        $formularioCabecera ->add('suministro', TextType::class);
+
         $formularioCabecera ->add('save', SubmitType::class, array('label' => 'Siguiente'));
         $formularioCabecera = $formularioCabecera ->getForm();
 
         $formularioCabecera->handleRequest($request);
+
+
+        /* *********************************************************************** */
+        /* **************** RESPUESTA NUEVA ORDEN (ENCABEZADO) ******************* */
+        /* *********************************************************************** */
 
         if ($formularioCabecera->isSubmitted() && $formularioCabecera->isValid()) {
 
@@ -43,10 +59,12 @@ class IngresoController extends AbstractController
 
             if($nombreForm == "editarCabecera") {
 
-                echo "editarCabecera";
 
                 $Cabecera -> setFecha($rta["fecha"]);
                 $Cabecera -> setProveedor($rta["proveedor"]);
+                $Cabecera -> setReceptor($rta["receptor"]);
+                $Cabecera -> setRemito($rta["remito"]);
+                $Cabecera -> setSuministro($rta["suministro"]);
                 $Cabecera -> seteSTADO(0);
 
                 $entityManager = $this->getDoctrine()->getManager();
@@ -78,7 +96,9 @@ class IngresoController extends AbstractController
         $listaArticulos = $repository->findAll();
 
 
-        ///////////////////formulario de orden
+        /* *********************************************************************** */
+        /* *************** FORMULARIO NUEVA ORDEN (LINEAS)****************************** */
+        /* *********************************************************************** */
         $formularioIngreso = $this->createFormBuilder();
 
        $articulosTotales = count($listaArticulos);
@@ -112,7 +132,9 @@ class IngresoController extends AbstractController
 
         $formularioIngreso->handleRequest($request);
 
-        ////////////respuesta del formulario de articulos
+        /* *********************************************************************** */
+        /* *************** RESPUESTA DE "NUEVA ORDEN (LINEAS)" ************************* */
+        /* *********************************************************************** */
 
         if ($formularioIngreso->isSubmitted() && $formularioIngreso->isValid()) {
 
@@ -188,7 +210,9 @@ class IngresoController extends AbstractController
         }
 
 
-        /////////formulario cabecera
+        /* *********************************************************************** */
+        /* *************** FORMULARIO DE CABECERA ******************************** */
+        /* *********************************************************************** */
 
         $formularioCabecera = $this->createFormBuilder()
             ->add('nombreForm', HiddenType::class,array('attr' => array('value' => 'editarCabecera')))
@@ -197,7 +221,9 @@ class IngresoController extends AbstractController
             ->add('save', SubmitType::class, array('label' => 'Siguiente'))
             ->getForm();
 
-        /////////respuesta formulario cabecera
+        /* *********************************************************************** */
+        /* *************** RESPUESTA DE "FORMULARIO DE CABECERA" ***************** */
+        /* *********************************************************************** */
         $formularioCabecera->handleRequest($request);
 
         if ( $formularioCabecera->isSubmitted() && $formularioCabecera->isValid() ) {
@@ -238,7 +264,9 @@ class IngresoController extends AbstractController
         $cabe = $repCabecera->find($orden);
 
 
-        //////formulario para quitar lineas
+        /* *********************************************************************** */
+        /* *************** FORMULARIO QUITAR LINEAS ****************************** */
+        /* *********************************************************************** */
 
         $lineas = $this->getDoctrine()->getRepository(ILineas::class);
         $lineas = $lineas->findBy( ['orden' => $orden] );
@@ -254,7 +282,9 @@ class IngresoController extends AbstractController
         $formPedido->handleRequest($request);
 
 
-        /////////respuesta formulario quitar lineas
+        /* *********************************************************************** */
+        /* *************** RESPUESTA DE "QUITAR LINEAS" ************************** */
+        /* *********************************************************************** */
 
         if ($formPedido->isSubmitted() && $formPedido->isValid()) {
 
@@ -273,18 +303,23 @@ class IngresoController extends AbstractController
         }
 
 
-        //////////////formulario enviar orden
+        /* *********************************************************************** */
+        /* *************** FORMULARIO CONFIRMAR ORDEN ******************************* */
+        /* *********************************************************************** */
 
         $formularioOrden = $this -> createFormBuilder();
 
         $formularioOrden -> add('nombreForm', HiddenType::class, array( 'attr' => array('value' => 'formularioOrden' ) ) );
-        $formularioOrden -> add('envOrden', SubmitType::class, array( 'label' => 'Enviar orden', 'attr' => array('class' => 'btn btn-primary') ) );
+        $formularioOrden -> add('envOrden', SubmitType::class, array( 'label' => 'Confirmar orden', 'attr' => array('class' => 'btn btn-primary') ) );
 
         $formularioOrden = $formularioOrden -> getForm();
         $formularioOrden -> handleRequest($request);
 
 
-        /////////////////respuesta de formulario enviar orden
+        /* *********************************************************************** */
+        /* *************** RESPUESTA DE FORMULARIO CONFIRMAR ORDEN ****************** */
+        /* *********************************************************************** */
+
         if ($formularioOrden->isSubmitted() && $formularioOrden->isValid() ) {
 
 
@@ -314,20 +349,37 @@ class IngresoController extends AbstractController
 
 
 
-
-
-
-
-
-        ////////////////////////////formulario de nuevo ARTICULO
+        /* *********************************************************************** */
+        /* *************** FORMULARIO NUEVO ARTICULO****************************** */
+        /* *********************************************************************** */
 
         $articulos = new Articulos();
 
         $formulario = $this->createFormBuilder($articulos);
 
-        $formulario->add('familia',TextType::class);
+
+        $em = $this -> getDoctrine() -> getManager();
+
+        $familia = $em -> getRepository(Familia::class) -> findBy(array(),array('familia'=>'ASC'));
+
+        $marca = $em -> getRepository(Marca::class) -> findBy(array(),array('marca'=>'ASC'));
+
+
+
+        foreach ($marca as $item0) {
+                                    $marcaList[""] = null;
+                                    $marcaList[$item0->getMarca()] = true;
+                                    }
+
+
+        foreach ($familia as $item1) {
+                                        $familiaList[""] = null;
+                                        $familiaList[$item1->getFamilia()] = true;
+                                    }
+
+        $formulario->add('familia',ChoiceType::class, array( 'choices'  => array('Seleccioná una familia' =>$familiaList)));
         $formulario->add('articulo',TextType::class);
-        $formulario->add('marca',TextType::class);
+        $formulario->add('marca',ChoiceType::class, array( 'choices'  => array('Seleccioná una marca' =>$marcaList)));
         $formulario->add('modelo',TextType::class);
         $formulario->add('detalle',TextType::class);
         $formulario->add('save', SubmitType::class, array('label' => 'Guardar'));
@@ -340,7 +392,8 @@ class IngresoController extends AbstractController
 
             $em = $this -> getDoctrine() -> getManager();
 
-            ///////////////ingresar aticulo
+            /* *******INGRESAR ARTICULO************ */
+
             $tablaArt = $em ->getRepository(Articulos::class);
             $art = $formulario -> getData();
 
@@ -355,7 +408,8 @@ class IngresoController extends AbstractController
             $detalle = $art-> getDetalle();
 
 
-            ///////////////ingresar stock
+            /* *******INGRESAR STOCK************ */
+
             $tablaArt = $em ->getRepository(stock::class);
 
             $stock = new stock();
@@ -372,12 +426,7 @@ class IngresoController extends AbstractController
             $em->flush();
 
             return $this->redirect("/ingr_linea/{$orden}/agregar");
-
-
         }
-
-
-
 
         return $this->render('ingreso/ingr_linea.html.twig', [
             'formularioIngreso' => $formularioIngreso->createView(),

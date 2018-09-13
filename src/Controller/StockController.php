@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 class StockController extends AbstractController
 {
 	/**
-     * @Route("/", name="stock")
+     * @Route("/stock", name="stock")
      */
 
 	public function list()

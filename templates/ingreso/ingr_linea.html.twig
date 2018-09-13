@@ -36,7 +36,7 @@
 
     <br>
 
-
+    {% set fecha = cabecera.fecha.date | split(' ') %}
     <!-- Modal -->
 <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -49,10 +49,16 @@
       </div>
       <div class="modal-body">
 
-           {% set fecha = cabecera.fecha.date | split(' ') %}
 
-            <h5>Preoveedor: {{ cabecera.proveedor }}</h5>
-            <h5>Fecha: {{ fecha[0]|date("m/d/Y") }} </h5><br>
+
+          <div class="alert alert-info" role="alert">
+              <h5>Fecha: {{ fecha[0]|date("m/d/Y") }} </h5>
+              <h5 style="float: left;">Preoveedor: {{ cabecera.proveedor }}</h5>
+              <h5 style="float: right;">Nro de remito: {{ cabecera.remito }}</h5>
+              <h5 style="float: left; clear: left; ">Receptor: {{ cabecera.receptor }}</h5>
+              <h5 style="float: right; ">Nro de suministro: {{ cabecera.suministro }}</h5>
+              <br><br><br>
+          </div>
 
             <table class="table">
                                 <tr>
@@ -75,7 +81,7 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+
           {{ form_start(formularioOrden) }}
           {{ form_widget(formularioOrden) }}
           {{ form_end(formularioOrden) }}

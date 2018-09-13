@@ -2,7 +2,19 @@
 
 {% block title %}Hello {{ controller_name }}!{% endblock %}
 
+{% set conProceso =0 %}
+{% set conPendiente =0 %}
 
+{% for orden in ordenes %}
+
+    {% if orden.estado == 0 %}
+        {% set conProceso = conProceso +1  %}
+
+    {% elseif orden.estado == 1 %}
+        {% set conPendiente = conPendiente +1  %}
+
+    {% endif %}
+{% endfor %}
 
 {% block body %}
     <script>
@@ -47,18 +59,24 @@
                  <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
 
 
-                     <!-------------------------- tab 1 ---------------------->
+                     <!-------------------------- tab 1 ---------------------->.
+
+
+
                      <div class="tab-pane fade show active" id="nav-recepcion" role="tabpanel" aria-labelledby="nav-rcepcion-tab">
                          <div class="alert alert-info" role="alert">
-                             ...
+                             <div style="float:left; margin-right:50px;">Pendientes <span class="badge badge-danger">{{ conPendiente }}  </span></div>
+                             <div style="">En proceso <span class="badge badge-secondary">{{ conProceso }} </span></div>
                          </div>
-
+<br>
 
                          <table class="table">
                              <tr>
+                                 <th style="width:150px;"></th>
                                  <th style="width:150px;">Fecha</th>
                                  <th style="text-align:center;">Proveedor</th>
                                  <th style="text-align:center;">Nro de orden</th>
+                                 <th style="text-align:center;">Estado</th>
 
                              </tr>
 
@@ -69,7 +87,9 @@
 
 
                                  {% set estado = "..." %}
-                                     {% if orden.estado == 0 %}
+
+                             {% if orden.estado == 0 %}
+
                                          {% set estado = "En proceso" %}
                                          {% set btn = "secondary" %}
 
@@ -84,10 +104,6 @@
                                  {% endif %}
 
                                  <tr>
-                                     <td>{{ f[0]|date("m/d/Y") }}</td>
-                                     <td style="text-align:center;">{{ orden.proveedor }}</td>
-                                     <td style="text-align:center; font-weight: bold;"># {{ orden.id }}</td>
-
 
                                      <td>
 
@@ -97,6 +113,11 @@
                                          </button>
 
                                      </td>
+
+                                     <td>{{ f[0]|date("m/d/Y") }}</td>
+                                     <td style="text-align:center;">{{ orden.proveedor }}</td>
+                                     <td style="text-align:center; font-weight: bold;"># {{ orden.id }}</td>
+
 
                                      <td style="width:120px; text-align:right;">
                                          <span class="badge badge-{{ btn }}">{{ estado }}</span>
