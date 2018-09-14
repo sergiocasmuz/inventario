@@ -17,9 +17,10 @@ class StockController extends AbstractController
 	public function list()
     {
 
-        $repository = $this->getDoctrine()->getRepository(stock::class);
+        $repository = $this->getDoctrine() -> getManager();
 
-        $art = $repository->findAll();
+        $art = $repository->getRepository(stock::class)->findAll();
+
 
 
         return $this->render('stock/stock.html.twig', ['art' => $art]);

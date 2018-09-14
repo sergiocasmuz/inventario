@@ -2,55 +2,124 @@
 
 {% block title %}Hello {{ controller_name }}!{% endblock %}
 
+
+
 {% block body %}
+
     <style>
         #chart_div{
                     width:500px;
+
+                }
+
+
+        #contendor{
+                    margin-left: 2%;
+                    }
+
+        #nro{
+            font-size: 100px;
+            float: left;
+            }
+
+        #concept{
+                margin-top: -25px;
+                font-size: 30px;
+                float: left;
+                clear: left;
                 }
     </style>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
+
+
     <script>
+
+
+
         google.charts.load('current', {packages: ['corechart', 'bar']});
         google.charts.setOnLoadCallback(drawMaterial);
+        google.charts.setOnLoadCallback(drawStuff);
+
+
+
+        /******************************************************************************/
+        /******************************** GRÁGICO DE COLUMNAS *************************/
+        /******************************************************************************/
 
         function drawMaterial() {
             var data = new google.visualization.DataTable();
             data.addColumn('string', '');
             data.addColumn('number', 'Cantidad de Artículos');
 
-            data.addRows([
-                ['CPU', 1],
-                ['Teclados', 2],
-                ['asa', 3],
-                [ '11 am', 4],
-                [ '12 pm', 5],
-                [ '1 pm', 6 ],
-                [ '2 pm', 7 ],
-                [ '3 pm', 8],
-                [ '4 pm', 9],
-                [ '5 pm', 10],
-            ]);
+
+            {% for artJS in art %}
+
+                data.addRows([
+                    [ "{{ artJS.articulo }}",{{ artJS.cantidad }}],
+                ]);
+
+
+
+            {% endfor %}
+
+
+
+
+
+
 
             var options = {
-
-                title: null,
+                legend: { position: 'none' },
                 hAxis: {
-                    title: 'Artículos por familia',
-                    format: '',
-                    viewWindow: {
-                        min: [7, 30, 0],
-                        max: [17, 30, 0]
-                    }
+                         title: 'Artículos por familia',
                 },
-                vAxis: {
-                    title: ''
-                }
-            };
+
+                };
 
             var materialChart = new google.charts.Bar(document.getElementById('chart_div'));
             materialChart.draw(data, options);
         }
+
+
+        /******************************************************************************/
+        /*****************************GRÁFICO DCE BARRAS ******************************/
+        /******************************************************************************/
+
+
+        function drawStuff() {
+            var data = new google.visualization.arrayToDataTable([
+                ['Opening Move', 'Percentage'],
+                ["King's pawn (e4)", 44],
+                ["Queen's pawn (d4)", 31],
+                ["Knight to King 3 (Nf3)", 12],
+                ["Queen's bishop pawn (c4)", 10],
+                ['Other', 3]
+            ]);
+
+
+
+
+            var options = {
+                title: 'Chess opening moves',
+                width: 900,
+                legend: { position: 'none' },
+                chart: { title: 'Chess opening moves',
+                    subtitle: 'popularity by percentage' },
+                bars: 'horizontal', // Required for Material Bar Charts.
+                axes: {
+                    x: {
+                        0: { side: 'top', label: 'Percentage'} // Top x-axis.
+                    }
+                },
+                bar: { groupWidth: "90%" }
+            };
+
+            var chart = new google.charts.Bar(document.getElementById('top_x_div'));
+            chart.draw(data, options);
+        };
+
+
     </script>
 
 
@@ -59,13 +128,33 @@
 
     <div class="jumbotron">
         <h1 class="display-4">Stock</h1>
+    </div>
 
+    <div class="row">
+        <div id="chart_div" class="col" ></div>
 
+        <div class="col">
+            <div id="contendor">
+                <span id="nro">20</span>
+                <span id="concept">Artículos</span>
+            </div>
+        </div>
     </div>
 
 
-        <div id="chart_div" class="w-50 p-3" ></div>
+    <div class="row">
 
+        <div class="col">
+            <div id="contendor">
+                <span id="nro">20</span>
+                <span id="concept">Artículos</span>
+            </div>
+        </div>
+
+        <div id="top_x_div" class="col" ></div>
+
+
+    </div>
 
 
 
