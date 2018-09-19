@@ -206,6 +206,7 @@
                                     <th>Marca</th>
                                     <th>Modelo</th>
                                     <th>Cantidad</th>
+                                    <th style="width:100px;"></th>
                                 </tr>
 
 
@@ -224,6 +225,7 @@
                                             {{ form_widget(formularioIngreso["idArticulo"~loop.index0]) }}
                                             {{ form_widget(formularioIngreso["familia"~loop.index0]) }}
                                         </td>
+                                        <td><img src="/imagenes/codRojo.png"></td>
                                     </tr>
                                 {% endfor %}
                             </table>

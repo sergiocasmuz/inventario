@@ -9,14 +9,6 @@
       <change afterPath="$PROJECT_DIR$/../prueba1/.idea/vcs.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../prueba1/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/HomeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/IngresoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/IngresoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/OrdenesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/OrdenesController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/StockRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/StockRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/home/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/ingreso/ingr_linea.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/ingreso/ingr_linea.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/ordenes/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/ordenes/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/stock/stock.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/stock/stock.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -31,7 +23,7 @@
     <session id="1083423235">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="16" />
+          <entry key="project.closed" value="17" />
           <entry key="project.open.time.15" value="1" />
           <entry key="project.open.time.3" value="1" />
           <entry key="project.open.time.45" value="1" />
@@ -525,18 +517,17 @@
       <workItem from="1536943355030" duration="20835000" />
       <workItem from="1537201673845" duration="7841000" />
       <workItem from="1537265603477" duration="27033000" />
-      <workItem from="1537351894805" duration="725000" />
+      <workItem from="1537351894805" duration="1219000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="376536000" />
+    <option name="totallyTimeSpent" value="377030000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="0" width="1384" height="1047" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49823943" visible="true" weight="0.23001508" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49823943" visible="true" weight="0.23001508" />
       <window_info id="Structure" order="1" sideWeight="0.50176054" side_tool="true" weight="0.20607029" />
       <window_info id="Favorites" order="2" sideWeight="0.50176054" side_tool="true" weight="0.20607029" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -549,7 +540,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.49946752" visible="true" weight="0.37261504" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.49946752" visible="true" weight="0.37261504" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5005325" side_tool="true" weight="0.37" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />

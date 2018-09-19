@@ -20,6 +20,7 @@ class OrdenesController extends AbstractController
     public function index(Request $request)
     {
 
+        $ilineas = array();
         $em = $this -> getDoctrine() -> getManager();
         $icabecera = $em -> getRepository(ICabecera::class) -> findBy(array(),array('id'=>'DESC'));
 
@@ -53,8 +54,6 @@ class OrdenesController extends AbstractController
                     break;
 
             }
-
-
 
 
             $ilineas = $em -> getRepository(ILineas::class) -> findByOrden($a->getId());
