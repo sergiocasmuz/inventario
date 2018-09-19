@@ -41,15 +41,15 @@ class OrdenesController extends AbstractController
 
                 case 1:
                         $formularioEstado -> add($a->getId(), SubmitType::class,
-                        array("label" => 'Aprobar',
+                        array("label" => 'Agregar a stock',
                         'attr' => array('class' => 'btnC btn-primary' )) );
 
                     break;
 
                 case 2:
                         $formularioEstado -> add($a->getId(), HiddenType::class,
-                        array("label" => 'Aprobar',
-                        'attr' => array('class' => 'btnC btn-primary' )) );
+                        array("label" => 'Imprimir nota',
+                        'attr' => array('class' => 'btnC btn-info' )) );
                     break;
 
             }

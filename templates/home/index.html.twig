@@ -7,27 +7,13 @@
 {% block body %}
 
     <style>
-        #chart_div{
+        #top_x_div{
                     width:500px;
+                    height: 300px;
 
                 }
 
 
-        #contendor{
-                    margin-left: 2%;
-                    }
-
-        #nro{
-            font-size: 100px;
-            float: left;
-            }
-
-        #concept{
-                margin-top: -25px;
-                font-size: 30px;
-                float: left;
-                clear: left;
-                }
     </style>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
@@ -38,48 +24,7 @@
 
 
         google.charts.load('current', {packages: ['corechart', 'bar']});
-        google.charts.setOnLoadCallback(drawMaterial);
-        google.charts.setOnLoadCallback(drawStuff);
-
-
-
-        /******************************************************************************/
-        /******************************** GRÁGICO DE COLUMNAS *************************/
-        /******************************************************************************/
-
-        function drawMaterial() {
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', '');
-            data.addColumn('number', 'Cantidad de Artículos');
-
-
-            {% for artJS in art %}
-
-                data.addRows([
-                    [ "{{ artJS.articulo }}",{{ artJS.cantidad }}],
-                ]);
-
-
-
-            {% endfor %}
-
-
-
-
-
-
-
-            var options = {
-                legend: { position: 'none' },
-                hAxis: {
-                         title: 'Artículos por familia',
-                },
-
-                };
-
-            var materialChart = new google.charts.Bar(document.getElementById('chart_div'));
-            materialChart.draw(data, options);
-        }
+             google.charts.setOnLoadCallback(drawStuff);
 
 
         /******************************************************************************/
@@ -89,35 +34,50 @@
 
         function drawStuff() {
             var data = new google.visualization.arrayToDataTable([
-                ['Opening Move', 'Percentage'],
-                ["King's pawn (e4)", 44],
-                ["Queen's pawn (d4)", 31],
-                ["Knight to King 3 (Nf3)", 12],
-                ["Queen's bishop pawn (c4)", 10],
-                ['Other', 3]
+
+                ['Artículo', 'Cantidad'],
+                {% for art in art %}
+                    ['{{ art.articulo }}', '{{ art.cantidad }}'],
+                {% endfor %}
+
+
             ]);
 
 
 
 
             var options = {
-                title: 'Chess opening moves',
+
+
+                title: 'Cantidad de artículos disponibles',
                 width: 900,
                 legend: { position: 'none' },
-                chart: { title: 'Chess opening moves',
-                    subtitle: 'popularity by percentage' },
+                chart: { title: 'Cantidad de Atículos disponibles',
+                    subtitle: 'Stock actual',
+                },
                 bars: 'horizontal', // Required for Material Bar Charts.
                 axes: {
                     x: {
-                        0: { side: 'top', label: 'Percentage'} // Top x-axis.
+                        0: { side: 'top', label: 'Cantidad'} // Top x-axis.
                     }
                 },
+
+
+
                 bar: { groupWidth: "90%" }
+
+
+
+
             };
+
+
+
+
 
             var chart = new google.charts.Bar(document.getElementById('top_x_div'));
             chart.draw(data, options);
-        };
+        }
 
 
     </script>
@@ -131,25 +91,7 @@
     </div>
 
     <div class="row">
-        <div id="chart_div" class="col" ></div>
 
-        <div class="col">
-            <div id="contendor">
-                <span id="nro">20</span>
-                <span id="concept">Artículos</span>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="row">
-
-        <div class="col">
-            <div id="contendor">
-                <span id="nro">20</span>
-                <span id="concept">Artículos</span>
-            </div>
-        </div>
 
         <div id="top_x_div" class="col" ></div>
 

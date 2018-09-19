@@ -22,19 +22,21 @@ class StockRepository extends ServiceEntityRepository
 //    /**
 //     * @return Stock[] Returns an array of Stock objects
 //     */
-    /*
-    public function findByExampleField($value)
+
+/*
+    public function findAllSuma($flia)
     {
         return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('s.familia = :val')
+            ->setParameter('val', $flia)
             ->orderBy('s.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
+
+
     }
-    */
+*/
 
     /*
     public function findOneBySomeField($value): ?Stock

@@ -49,7 +49,7 @@
                 <th>Artículo</th>
                 <th>Marca</th>
                 <th>Modelo</th>
-                <th>Cantidad</th>
+                <th style="width:100px; text-align: center;">Stock disponible</th>
             </tr>
 
             {% for art in art %}
@@ -59,7 +59,7 @@
                     <td>{{ art.articulo }}</td>
                     <td>{{ art.marca }}</td>
                     <td>{{ art.modelo }}</td>
-                    <td>{{ art.cantidad }}</td>
+                    <td style="width:100px; text-align: center;">{{ art.cantidad }}</td>
                 </tr>
 
             {% endfor %}

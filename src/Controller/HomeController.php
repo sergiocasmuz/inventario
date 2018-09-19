@@ -17,19 +17,6 @@ class HomeController extends AbstractController
         $em = $this->getDoctrine() -> getManager();
         $art = $em->getRepository(stock::class)->findAll();
 
-        $query = $em->createQuery("SELECT sum(s.cantidad) group by s.familia from App\Entity\stock s");
-
-        $rtaQuery = $query->getResult();
-
-        $flia = count($rtaQuery);
-
-        print_r($rtaQuery);
-
-
-
-
-
-
 
         return $this->render('home/index.html.twig', ['art' => $art]);
     }
