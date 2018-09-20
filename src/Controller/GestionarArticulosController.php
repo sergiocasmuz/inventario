@@ -28,7 +28,29 @@ class GestionarArticulosController extends AbstractController
     public function index(Request $request)
     {
 
+      /* ********************************************************************** */
+      /* *************** FORMULARIO DE MARCA ********************************* */
+      /* ********************************************************************* */
 
+      $em = $this -> getDoctrine() -> getRepository();
+      $articulos = $em -> getRepository(Articulos::class)->findBy(aray(), array('articulos' => 'DESC') );
+
+      $formArticulos = $this -> createFormBuilder()
+      ->add('articulo', TextType::class);
+      ->add('save', SubmitType::class, array('label' => 'Guardar'));
+
+      $formArticulos = $formArticulos -> getForm();
+
+      if ($formArticulos->isSubmitted() && $formArticulos->isValid()) {
+          $rta = $formArticulos->getData();
+
+            $articulos ->setFamilia($rta["familia"]);
+
+            $em -> flush();
+
+            return $this->redirect("articulos");
+
+    }
 
 
 
@@ -39,7 +61,7 @@ class GestionarArticulosController extends AbstractController
       /* ********************************************************************** */
       /* *************** FORMULARIO DE MARCA ********************************* */
       /* ********************************************************************* */
-
+/*
       $formMarca = $this -> createFormBuilder();
 
 
@@ -68,17 +90,12 @@ class GestionarArticulosController extends AbstractController
 
       }
 
-
+*/
 
 
         return $this->render('gestionar_articulos/index.html.twig', [
             'formArticulo' => $formArticulo -> createView(),
-            'formFamilia' => $formFamilia -> createView(),
-            'formMarca' => $formMarca -> createView(),
-            'formFamiliaE' => $formFamiliaE -> createView(),
             'articulos' => $articulos,
-            'familia' => $familia,
-            'marca' => $marca
         ]);
     }
 }
