@@ -1,0 +1,317 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+
+{% block body %}
+
+
+    <script>
+        $(document).ready(function(){
+
+        });
+    </script>
+
+    <br>
+
+
+    <!-- Modal nuevo articulo-->
+    <div class="modal fade" id="articuloN" tabindex="-1" role="dialog" aria-labelledby="articuloNLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel"> Crear artículo</h3>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                    <div class="modal-body">
+                      {{ form_start(formArticulo) }}
+                      {{ form_widget(formArticulo) }}
+                      {{ form_end(formArticulo) }}
+                    </div>
+
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <!-- ------------------------------------------->
+
+
+
+    <!-- Modal nuevo familia-->
+    <div class="modal fade" id="familiaN" tabindex="-1" role="dialog" aria-labelledby="familiaNLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel"> Nueva familia </h3>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                    <div class="modal-body">
+                      {{ form_start(formFamilia) }}
+                      {{ form_widget(formFamilia) }}
+                      {{ form_end(formFamilia) }}
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <!-- ------------------------------------------->
+
+  {{ form_start(formFamiliaE) }}
+  {% for familia in familia %}
+    <!-- Modal editar familia-->
+    <div class="modal fade" id="familiaE_{{familia.id}}" tabindex="-1" role="dialog" aria-labelledby="familiaE_{{familia.id}}Label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel"> Editar familia #{{familia.id}} </h3>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                    <div class="modal-body">
+                      {{ form_widget(formFamiliaE["id"~loop.index0]) }}
+                      {{ form_widget(formFamiliaE["familia"~loop.index0]) }}
+                      {{ form_widget(formFamiliaE["save"]) }}
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <!-- ------------------------------------------->
+    {% endfor %}
+    {{ form_end(formFamiliaE) }}
+
+    <!-- Modal nuevo marca-->
+    <div class="modal fade" id="marcaN" tabindex="-1" role="dialog" aria-labelledby="marcaNLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel"> Nuevo marca</h3>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                    <div class="modal-body">
+                      {{ form_start(formMarca) }}
+                      {{ form_widget(formMarca) }}
+                      {{ form_end(formMarca) }}
+                    </div>
+
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <!-- ------------------------------------------->
+
+    <div class="container">
+
+
+        <br>
+        <section id="tabs">
+
+
+            <h6 class="section-title h1" style="float:left;">
+                Gestón de artículos
+            </h6>
+
+
+            <br><br><br>
+
+
+                <br>
+            <div class="row">
+                <div class="col-lg-12 ">
+                    <nav>
+
+                        <!-------------------------- titulos de tabs ---------------------->
+                        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link active" id="nav-vistaPrevia-tab" data-toggle="tab" href="#nav-vistaPrevia" role="tab" aria-controls="nav-vistaPrevia" aria-selected="true">Artículos</a>
+                            <a class="nav-item nav-link" id="nav-cabecera-tab" data-toggle="tab" href="#nav-cabecera" role="tab" aria-controls="nav-cabecera" aria-selected="false">Familias</a>
+                            <a class="nav-item nav-link" id="nav-editarList-tab" data-toggle="tab" href="#nav-editarList" role="tab" aria-controls="nav-editarList" aria-selected="false">Marcas</a>
+                        </div>
+                    </nav>
+
+                    <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+
+
+                        <!-------------------------- tab 1 ---------------------->
+                        <div class="tab-pane fade show active" id="nav-vistaPrevia" role="tabpanel" aria-labelledby="nav-vistaPrevia-tab">
+
+
+                            <div class="alert alert-info" role="alert">
+                                Lista de los artículos
+
+                                <button type="button" class="btn btn-info" id="articuloN" data-toggle="modal" data-target="#articuloN" style="float:right; clear:right;">
+                                    Nuevo artículo
+                                </button>
+                                <br>
+                                <br>
+                            </div>
+
+
+
+                            <table class="table">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Familia</th>
+                                    <th>Artículo</th>
+                                    <th>Marca</th>
+                                    <th>Modelo</th>
+                                    <th style="width:100px;"></th>
+                                </tr>
+
+                                {% for articulo in articulos %}
+                                  <tr>
+                                    <td>
+                                      {{articulo.id}}
+                                    </td>
+
+                                    <td>
+                                      {{articulo.familia}}
+                                    </td>
+
+                                    <td>
+                                      {{articulo.articulo}}
+                                    </td>
+
+                                    <td>
+                                      {{articulo.marca}}
+                                    </td>
+
+                                    <td>
+                                      {{articulo.modelo}}
+                                    </td>
+
+
+                                  </tr>
+                                {% endfor %}
+
+
+
+                            </table>
+
+
+                        </div>
+
+                        <!-------------------------- tab 2 ---------------------->
+                        <div class="tab-pane fade" id="nav-cabecera" role="tabpanel" aria-labelledby="nav-cabecera-tab">
+
+                            <div class="alert alert-info" role="alert">
+                                Familia
+
+                                <button type="button" class="btn btn-info" id="familiaN" data-toggle="modal" data-target="#familiaN" style="float:right; clear:right;">
+                                    Nueva familia
+                                </button>
+                                <br>
+                                <br>
+                            </div>
+
+                            <table class="table">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Familia</th>
+                                </tr>
+
+                                {% for familia in familia %}
+                                  <tr>
+                                    <td>
+                                      {{familia.id}}
+                                    </td>
+
+                                    <td>
+                                      {{familia.familia}}
+                                    </td>
+
+                                    <td>
+                                      <img src="/imagenes/borrar.png">
+                                    </td>
+
+                                    <td>
+                                      <img src="/imagenes/editar.png"  id="{{familia.id}}" class="  class="btn btn-info" id="familiaE_{{familia.id}}" data-toggle="modal" data-target="#familiaE_{{familia.id}}" >
+                                    </td>
+                                  </tr>
+                                {% endfor%}
+
+                            </table>
+                        </div>
+
+                        <!-------------------------- tab 3 ---------------------->
+                        <div class="tab-pane fade" id="nav-editarList" role="tabpanel" aria-labelledby="nav-editarList-tab">
+                          <div class="alert alert-info" role="alert">
+                              Marca
+
+                              <button type="button" class="btn btn-info" id="marcaN" data-toggle="modal" data-target="#marcaN" style="float:right; clear:right;">
+                                  Nueva marca
+                              </button>
+                              <br>
+                              <br>
+                          </div>
+
+                          <table class="table">
+                              <tr>
+                                  <th>#</th>
+                                  <th>Marca</th>
+                              </tr>
+
+                              {% for marca in marca %}
+                                <tr>
+                                  <td>
+                                    {{marca.id}}
+                                  </td>
+
+                                  <td>
+                                    {{marca.marca}}
+                                  </td>
+
+                                  <td>
+                                    <img src="/imagenes/borrar.png">
+                                  </td>
+
+                                  <td>
+                                    <img src="/imagenes/editar.png">
+                                  </td>
+                                </tr>
+                              {% endfor%}
+
+                          </table>
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ./Tabs -->
+
+    </div>
+
+
+
+{% endblock %}
