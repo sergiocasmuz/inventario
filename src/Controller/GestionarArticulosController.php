@@ -28,73 +28,87 @@ class GestionarArticulosController extends AbstractController
     public function index(Request $request)
     {
 
+      $em = $this -> getDoctrine() -> getManager();
+      $articulos = $em -> getRepository(Articulos::class)->findAll();
+
+      $familia = $em -> getRepository(Familia::class) -> findBy(array(), array('familia' => "ASC") );
+
+      $marca = $em -> getRepository(Marca::class) -> findBy(array(), array('marca' => "ASC") );
+
+
+      $cFamilia = count($familia);
+
+      $listaFamilia[""] = 'true';
+      for ($i=0; $i < $cFamilia; $i++) {
+              $listaFamilia[$familia[$i]->getFamilia()] = 'true';
+      }
+
+
+
+      $cMarca = count($marca);
+
+      $listaMarca[""] = 'false';
+      for ($i=0; $i < $cMarca; $i++) {
+              $listaMarca[$marca[$i]->getMarca()] = 'false';
+      }
+
+
+
+
       /* ********************************************************************** */
       /* *************** FORMULARIO DE MARCA ********************************* */
       /* ********************************************************************* */
 
-      $em = $this -> getDoctrine() -> getRepository();
-      $articulos = $em -> getRepository(Articulos::class)->findBy(aray(), array('articulos' => 'DESC') );
-
       $formArticulos = $this -> createFormBuilder()
-      ->add('articulo', TextType::class);
-      ->add('save', SubmitType::class, array('label' => 'Guardar'));
+      -> add('articulo', TextType::class)
+      -> add('familia', ChoiceType::class, array('choices' => array('Seleccioná una familia' => $listaFamilia )  ) )
+      -> add('marca', ChoiceType::class, array('choices' => array('Seleccioná una marca' => $listaFamilia )  ) )
+      -> add('modelo', TextType::class)
+      -> add('detalle', TextType::class)
+      -> add('save', SubmitType::class, array('label' => 'Guardar'));
 
-      $formArticulos = $formArticulos -> getForm();
+      $formArticulos = $formArticulos->getForm();
+
+        $formArticulos = $formArticulos -> handleRequest($request);
 
       if ($formArticulos->isSubmitted() && $formArticulos->isValid()) {
+
           $rta = $formArticulos->getData();
 
-            $articulos ->setFamilia($rta["familia"]);
 
-            $em -> flush();
+          /////////////////articulos//////////////////
+          $art = new Articulos();
 
-            return $this->redirect("articulos");
+          $art -> setFamilia($rta["familia"]);
+          $art -> setArticulo($rta["articulo"]);
+          $art -> setMarca($rta["marca"]);
+          $art -> setModelo($rta["modelo"]);
+          $art -> setDetalle($rta["detalle"]);
 
+          $em->persist($art);
+          $em->flush();
+
+
+          //////////////////stock//////////////////////
+          $stock = new Stock();
+
+          $stock -> setFamilia($rta["familia"]);
+          $stock -> setArticulo($rta["articulo"]);
+          $stock -> setMarca($rta["marca"]);
+          $stock -> setModelo($rta["modelo"]);
+          $stock -> setDetalle($rta["detalle"]);
+          $stock -> setCantidad(0);
+
+          $em->persist($stock);
+          $em->flush();
+
+
+          return $this->redirect("articulos");
     }
 
 
-
-
-
-
-
-      /* ********************************************************************** */
-      /* *************** FORMULARIO DE MARCA ********************************* */
-      /* ********************************************************************* */
-/*
-      $formMarca = $this -> createFormBuilder();
-
-
-      $formMarca -> add('nombreForm', HiddenType::class, array('attr' => array('value' => 'formularioMarca') ));
-      $formMarca -> add('marca', TextType::class);
-      $formMarca -> add('save', SubmitType::class, array('label' => 'Guardar'));
-      $formMarca = $formMarca->getForm();
-
-      $formMarca = $formMarca->handleRequest($request);
-
-      if ($formMarca -> isSubmitted() && $formMarca -> isValid()) {
-          $rta = $formMarca->getData();
-
-          if($rta[nombreForm] == "formularioMarca"){
-
-          $mar = new Marca();
-          $mar ->setMarca($rta["familia"]);
-
-          $em -> persist($mar);
-          $em -> flush();
-
-          return $this->redirect("articulos");
-        }
-
-
-
-      }
-
-*/
-
-
         return $this->render('gestionar_articulos/index.html.twig', [
-            'formArticulo' => $formArticulo -> createView(),
+            'formArticulo' => $formArticulos -> createView(),
             'articulos' => $articulos,
         ]);
     }

@@ -1,0 +1,160 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+
+{% block body %}
+
+
+    <script>
+        $(document).ready(function(){
+
+        });
+    </script>
+
+    <br>
+
+
+    <!-- Modal nueva marca-->
+    <div class="modal fade" id="marcaN" tabindex="-1" role="dialog" aria-labelledby="marcaNLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel"> Crear nueva marca</h3>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                    <div class="modal-body">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ------------------------------------------->
+
+    <div class="container">
+
+        <br>
+        <section id="tabs">
+            <h6 class="section-title h1" style="float:left;">
+                Gestión de marcas
+            </h6>
+
+            <br>
+            <br>
+            <br>
+            <br>
+
+            <div class="row">
+                <div class="col-lg-12 ">
+                    <nav>
+
+                        <!-------------------------- titulos de tabs ---------------------->
+                        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link" id="nav-vistaPrevia-tab" href="/gestionar/articulos" role="tab" aria-controls="nav-vistaPrevia" aria-selected="true">Artículos</a>
+                            <a class="nav-item nav-link" id="nav-cabecera-tab"  href="/gestionar/familias" aria-controls="nav-cabecera" aria-selected="false">Familias</a>
+                            <a class="nav-item nav-link active" id="nav-editarList-tab"  href="/gestionar/marcas" role="tab" aria-controls="nav-editarList" aria-selected="false">Marcas</a>
+                        </div>
+                    </nav>
+
+                    <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+
+
+                        <!-------------------------- tab 1 ---------------------->
+                        <div class="tab-pane fade" id="nav-vistaPrevia" role="tabpanel" aria-labelledby="nav-vistaPrevia-tab">
+
+
+
+
+                        </div>
+
+                        <!-------------------------- tab 2 ---------------------->
+                        <div class="tab-pane fade" id="nav-cabecera" role="tabpanel" aria-labelledby="nav-cabecera-tab">
+                        </div>
+
+                        <!-------------------------- tab 3 ---------------------->
+                        <div class="tab-pane fade show active" id="nav-editarList" role="tabpanel" aria-labelledby="nav-editarList-tab">
+
+                        <div class="row row justify-content-between">
+
+                            <div class="col-5">
+
+                              <h4>Lista de artículos</h4>
+                              <br>
+                              <table class="table table-hover">
+                                  {% for marca in marca %}
+                                    <tr>
+
+                                      <td>
+                                        {{marca.marca}}
+                                      </td>
+
+                                      <td style="text-align:right;">
+                                        <a href="/gestionar/marcasBorrar/{{ marca.id  }}">
+                                          <img src="/imagenes/borrar.png">
+                                        </a>
+
+                                        <a href="/gestionar/marcasEditar/{{ marca.id  }}">
+                                          <img src="/imagenes/editar.png"  >
+                                        </a>
+                                      </td>
+
+
+                                    </tr>
+                                  {% endfor %}
+                              </table>
+                            </div>
+
+                            <div class="col-6"  >
+
+                              <h4>12 Marcas disponibles</h4>
+                              <br>
+
+                              <div class="alert alert-info " >
+
+                                <div class="input-group mb-3">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Buscar</span>
+                                  </div>
+                                  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                </div>
+
+                              </div>
+
+                              <div class="alert alert-info " >
+
+                                <p> * Al enviar el formulario se creará una marca nueva.</p>
+                                <hr>
+
+                                {{ form_start(formMarca) }}
+                                {{ form_widget(formMarca) }}
+                                {{ form_end(formMarca) }}
+
+                              </div>
+
+                            </div>
+
+
+
+
+                          </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ./Tabs -->
+
+    </div>
+
+
+
+{% endblock %}
