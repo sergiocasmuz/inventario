@@ -28,7 +28,23 @@ class GestionarMarcasController extends AbstractController
       -> add('save', SubmitType::class, array ('label'=>'Guardar') );
       $forMarca = $forMarca -> getForm();
 
-      if ($forMarca->isSubmitted() && $forMarca->isValid()) {}
+
+      $forMarca = $forMarca -> handleRequest($request);
+
+      if ($forMarca->isSubmitted() && $forMarca->isValid()) {
+
+        $rta = $forMarca -> getData();
+
+        $marc = new Marca();
+        $marc -> setMarca($rta ["marca"]);
+
+        $em -> persist($marc);
+        $em -> flush();
+
+      return $this->redirect("/gestionar/marcas");
+
+
+      }
 
 
 
@@ -82,6 +98,8 @@ class GestionarMarcasController extends AbstractController
 
         $em->persist($marca);
         $em->flush();
+
+        return $this->redirect("/gestionar/marcas");
       }
 
 

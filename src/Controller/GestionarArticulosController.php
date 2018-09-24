@@ -27,6 +27,8 @@ class GestionarArticulosController extends AbstractController
      */
     public function index(Request $request)
     {
+      $marca = "";
+      $familia ="";
 
       $em = $this -> getDoctrine() -> getManager();
       $articulos = $em -> getRepository(Articulos::class)->findAll();
