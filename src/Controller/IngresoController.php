@@ -3,11 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Articulos;
-use App\Entity\ECabecera;
-use App\Entity\ELineas;
+use App\Entity\ILineas;
 use App\Entity\Familia;
 use App\Entity\ICabecera;
-use App\Entity\ILineas;
 use App\Entity\Marca;
 use App\Entity\stock;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityRepository;
 
 class IngresoController extends AbstractController
 {
@@ -29,9 +28,9 @@ class IngresoController extends AbstractController
     public function index(Request $request)
     {
 
-        /* *********************************************************************** */
+        $em = $this -> getDoctrine() -> getManager();
+
         /* *************** FORMULARIO NUEVA ORDEN (ENCABEZADO) ******************* */
-        /* *********************************************************************** */
 
         $formularioCabecera = $this->createFormBuilder();
         $formularioCabecera ->add('nombreForm', HiddenType::class,array('attr' => array('value' => 'editarCabecera')));
@@ -47,9 +46,7 @@ class IngresoController extends AbstractController
         $formularioCabecera->handleRequest($request);
 
 
-        /* *********************************************************************** */
         /* **************** RESPUESTA NUEVA ORDEN (ENCABEZADO) ******************* */
-        /* *********************************************************************** */
 
         if ($formularioCabecera->isSubmitted() && $formularioCabecera->isValid()) {
 
@@ -75,12 +72,12 @@ class IngresoController extends AbstractController
                 $orden = $Cabecera->getId();
 
                  return $this->redirect("/ingr_linea/{$orden}/agregar/");
-            }
-        }
+          }
+      }
 
-        return $this->render('ingreso/ingr_cabecera.html.twig',
+        return $this->render('ingreso/ingr_cabecera.html.twig',////////////
             ['formularioCabecera' => $formularioCabecera->createView()]);
-    }
+            }
 
 
 
@@ -91,26 +88,35 @@ class IngresoController extends AbstractController
     public function linea(Request $request, $orden, $activar)
     {
 
-
+        $em = $this -> getDoctrine() -> getManager();
         $repository = $this->getDoctrine()->getRepository(Articulos::class);
         $listaArticulos = $repository->findAll();
 
 
-        /* *********************************************************************** */
-        /* *************** FORMULARIO NUEVA ORDEN (LINEAS)****************************** */
-        /* *********************************************************************** */
+        /* *************** FORMULARIO NUEVA ORDEN (LINEAS)******************** */
         $formularioIngreso = $this->createFormBuilder();
 
        $articulosTotales = count($listaArticulos);
 
-
         for($i=0; $i < $articulosTotales; $i++) {
+
+
+          //createQuery("SELECT u FROM App\Entity\ILineas u WHERE u.orden = '$orden' and u.idArticulo= '$idArt' ")
+          $ArticuloEnLineas = $em -> getRepository(ILineas::class) -> findLineas($listaArticulos[$i]->getId(),$orden);
+
+          if( empty($ArticuloEnLineas)   ){  $rta = 0; }
+            else{
+                    $rta = $ArticuloEnLineas[0]->getCantidad();
+                }
+
+
 
 
             $formularioIngreso->add('idArticulo'.$i, HiddenType::class,
                 array('attr' => array('value' => $listaArticulos[$i]->getId() )));
 
-            $formularioIngreso->add('cantidad'.$i, TextType::class);
+            $formularioIngreso->add('cantidad'.$i, IntegerType::class,
+                array('attr' => array('value' => $rta) ) );
 
             $formularioIngreso->add('articulo'.$i, HiddenType::class,
                 array('attr' => array('value' => $listaArticulos[$i]->getArticulo() )));
@@ -126,81 +132,63 @@ class IngresoController extends AbstractController
 
         }
 
-        $formularioIngreso->add('save', SubmitType::class, array('label' => 'Agregar Lineas' ));
-
+        $formularioIngreso->add('save', SubmitType::class, array('label' => 'Agregar a la orden' ));
         $formularioIngreso = $formularioIngreso->getForm();
 
-        $formularioIngreso->handleRequest($request);
+        $formularioIngreso = $formularioIngreso -> handleRequest($request);
 
-        /* *********************************************************************** */
-        /* *************** RESPUESTA DE "NUEVA ORDEN (LINEAS)" ************************* */
-        /* *********************************************************************** */
+        /* *************** RESPUESTA DE "NUEVA ORDEN (LINEAS)" ******************* */
 
         if ($formularioIngreso->isSubmitted() && $formularioIngreso->isValid()) {
 
             $respuesta = $formularioIngreso->getData();
 
-            $em = $this->getDoctrine()->getManager();
+            $arRep = $em -> getRepository(Articulos::class) -> findAll();
 
-            $ar = $this->getDoctrine()
-            -> getRepository(Articulos::class)
-            -> findAll();
-
-            $cantArt = count($ar);
+            $cantArt = count($arRep);
 
             for($f=0; $f < $cantArt; $f++){
 
-                $idArt =  $respuesta["idArticulo".$f];
-                $cantidad =  $respuesta["cantidad".$f];
-                $marca =  $respuesta["marca".$f];
-                $modelo =  $respuesta["modelo".$f];
-                $articulo =  $respuesta["articulo".$f];
-                $familia =  $respuesta["familia".$f];
 
+              $ilRep = $em -> getRepository(ILineas::class);
 
                 $iLineas = new ILineas();
 
+
                 $iLineas->setOrden($orden);
-                $iLineas->setIdArticulo($idArt);
-                $iLineas->setCantidad($cantidad);
-                $iLineas->setArticulo($articulo);
-                $iLineas->setMarca($marca);
-                $iLineas->setModelo($modelo);
-                $iLineas->setFamilia($familia);
+                $iLineas->setIdArticulo($respuesta["idArticulo".$f]);
+                $iLineas->setCantidad($respuesta["cantidad".$f]);
+                $iLineas->setArticulo($respuesta["articulo".$f]);
+                $iLineas->setMarca($respuesta["marca".$f]);
+                $iLineas->setModelo($respuesta["modelo".$f]);
+                $iLineas->setFamilia($respuesta["familia".$f]);
 
-                
-                $il = $this -> getDoctrine() -> getRepository(ILineas::class);
+                $idArt = $respuesta["idArticulo".$f];
 
-                $query = $em->createQuery("SELECT u FROM App\Entity\ILineas u WHERE u.orden = '$orden' and u.idArticulo= '$idArt' ");
+                $query = $em -> createQuery("SELECT u FROM App\Entity\ILineas u WHERE u.orden = '$orden' and u.idArticulo= '$idArt' ");
 
                 $rtaDQL = $query->getResult();
 
-                $existencia = count($rtaDQL); 
+                $existencia = count($rtaDQL);
 
                 if($existencia == 0){
 
-                        if($cantidad != 0){
+                        if($respuesta["cantidad".$f] != 0){
 
                             $em->persist($iLineas);
                             $em->flush();
                         }
                 }
                 else{
-                             
-                        $canDQL = $rtaDQL[0]->getCantidad();
-                        $idDQL = $rtaDQL[0]->getId();
-                     
-                        $suma = $cantidad + $canDQL;
+                        if($respuesta["cantidad".$f] != 0){
 
-                        if($cantidad != 0){
-                            
-                            $il ->find($idDQL)->setCantidad($suma);
+                            $ilRep2 = $em -> getRepository(ILineas::class)->find($rtaDQL[0] -> getId());
+
+                            $ilRep2 -> setCantidad($respuesta["cantidad".$f]);
                             $em->flush();
                         }
-                               
+                }
 
-                }      
-                
 
             }
 
@@ -210,12 +198,10 @@ class IngresoController extends AbstractController
         }
 
 
-        /* *********************************************************************** */
         /* *************** FORMULARIO DE CABECERA ******************************** */
-        /* *********************************************************************** */
 
-        $eCab = $this -> getDoctrine() -> getManager();
-        $cab = $eCab -> getRepository(ICabecera::class) -> find($orden);
+
+        $cab = $em -> getRepository(ICabecera::class) -> find($orden);
 
         $editarCabecera = $this->createFormBuilder();
 
@@ -257,10 +243,7 @@ class IngresoController extends AbstractController
                 ///////el nro de orden corresponde con el id de la cabecera
                 $orden = $ICabecera->getId();
 
-
                 return $this->redirect("/ingr_linea/{$orden}/cabecera");
-
-
 
         }
 
@@ -274,17 +257,20 @@ class IngresoController extends AbstractController
         /* *********************************************************************** */
 
         $lineas = $this->getDoctrine()->getRepository(ILineas::class);
-        $lineas = $lineas->findBy( ['orden' => $orden] );
+        $lineas = $lineas->findByOrden($orden);
 
         $formPedido = $this->createFormBuilder();
 
+
         foreach ($lineas as $a ) {
+
+
             $formPedido->add($a->getId(), SubmitType::class, array('label' => 'Eliminar línea'));
         }
 
         $formPedido = $formPedido->getForm();
 
-        $formPedido->handleRequest($request);
+        $formPedido = $formPedido-> handleRequest($request);
 
 
         /* *********************************************************************** */
@@ -295,7 +281,10 @@ class IngresoController extends AbstractController
 
             $rta = $formPedido -> getData();
 
+
             $idBorrar=$formPedido->getClickedButton()->getName();
+
+
 
             $entityManager = $this->getDoctrine()->getManager();
             $iLineas = $entityManager->getRepository(ILineas::class)->find($idBorrar);
@@ -304,7 +293,7 @@ class IngresoController extends AbstractController
             $entityManager->flush();
 
             $activar = "quitar";
-            return $this->redirect("/ingr_linea/{$orden}/quitar");
+            //return $this->redirect("/ingr_linea/{$orden}/quitar");
         }
 
 
@@ -344,8 +333,6 @@ class IngresoController extends AbstractController
 
                $stock = $emStock -> getRepository(stock::class) -> findByIdArticulo($line->getIdArticulo());
 
-               echo $stock[0]->getId()."<br>";
-
                $suma = $stock[0]->getCantidad() + $line -> getCantidad();
 
 
@@ -358,95 +345,11 @@ class IngresoController extends AbstractController
 
 
 
-        /* *********************************************************************** */
-        /* *************** FORMULARIO NUEVO ARTICULO****************************** */
-        /* *********************************************************************** */
-
-        $articulos = new Articulos();
-
-        $formulario = $this->createFormBuilder($articulos);
-
-
-        $em = $this -> getDoctrine() -> getManager();
-
-        $familia = $em -> getRepository(Familia::class) -> findBy(array(),array('familia'=>'ASC'));
-
-        $marca = $em -> getRepository(Marca::class) -> findBy(array(),array('marca'=>'ASC'));
-
-
-
-        foreach ($marca as $item0) {
-                                    $marcaList[""] = null;
-                                    $marcaList[$item0->getMarca()] = $item0->getMarca();
-                                    }
-
-
-
-        foreach ($familia as $item1) {
-                                        $familiaList[""] = null;
-                                        $familiaList[$item1->getFamilia()] = $item1->getFamilia() ;
-
-                                    }
 
 
 
 
-
-        $formulario->add('familia',ChoiceType::class, array( 'choices'  => array('Seleccioná una familia' =>$familiaList)));
-        $formulario->add('articulo',TextType::class);
-        $formulario->add('marca',ChoiceType::class, array( 'choices'  => array('Seleccioná una marca' =>$marcaList)));
-        $formulario->add('modelo',TextType::class);
-        $formulario->add('detalle',TextType::class);
-        $formulario->add('save', SubmitType::class, array('label' => 'Guardar'));
-        $formulario = $formulario->getForm();
-
-        $formulario = $formulario->handleRequest($request);
-
-        if ($formulario->isSubmitted() && $formulario->isValid()) {
-
-
-            $em = $this -> getDoctrine() -> getManager();
-
-            /* *******INGRESAR ARTICULO************ */
-
-            $tablaArt = $em ->getRepository(Articulos::class);
-            $art = $formulario -> getData();
-
-
-            $em->persist($art);
-            $em->flush();
-
-            $idArt = $art->getId();
-            $familia = $art-> getFamilia();
-            $articulo = $art-> getArticulo();
-            $marca = $art-> getMarca();
-            $modelo = $art-> getModelo();
-            $detalle = $art-> getDetalle();
-
-            echo $art-> getFamilia();
-            /* *******INGRESAR STOCK************ */
-
-            $tablaArt = $em ->getRepository(stock::class);
-
-            $stock = new stock();
-
-            $stock -> setFamilia($familia);
-            $stock -> setArticulo($articulo);
-            $stock -> setMarca($marca);
-            $stock -> setModelo($modelo);
-            $stock -> setDetalle($detalle);
-            $stock -> setCantidad(0);
-            $stock -> setIdArticulo($idArt);
-
-            $em->persist($stock);
-            $em->flush();
-
-            return $this->redirect("/ingr_linea/{$orden}/agregar");
-        }
-
-
-        $emCabe = $this -> getDoctrine() -> getManager();
-        $cabe = $emCabe -> getRepository(ICabecera::class)->find($orden);
+        $cabe = $em -> getRepository(ICabecera::class)->find($orden);
 
 
 
@@ -456,14 +359,13 @@ class IngresoController extends AbstractController
             'formularioIngreso' => $formularioIngreso->createView(),
             'editarCabecera' => $editarCabecera->createView(),
             'formPedido' => $formPedido->createView(),
-            'formularioArticuloN' => $formulario->createView(),
             'formularioOrden' => $formularioOrden -> createView(),
             'listaArticulo' => $listaArticulos,
             'lineas' => $lineas,
             'activar' => $activar,
             'orden' => $orden,
             'cabecera' => $cabe,
-        
+
                  ]);
 
 

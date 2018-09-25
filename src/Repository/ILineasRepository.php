@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method ILineas|null find($id, $lockMode = null, $lockVersion = null)
  * @method ILineas|null findOneBy(array $criteria, array $orderBy = null)
  * @method ILineas[]    findAll()
+ * @method ILineas[]    findLineas($idArt,$orden)
  * @method ILineas[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ILineasRepository extends ServiceEntityRepository
@@ -19,32 +20,18 @@ class ILineasRepository extends ServiceEntityRepository
         parent::__construct($registry, ILineas::class);
     }
 
-//    /**
-//     * @return ILineas[] Returns an array of ILineas objects
-//     */
-    /*
-    public function findByExampleField($value)
+    public function findLineas($idArt, $orden)
     {
         return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('i.idArticulo = :idArt and i.orden = :orden')
+            ->setParameter('idArt', $idArt)
+            ->setParameter('orden', $orden)
             ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?ILineas
-    {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+
+
 }

@@ -23,6 +23,7 @@ class GestionarMarcasController extends AbstractController
       $em = $this -> getDoctrine() -> getManager();
       $marca = $em -> getRepository(Marca::class) -> findBy(array(), array('marca' => 'ASC' ) );
 
+
       $forMarca = $this ->  createFormBuilder()
       -> add('marca', TextType::class)
       -> add('save', SubmitType::class, array ('label'=>'Guardar') );
@@ -81,6 +82,8 @@ class GestionarMarcasController extends AbstractController
 
       $em = $this -> getDoctrine() -> getManager();
       $marcaList = $em -> getRepository(Marca::class) -> findBy(array(), array('marca' => 'ASC' ));
+
+
       $marca = $em -> getRepository(Marca::class) -> find($idMarca);
 
       $formEditar = $this -> createFormBuilder()

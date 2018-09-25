@@ -40,9 +40,9 @@ class GestionarArticulosController extends AbstractController
 
       $cFamilia = count($familia);
 
-      $listaFamilia[""] = 'true';
+      $listaFamilia[""] = false;
       for ($i=0; $i < $cFamilia; $i++) {
-              $listaFamilia[$familia[$i]->getFamilia()] = 'true';
+              $listaFamilia[$familia[$i]->getFamilia()] = $familia[$i]->getFamilia();
       }
 
 
@@ -51,7 +51,7 @@ class GestionarArticulosController extends AbstractController
 
       $listaMarca[""] = 'false';
       for ($i=0; $i < $cMarca; $i++) {
-              $listaMarca[$marca[$i]->getMarca()] = 'false';
+              $listaMarca[$marca[$i]->getMarca()] = $marca[$i]->getMarca();
       }
 
 
@@ -64,7 +64,7 @@ class GestionarArticulosController extends AbstractController
       $formArticulos = $this -> createFormBuilder()
       -> add('articulo', TextType::class)
       -> add('familia', ChoiceType::class, array('choices' => array('Seleccioná una familia' => $listaFamilia )  ) )
-      -> add('marca', ChoiceType::class, array('choices' => array('Seleccioná una marca' => $listaFamilia )  ) )
+      -> add('marca', ChoiceType::class, array('choices' => array('Seleccioná una marca' => $listaMarca )  ) )
       -> add('modelo', TextType::class)
       -> add('detalle', TextType::class)
       -> add('save', SubmitType::class, array('label' => 'Guardar'));
@@ -100,6 +100,8 @@ class GestionarArticulosController extends AbstractController
           $stock -> setModelo($rta["modelo"]);
           $stock -> setDetalle($rta["detalle"]);
           $stock -> setCantidad(0);
+
+          print_r($stock);
 
           $em->persist($stock);
           $em->flush();

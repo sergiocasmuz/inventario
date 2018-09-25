@@ -88,33 +88,7 @@
 
 
 
-    <!-- Modal nuevo articulo-->
-    <div class="modal fade" id="articuloN" tabindex="-1" role="dialog" aria-labelledby="articuloNLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="exampleModalLabel"> Crear artículo</h3>
 
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                    <div class="modal-body">
-
-                    {{ form_start(formularioArticuloN) }}
-                    {{ form_widget(formularioArticuloN) }}
-                    {{ form_end(formularioArticuloN) }}
-
-                    </div>
-
-
-                </div>
-
-
-            </div>
-        </div>
-    </div>
 
     <div class="container">
 
@@ -188,10 +162,8 @@
 
                             <div class="alert alert-info" role="alert">
                                 Lista de los artículos a solicitar
+                                <a class="btn btn-info" href="/gestionar/articulos" role="button" style="float:right; clear:right;">Agregar elementos a la lista</a>
 
-                                <button type="button" class="btn btn-info" id="articuloN" data-toggle="modal" data-target="#articuloN" style="float:right; clear:right;">
-                                    Agregar elementos a la lista
-                                </button>
                                 <br>
                                 <br>
                             </div>
@@ -200,9 +172,8 @@
                             {{ form_start(formularioIngreso) }}
                             <table class="table">
                                 <tr>
-                                    <th>#</th>
-                                    <th>Familia</th>
                                     <th>Artículo</th>
+                                    <th>Familia</th>
                                     <th>Marca</th>
                                     <th>Modelo</th>
                                     <th>Cantidad</th>
@@ -212,20 +183,19 @@
 
                                 {% for datos in listaArticulo %}
                                     <tr>
-                                        <td>{{ datos.id }} </td>
-                                        <td>{{ datos.familia }}</td>
                                         <td>{{ datos.articulo }}</td>
+                                        <td>{{ datos.familia }}</td>
                                         <td>{{ datos.marca }}</td>
                                         <td>{{ datos.modelo }}</td>
                                         <td style="width:30px;">
-                                            {{ form_widget(formularioIngreso["cantidad"~loop.index0],{'attr':{'value':0} }  ) }}
+                                            {{ form_widget(formularioIngreso["cantidad"~loop.index0] ) }}
                                             {{ form_widget(formularioIngreso["articulo"~loop.index0],{'attr':{'type':'hidden'} }) }}
                                             {{ form_widget(formularioIngreso["marca"~loop.index0]) }}
                                             {{ form_widget(formularioIngreso["modelo"~loop.index0]) }}
                                             {{ form_widget(formularioIngreso["idArticulo"~loop.index0]) }}
                                             {{ form_widget(formularioIngreso["familia"~loop.index0]) }}
                                         </td>
-                                        <td><img src="/imagenes/codRojo.png"></td>
+                                      <!-- <td><img src="/imagenes/codRojo.png"></td>  -->
                                     </tr>
                                 {% endfor %}
                             </table>

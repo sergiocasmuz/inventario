@@ -93,7 +93,7 @@ class GestionarFamiliasController extends AbstractController
 
       $formEditar -> add('familia', TextType::class, array('attr' => array('value' => $familia->getFamilia() )) );
       $formEditar -> add('save', SubmitType::class, array('label' => 'Guardar'));
-      $formEditar = $formEditar->getForm();
+      $formEditar = $formEditar -> getForm();
 
       $formEditar = $formEditar -> handleRequest($request);
 

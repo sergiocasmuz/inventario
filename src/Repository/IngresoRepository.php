@@ -19,22 +19,12 @@ class IngresoRepository extends ServiceEntityRepository
         parent::__construct($registry, stock::class);
     }
 
-//    /**
-//     * @return stock[] Returns an array of stock objects
-//     */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+    /**
+     * @return stock[] Returns an array of stock objects
     */
+
+
+
 
     /*
     public function findOneBySomeField($value): ?stock

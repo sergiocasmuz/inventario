@@ -47,15 +47,6 @@ class stock
     private $cantidad;
 
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $idArticulo;
-
-
-
-
-
 
 
 
@@ -137,17 +128,6 @@ class stock
     }
 
 
-    public function getIdArticulo(): ?string
-    {
-        return $this->idArticulo;
-    }
-
-    public function setIdArticulo(string $idArticulo): self
-    {
-        $this->idArticulo = $idArticulo;
-
-        return $this;
-    }
+  
 
 }
-
