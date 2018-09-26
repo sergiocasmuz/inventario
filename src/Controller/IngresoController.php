@@ -94,6 +94,12 @@ class IngresoController extends AbstractController
 
 
         /* *************** FORMULARIO NUEVA ORDEN (LINEAS)******************** */
+
+        $icabe = $em -> getRepository(ICabecera::class) -> find($orden);
+
+        if($icabe->getEstado() == 2 ){$act = true; }else{ $act =false;}
+
+
         $formularioIngreso = $this->createFormBuilder();
 
        $articulosTotales = count($listaArticulos);
@@ -109,14 +115,11 @@ class IngresoController extends AbstractController
                     $rta = $ArticuloEnLineas[0]->getCantidad();
                 }
 
-
-
-
             $formularioIngreso->add('idArticulo'.$i, HiddenType::class,
                 array('attr' => array('value' => $listaArticulos[$i]->getId() )));
 
             $formularioIngreso->add('cantidad'.$i, IntegerType::class,
-                array('attr' => array('value' => $rta) ) );
+                array('attr' => array('value' => $rta, 'min' => 0) ) );
 
             $formularioIngreso->add('articulo'.$i, HiddenType::class,
                 array('attr' => array('value' => $listaArticulos[$i]->getArticulo() )));
@@ -132,14 +135,14 @@ class IngresoController extends AbstractController
 
         }
 
-        $formularioIngreso->add('save', SubmitType::class, array('label' => 'Agregar a la orden' ));
+        $formularioIngreso->add('save', SubmitType::class, array('label' => 'Agregar a la orden', 'attr' => array('disabled' => $act) ));
         $formularioIngreso = $formularioIngreso->getForm();
 
         $formularioIngreso = $formularioIngreso -> handleRequest($request);
 
         /* *************** RESPUESTA DE "NUEVA ORDEN (LINEAS)" ******************* */
 
-        if ($formularioIngreso->isSubmitted() && $formularioIngreso->isValid()) {
+        if ($formularioIngreso->isSubmitted() && $formularioIngreso->isValid() && $act == false) {
 
             $respuesta = $formularioIngreso->getData();
 
@@ -212,21 +215,17 @@ class IngresoController extends AbstractController
         $editarCabecera ->add('remito', TextType::class, array('attr' => array('value'=> $cab->getRemito())));
         $editarCabecera ->add('suministro', TextType::class, array('attr' => array('value'=> $cab->getSuministro())));
 
-        $editarCabecera ->add('save', SubmitType::class, array('label' => 'Siguiente'));
+        $editarCabecera ->add('save', SubmitType::class, array('label' => 'Siguiente', 'attr' => array("disabled" => $act)  ));
         $editarCabecera = $editarCabecera ->getForm();
 
         $editarCabecera->handleRequest($request);
 
-        /* *********************************************************************** */
         /* *************** RESPUESTA DE "FORMULARIO DE CABECERA" ***************** */
-        /* *********************************************************************** */
 
 
-        if ( $editarCabecera->isSubmitted() && $editarCabecera->isValid() ) {
+        if ( $editarCabecera->isSubmitted() && $editarCabecera->isValid() && $act == false ) {
 
             $rta = $editarCabecera->getData();
-
-
 
                 $eManager = $this->getDoctrine()->getManager();
                 $ICabecera = $eManager->getRepository(ICabecera::class)->find($orden);
@@ -247,14 +246,10 @@ class IngresoController extends AbstractController
 
         }
 
-
         $repCabecera = $this->getDoctrine()->getRepository(ICabecera::class);
         $cabe = $repCabecera->find($orden);
 
-
-        /* *********************************************************************** */
         /* *************** FORMULARIO QUITAR LINEAS ****************************** */
-        /* *********************************************************************** */
 
         $lineas = $this->getDoctrine()->getRepository(ILineas::class);
         $lineas = $lineas->findByOrden($orden);
@@ -265,7 +260,7 @@ class IngresoController extends AbstractController
         foreach ($lineas as $a ) {
 
 
-            $formPedido->add($a->getId(), SubmitType::class, array('label' => 'Eliminar línea'));
+            $formPedido->add($a->getId(), SubmitType::class, array('label' => 'Eliminar línea', 'attr' => array("disabled" => $act)));
         }
 
         $formPedido = $formPedido->getForm();
@@ -277,7 +272,7 @@ class IngresoController extends AbstractController
         /* *************** RESPUESTA DE "QUITAR LINEAS" ************************** */
         /* *********************************************************************** */
 
-        if ($formPedido->isSubmitted() && $formPedido->isValid()) {
+        if ($formPedido->isSubmitted() && $formPedido->isValid() && $act == false) {
 
             $rta = $formPedido -> getData();
 
@@ -310,11 +305,9 @@ class IngresoController extends AbstractController
         $formularioOrden -> handleRequest($request);
 
 
-        /* *********************************************************************** */
-        /* *************** RESPUESTA DE FORMULARIO CONFIRMAR ORDEN ****************** */
-        /* *********************************************************************** */
+        /* *************** RESPUESTA DE FORMULARIO CONFIRMAR ORDEN *************** */
 
-        if ($formularioOrden->isSubmitted() && $formularioOrden->isValid() ) {
+        if ($formularioOrden->isSubmitted() && $formularioOrden->isValid() && $act == false ) {
 
 
             $emLines = $this->getDoctrine() -> getManager();
@@ -329,31 +322,12 @@ class IngresoController extends AbstractController
             $emStock = $this -> getDoctrine() -> getManager();
 
 
-           foreach ($ilines as $line){
 
-               $stock = $emStock -> getRepository(stock::class) -> findByIdArticulo($line->getIdArticulo());
-
-               $suma = $stock[0]->getCantidad() + $line -> getCantidad();
-
-
-               $stock[0] -> setCantidad($suma);
-               $emStock->flush();
-           }
-
-            return $this->redirect("/");
+            return $this->redirect("control");
         }
 
 
-
-
-
-
-
         $cabe = $em -> getRepository(ICabecera::class)->find($orden);
-
-
-
-
 
         return $this->render('ingreso/ingr_linea.html.twig', [
             'formularioIngreso' => $formularioIngreso->createView(),

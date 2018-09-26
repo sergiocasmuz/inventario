@@ -12,6 +12,14 @@
         });
     </script>
 
+    <style>
+      .borrar, .editar{visibility:hidden;}
+
+      tr:hover .editar{visibility: visible;}
+      tr:hover .borrar{visibility: visible;}
+
+    </style>
+
     <br>
 
 
@@ -94,11 +102,11 @@
                                       </td>
 
                                       <td style="text-align:right;">
-                                        <a href="/gestionar/marcasBorrar/{{ marca.id  }}">
+                                        <a href="/gestionar/marcasBorrar/{{ marca.id  }}" class="borrar">
                                           <img src="/imagenes/borrar.png">
                                         </a>
 
-                                        <a href="/gestionar/marcasEditar/{{ marca.id  }}">
+                                        <a href="/gestionar/marcasEditar/{{ marca.id  }}" class="editar">
                                           <img src="/imagenes/editar.png"  >
                                         </a>
                                       </td>

@@ -21,8 +21,6 @@ class StockController extends AbstractController
 
         $art = $repository->getRepository(stock::class)->findAll();
 
-
-
         return $this->render('stock/stock.html.twig', ['art' => $art]);
 
 
@@ -31,5 +29,5 @@ class StockController extends AbstractController
 
 
 
-    
+
 }

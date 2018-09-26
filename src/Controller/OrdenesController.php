@@ -29,15 +29,16 @@ class OrdenesController extends AbstractController
         foreach ($icabecera as $a){
 
 
+
             $formularioEstado -> add('nombreForm', HiddenType::class, array('attr' => array("value" => 'estadoForm' )) );
             $formularioEstado -> add('id_'.$a->getId(), HiddenType::class, array('attr' => array("value" => $a->getId(),  )));
 
             switch ($a->getEstado()){
 
                 case 0:
-                    $formularioEstado -> add($a->getId(), HiddenType::class,
-                        array("label" => 'Aprobar',
-                            'attr' => array('class' => 'btnC btn-primary' )) );
+                    $formularioEstado -> add($a->getId(), SubmitType::class,
+                        array("label" => 'Eliminar',
+                            'attr' => array('class' => 'btnC btn-secondary' )) );
                     break;
 
                 case 1:
@@ -65,24 +66,48 @@ class OrdenesController extends AbstractController
 
         if ($formularioEstado->isSubmitted() && $formularioEstado->isValid() ) {
 
+
+
             $emLines = $this->getDoctrine() -> getManager();
-            $orden=$formularioEstado->getClickedButton()->getName();
+            $orden = $formularioEstado -> getClickedButton() -> getName();
             $iCabe = $emLines -> getRepository(ICabecera::class)->find($orden);
 
             $estado = $iCabe->getEstado();
 
+
+
+
             switch ($estado){
 
                 case 0:
+
+                  $em = $this -> getDoctrine() -> getManager();
+                  $ilines = $em -> getRepository(ILineas::class)->findByOrden($orden);
+                  $iCabe = $em -> getRepository(ICabecera::class)->find($orden);
+
+                  $em -> remove($iCabe);
+                  $em -> flush();
+
+                  foreach ($ilines as $line){
+
+
+
+                      $em-> remove($line);
+                      $em->flush();
+
+                  }
+
+                  return $this->redirect("ordenes");
                     break;
 
                 case 1:
                     $iCabe -> setEstado(2);
                     $emLines->flush();
 
-                    $ilines = $emLines -> getRepository(ILineas::class)->findByOrden($orden);
 
                     $emStock = $this -> getDoctrine() -> getManager();
+                    $ilines = $emLines -> getRepository(ILineas::class)->findByOrden($orden);
+
 
                     foreach ($ilines as $line){
 
@@ -91,9 +116,11 @@ class OrdenesController extends AbstractController
 
                         $stock[0] -> setCantidad($suma);
                         $emStock->flush();
-                        header("Refresh:0");
 
                     }
+
+                    return $this->redirect("ordenes");
+
                     break;
 
                 case 2:

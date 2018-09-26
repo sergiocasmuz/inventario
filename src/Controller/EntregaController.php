@@ -22,11 +22,12 @@ class EntregaController extends AbstractController
     public function index(Request $request)
     {
 
-        $formularioCabecera = new ECabecera();
+      $em = $this -> getDoctrine() -> getManager();
 
-        $formularioCabecera = $this->createFormBuilder($formularioCabecera)
+        $formularioCabecera = $this->createFormBuilder()
             ->add('fecha', DateType::class)
-            ->add('destino', TextType::class)
+            ->add('dependenciaDeDestino', TextType::class)
+            ->add('recibe', TextType::class)
             ->add('save', SubmitType::class, array('label' => 'Siguiente'))
             ->getForm();
 
@@ -34,188 +35,288 @@ class EntregaController extends AbstractController
 
         if ($formularioCabecera->isSubmitted() && $formularioCabecera->isValid()) {
 
-            $articulo = $formularioCabecera->getData();
+            $cabe = $formularioCabecera->getData();
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($articulo);
-            $entityManager->flush();
+            $formCabe = new ECabecera();
+
+            $formCabe -> setFecha($cabe["fecha"]);
+            $formCabe -> setDestino($cabe["dependenciaDeDestino"]);
+            $formCabe -> setRecibe($cabe["recibe"]);
+            $formCabe -> setEstado(0);
+
+            $em -> persist($formCabe);
+            $em -> flush();
 
             ///////el nro de orden corresponde con el id de la cabecera
-            $orden = $articulo->getId();
-
+            $orden = $formCabe->getId();
             return $this->redirect("/orden/{$orden}");
         }
 
         return $this->render('entrega/entr_cabecera.html.twig',
             ['formularioCabecera' => $formularioCabecera->createView()]);
 
-
     }
 
 
     /**
-     * @Route("/orden/{orden}", name="entrega")
+     * @Route("/entr_linea/{orden}", name="entrega3a")
      */
 
-    public function linea(Request $request,$orden)
+
+    public function linea($orden)
     {
+      $em = $this -> getDoctrine() -> getManager();
+      /* *************** FORMULARIO NUEVA ORDEN (LINEAS)******************** */
 
-        $repository = $this->getDoctrine()->getRepository(Articulos::class);
-        $listaArticulos = $repository->findAll();
+      $ecabe = $em -> getRepository(ECabecera::class) -> find($orden);
+      if($ecabe->getEstado() == 2 ){$act = true; }else{ $act =false;}
 
+      $listaArticulos = $this->getDoctrine()->getRepository(Articulos::class)->findAll();
 
-        ///////////////////formulario de orden
-        $formulario = $this->createFormBuilder();
 
-        foreach($listaArticulos as $articulo ) {
+      $formularioIngreso = $this->createFormBuilder();
 
-            $idArt = $articulo->getId();
 
+     $articulosTotales = 0;
+     $articulosTotales = count($listaArticulos);
 
-            $formulario->add('idArticulo'.$idArt, HiddenType::class,
-                array('attr' => array('value' => $idArt )));
+      for($i=0; $i < $articulosTotales; $i++) {
 
-            $formulario->add('cantidad'.$idArt, TextType::class);
 
-            $formulario->add('articulo'.$idArt, HiddenType::class,
-                array('attr' => array('value' => $articulo->getArticulo())));
+        $ArticuloEnLineas = $em -> getRepository(ELineas::class) -> findLineas($listaArticulos[$i]->getId(),$orden);
 
-            $formulario->add('marca'.$idArt, HiddenType::class,
-                array('attr' => array('value' => $articulo->getMarca())));
+        if( empty($ArticuloEnLineas)   ){  $rta = 0; }
+          else{
+                  $rta = $ArticuloEnLineas[0]->getCantidad();
+              }
 
-            $formulario->add('modelo'.$idArt, HiddenType::class,
-                array('attr' => array('value' => $articulo->getModelo())));
+          $formularioIngreso->add('idArticulo'.$i, HiddenType::class,
+              array('attr' => array('value' => $listaArticulos[$i]->getId() )));
 
-        }
+          $formularioIngreso->add('cantidad'.$i, IntegerType::class,
+              array('attr' => array('value' => $rta, 'min' => 0) ) );
 
-        $formulario->add('save', SubmitType::class, array('label' => 'Agregar Lineas'));
+          $formularioIngreso->add('articulo'.$i, HiddenType::class,
+              array('attr' => array('value' => $listaArticulos[$i]->getArticulo() )));
 
-        $formulario = $formulario->getForm();
+          $formularioIngreso->add('marca'.$i, HiddenType::class,
+              array('attr' => array('value' => $listaArticulos[$i]->getMarca() )));
 
-        $formulario->handleRequest($request);
+          $formularioIngreso->add('modelo'.$i, HiddenType::class,
+              array('attr' => array('value' => $listaArticulos[$i]->getModelo() )));
 
+          $formularioIngreso->add('familia'.$i, HiddenType::class,
+              array('attr' => array('value' => $listaArticulos[$i]->getFamilia() )));
 
+      }
 
+      $formularioIngreso->add('save', SubmitType::class, array('label' => 'Agregar a la orden', 'attr' => array('disabled' => $act) ));
+      $formularioIngreso = $formularioIngreso->getForm();
 
-        ////////////respuesta del formulario de articulos
+      $formularioIngreso = $formularioIngreso -> handleRequest($request);
 
-        if ($formulario->isSubmitted()) {
+      /* *************** RESPUESTA DE "NUEVA ORDEN (LINEAS)" ******************* */
 
-            $respuesta = $formulario->getData();
+      if ($formularioIngreso->isSubmitted() && $formularioIngreso->isValid() && $act == false) {
 
-            $c1 = 1;
-            foreach($respuesta as $id_articulo => $cantidad){
+          $respuesta = $formularioIngreso->getData();
 
-                $idArt =  $respuesta["idArticulo".$c1];
-                $cantidad =  $respuesta["cantidad".$c1];
-                $marca =  $respuesta["marca".$c1];
-                $modelo =  $respuesta["modelo".$c1];
-                $articulo =  $respuesta["articulo".$c1];
+          $arRep = $em -> getRepository(Articulos::class) -> findAll();
 
-                $eLineas = new ELineas();
+          $cantArt = count($arRep);
 
-                $eLineas->setOrden($orden);
-                $eLineas->setIdArticulo($idArt);
-                $eLineas->setMarca($marca);
-                $eLineas->setModelo($modelo);
-                $eLineas->setArticulo($articulo);
-                $eLineas->setCantidad($cantidad);
+          for($f=0; $f < $cantArt; $f++){
 
-                $entityManager = $this->getDoctrine()->getManager();
 
-                $entityManager->persist($eLineas);
-                $entityManager->flush();
+            $ilRep = $em -> getRepository(ILineas::class);
 
+              $iLineas = new ILineas();
 
 
-                if( $c1 % 3 == 0){$c1=1;}
-                else{$c1++;}
+              $eLineas->setOrden($orden);
+              $eLineas->setIdArticulo($respuesta["idArticulo".$f]);
+              $eLineas->setCantidad($respuesta["cantidad".$f]);
+              $eLineas->setArticulo($respuesta["articulo".$f]);
+              $eLineas->setMarca($respuesta["marca".$f]);
+              $eLineas->setModelo($respuesta["modelo".$f]);
+              $eLineas->setFamilia($respuesta["familia".$f]);
 
+              $idArt = $respuesta["idArticulo".$f];
 
-            }
+              $query = $em -> createQuery("SELECT u FROM App\Entity\ELineas u WHERE u.orden = '$orden' and u.idArticulo= '$idArt' ");
 
+              $rtaDQL = $query->getResult();
 
-            return $this->redirect("/orden/".$orden."");
-        }
+              $existencia = count($rtaDQL);
 
+              if($existencia == 0){
 
+                      if($respuesta["cantidad".$f] != 0){
 
-        ///////////////////formulario editar cabecera
-        $formularioCabecera = new ECabecera();
+                          $em->persist($eLineas);
+                          $em->flush();
+                      }
+              }
+              else{
+                      if($respuesta["cantidad".$f] != 0){
 
-        $formularioCabecera = $this->createFormBuilder($formularioCabecera)
-            ->add('fecha', DateType::class)
-            ->add('destino', TextType::class)
-            ->add('save', SubmitType::class, array('label' => 'Siguiente'))
-            ->getForm();
+                          $elRep2 = $em -> getRepository(ELineas::class)->find($rtaDQL[0] -> getId());
 
-        $formularioCabecera->handleRequest($request);
+                          $elRep2 -> setCantidad($respuesta["cantidad".$f]);
+                          $em->flush();
+                      }
+              }
 
-        if ($formularioCabecera->isSubmitted() && $formularioCabecera->isValid()) {
 
-            $cabe1 = $formularioCabecera->getData();
+          }
 
-            $cambio = $cabe1-> getDestino();
-            $entityManager = $this->getDoctrine()->getManager();
 
+          return $this->redirect("/entr_linea/{$orden}");
 
-            $cabe = $entityManager->getRepository(ECabecera::class)->find($orden);
+      }
 
 
-            $cabe->setDestino($cambio);
-            $cabe->setFecha(new \DateTime());
+      /* *************** FORMULARIO DE CABECERA ******************************** */
 
-            $entityManager->persist($cabe);
-            $entityManager->flush();
 
+      $cab = $em -> getRepository(ECabecera::class) -> find($orden);
 
-            return $this->redirect("/orden/{$orden}");
-        }
+      $editarCabecera = $this->createFormBuilder();
 
+      $editarCabecera ->add('nombreForm', HiddenType::class,array('attr' => array('value' => 'editarCabecera')));
+      $editarCabecera ->add('fecha', DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd','attr' => array("value" => date("Y-m-d") )));
+      $editarCabecera ->add('proveedor', TextType::class, array('attr' => array('value'=> $cab->getProveedor())) );
+      $editarCabecera ->add('receptor', TextType::class, array('attr' => array('value'=> $cab->getReceptor())));
+      $editarCabecera ->add('remito', TextType::class, array('attr' => array('value'=> $cab->getRemito())));
+      $editarCabecera ->add('suministro', TextType::class, array('attr' => array('value'=> $cab->getSuministro())));
 
-        //////formulario para quitar lineas
+      $editarCabecera ->add('save', SubmitType::class, array('label' => 'Siguiente', 'attr' => array("disabled" => $act)  ));
+      $editarCabecera = $editarCabecera ->getForm();
 
+      $editarCabecera->handleRequest($request);
 
-        $lineas = $this->getDoctrine()->getRepository(ELineas::class);
-        $lineas = $lineas->findBy( ['orden' => $orden] );
+      /* *************** RESPUESTA DE "FORMULARIO DE CABECERA" ***************** */
 
 
-        $formPedido = $this->createFormBuilder();
+      if ( $editarCabecera->isSubmitted() && $editarCabecera->isValid() && $act == false ) {
 
+          $rta = $editarCabecera->getData();
 
-        foreach ($lineas as $a ) {
+              $eManager = $this->getDoctrine()->getManager();
+              $ECabecera = $eManager->getRepository(ECabecera::class)->find($orden);
 
+              $ECabecera -> setFecha($rta["fecha"]);
+              $ECabecera -> setProveedor($rta["proveedor"]);
+              $ECabecera -> setReceptor($rta["receptor"]);
+              $ECabecera -> setRemito($rta["remito"]);
+              $ECabecera -> setSuministro($rta["suministro"]);
 
-            $formPedido->add("btn_".$a->getId(), SubmitType::class, array('label' => 'Eliminar línea'));
+              $eManager->persist($ECabecera);
+              $eManager->flush();
 
-        }
+              ///////el nro de orden corresponde con el id de la cabecera
+              $orden = $ECabecera->getId();
 
-        $formPedido = $formPedido->getForm();
+              return $this->redirect("/entr_linea/{$orden}");
 
-        $formPedido->handleRequest($request);
+      }
 
+      $repCabecera = $this->getDoctrine()->getRepository(ECabecera::class);
+      $cabe = $repCabecera->find($orden);
 
-        $repCabecera = $this->getDoctrine()->getRepository(ECabecera::class);
-        $cabe = $repCabecera->find($orden);
+      /* *************** FORMULARIO QUITAR LINEAS ****************************** */
 
-        return $this->render('entrega/entr_linea.html.twig', [
-                'formulario' => $formulario->createView(),
-                'formularioCabecera' => $formularioCabecera->createView(),
-                'formPedido' => $formPedido->createView(),
-                'listaArticulo' => $listaArticulos,
-                'cabe' => $cabe,
-                'lineas' => $lineas
+      $lineas = $this->getDoctrine()->getRepository(ELineas::class);
+      $lineas = $lineas->findByOrden($orden);
 
+      $formPedido = $this->createFormBuilder();
 
 
-            ]);
+      foreach ($lineas as $a ) {
 
+
+          $formPedido->add($a->getId(), SubmitType::class, array('label' => 'Eliminar línea', 'attr' => array("disabled" => $act)));
+      }
+
+      $formPedido = $formPedido->getForm();
+
+      $formPedido = $formPedido-> handleRequest($request);
+
+
+      /* *********************************************************************** */
+      /* *************** RESPUESTA DE "QUITAR LINEAS" ************************** */
+      /* *********************************************************************** */
+
+      if ($formPedido->isSubmitted() && $formPedido->isValid() && $act == false) {
+
+          $rta = $formPedido -> getData();
+
+
+          $idBorrar=$formPedido->getClickedButton()->getName();
+
+
+
+
+          $eLineas = $em->getRepository(ELineas::class)->find($idBorrar);
+
+          $em->remove($eLineas);
+          $em->flush();
+
+          $activar = "quitar";
+          //return $this->redirect("/ingr_linea/{$orden}/quitar");
+      }
+
+
+      /* *********************************************************************** */
+      /* ************ FORMULARIO CONFIRMAR ORDEN ******************************* */
+      /* *********************************************************************** */
+
+      $formularioOrden = $this -> createFormBuilder();
+
+      $formularioOrden -> add('nombreForm', HiddenType::class, array( 'attr' => array('value' => 'formularioOrden' ) ) );
+      $formularioOrden -> add('envOrden', SubmitType::class, array( 'label' => 'Terminar orden', 'attr' => array('class' => 'btn btn-primary') ) );
+
+      $formularioOrden = $formularioOrden -> getForm();
+      $formularioOrden -> handleRequest($request);
+
+
+      /* *************** RESPUESTA DE FORMULARIO CONFIRMAR ORDEN *************** */
+
+      if ($formularioOrden->isSubmitted() && $formularioOrden->isValid() && $act == false ) {
+
+
+          $emLines = $this->getDoctrine() -> getManager();
+
+          $iCabe = $emLines -> getRepository(ECabecera::class)->find($orden);
+          $iCabe -> setEstado(1);
+          $em->flush();
+
+
+          $ilines = $emLines -> getRepository(ELineas::class)->findByOrden($orden);
+
+          $em = $this -> getDoctrine() -> getManager();
+
+
+
+          return $this->redirect("control");
+      }
+
+
+      $cabe = $em -> getRepository(ECabecera::class)->find($orden);
+
+      return $this->render('entrega/entr_linea.html.twig', [
+          'formularioIngreso' => $formularioIngreso->createView(),
+          'editarCabecera' => $editarCabecera->createView(),
+          'formPedido' => $formPedido->createView(),
+          'formularioOrden' => $formularioOrden -> createView(),
+          'listaArticulo' => $listaArticulos,
+          'lineas' => $lineas,
+          'activar' => $activar,
+          'orden' => $orden,
+          'cabecera' => $cabe,
+
+               ]);
 
     }
-
-
-
-
-
 
 }

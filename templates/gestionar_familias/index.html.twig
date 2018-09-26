@@ -12,14 +12,15 @@
         });
     </script>
 
+    <style>
+      .borrar, .editar{visibility:hidden;}
+
+      tr:hover .editar{visibility: visible;}
+      tr:hover .borrar{visibility: visible;}
+
+    </style>
+
     <br>
-
-
-
-
-
-
-
 
     <div class="container">
 
@@ -79,11 +80,11 @@
                                         </td>
 
                                         <td style="text-align:right;">
-                                          <a href="/gestionar/familiasBorrar/{{ familia.id  }}">
+                                          <a href="/gestionar/familiasBorrar/{{ familia.id  }}" class="borrar" >
                                             <img src="/imagenes/borrar.png">
                                           </a>
 
-                                          <a href="/gestionar/familiasEditar/{{ familia.id  }}">
+                                          <a href="/gestionar/familiasEditar/{{ familia.id  }}" class="editar">
                                             <img src="/imagenes/editar.png"  >
                                           </a>
                                         </td>

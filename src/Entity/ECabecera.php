@@ -17,7 +17,7 @@ class ECabecera
     private $id;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private $fecha;
 
@@ -26,10 +26,22 @@ class ECabecera
      */
     private $destino;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $recibe;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $estado;
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
+
 
     public function getFecha(): ?\DateTimeInterface
     {
@@ -54,4 +66,35 @@ class ECabecera
 
         return $this;
     }
+
+
+    public function getRecibe(): ?string
+    {
+        return $this->recibe;
+    }
+
+    public function setRecibe(string $recibe): self
+    {
+        $this->recibe = $recibe;
+
+        return $this;
+    }
+
+
+    public function getEstado(): ?int
+    {
+        return $this->estado;
+    }
+
+    public function setEstado(string $estado): self
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+
+
+
+
 }

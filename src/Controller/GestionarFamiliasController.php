@@ -73,10 +73,6 @@ class GestionarFamiliasController extends AbstractController
     }
 
 
-
-
-
-
     /**
      * @Route("gestionar/familiasEditar/{idFamilia}", name="familia_editar")
      */
@@ -89,8 +85,6 @@ class GestionarFamiliasController extends AbstractController
 
       $formEditar = $this -> createFormBuilder();
 
-
-
       $formEditar -> add('familia', TextType::class, array('attr' => array('value' => $familia->getFamilia() )) );
       $formEditar -> add('save', SubmitType::class, array('label' => 'Guardar'));
       $formEditar = $formEditar -> getForm();
@@ -100,18 +94,13 @@ class GestionarFamiliasController extends AbstractController
         if ($formEditar->isSubmitted() && $formEditar->isValid()) {
             $rta = $formEditar->getData();
 
-
               $familia ->setFamilia($rta["familia"]);
 
               $em -> persist($familia);
               $em -> flush();
 
               return $this->redirect("/gestionar/familias");
-
-
       }
-
-
 
 
 

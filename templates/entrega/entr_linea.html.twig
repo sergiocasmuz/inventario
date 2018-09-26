@@ -1,1 +1,192 @@
-{% extends 'base.html.twig' %}{% block title %}Hello {{ controller_name }}!{% endblock %}{% block body %}    <script>        $(document).ready(function(){        });    </script><br>    <div class="container">        <br>        <section id="tabs">            <h6 class="section-title h1">Orden # ...</h6>            <br>            <div class="row">                <div class="col-lg-12 ">                    <nav>                        <!-------------------------- titulos de tabs ---------------------->                        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">                            <a class="nav-item nav-link active" id="nav-vistaPrevia-tab" data-toggle="tab" href="#nav-vistaPrevia" role="tab" aria-controls="nav-vistaPrevia" aria-selected="true">Agregar linea</a>                            <a class="nav-item nav-link" id="nav-cabecera-tab" data-toggle="tab" href="#nav-cabecera" role="tab" aria-controls="nav-cabecera" aria-selected="false">Quitar lineas</a>                            <a class="nav-item nav-link" id="nav-editarList-tab" data-toggle="tab" href="#nav-editarList" role="tab" aria-controls="nav-editarList" aria-selected="false">Modificar lista cabecera</a>                        </div>                    </nav>                    <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">                        <!-------------------------- tab 1 ---------------------->                        <div class="tab-pane fade show active" id="nav-vistaPrevia" role="tabpanel" aria-labelledby="nav-vistaPrevia-tab">                            <div class="alert alert-info" role="alert">                                Lista de los artículos a solicitar                            </div>                            {{ form_start(formulario) }}                            <table class="table">                                <tr>                                    <th>#</th>                                    <th>Familia</th>                                    <th>Artículo</th>                                    <th>Marca</th>                                    <th>Modelo</th>                                    <th>Cantidad</th>                                </tr>                                {% for datos in listaArticulo %}                                    <tr>                                        <td>{{ datos.id }}</td>                                        <td>{{ datos.familia }}</td>                                        <td>{{ datos.articulo }}</td>                                        <td>{{ datos.marca }}</td>                                        <td>{{ datos.modelo }}</td>                                        <td style="width:30px;">                                            {{ form_widget(formulario["cantidad"~datos.id],{'attr':{'value':0} }  ) }}                                            {{ form_widget(formulario["articulo"~datos.id],{'attr':{'type':'hidden'} }) }}                                            {{ form_widget(formulario["marca"~datos.id]) }}                                            {{ form_widget(formulario["modelo"~datos.id]) }}                                            {{ form_widget(formulario["idArticulo"~datos.id]) }}                                        </td>                                    </tr>                                {% endfor %}                            </table>                            {{ form_end(formulario) }}                        </div>                        <!-------------------------- tab 2 ---------------------->                        <div class="tab-pane fade" id="nav-cabecera" role="tabpanel" aria-labelledby="nav-cabecera-tab">                            <div class="alert alert-info" role="alert">                                Quitar                            </div>                            <table class="table">                                <tr>                                    <th>Artículo</th>                                    <th>Marca</th>                                    <th>Modelo</th>                                    <th>Cantidad</th>                                </tr>                                {{ form_start(formPedido) }}                                {% for linea in lineas %}                                    <tr>                                        <td>{{ linea.articulo }}</td>                                        <td>{{ linea.marca }}</td>                                        <td>{{ linea.modelo }}</td>                                        <td>{{ linea.cantidad }}</td>                                        <td>{{ form_row(formPedido["btn_"~linea.id]) }}</td>                                    </tr>                                {% endfor %}                                {{ form_end(formPedido) }}                            </table>                        </div>                        <!-------------------------- tab 3 ---------------------->                        <div class="tab-pane fade" id="nav-editarList" role="tabpanel" aria-labelledby="nav-editarList-tab">                            {{ form_start(formularioCabecera) }}                            {{ form_widget(formularioCabecera) }}                            {{ form_end(formularioCabecera) }}                        </div>                    </div>                </div>            </div>        </section>        <!-- ./Tabs -->    </div>{% endblock %}
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+
+
+{% block body %}
+
+
+    <script>
+        $(document).ready(function(){
+
+
+        });
+    </script>
+
+    <br>
+
+    {% set fecha = cabecera.fecha.date | split(' ') %}
+  
+
+    <div class="container">
+
+
+        <br>
+        <section id="tabs">
+
+            {% set tipoBTN = "primary" %}
+
+            {% if cabecera.estado == 0 %}
+                {% set estado = "En proceso"  %}
+                {% set tipoBTN = "secondary" %}
+
+            {% elseif cabecera.estado == 1 %}
+                {% set estado = "Pendiente"  %}
+                {% set tipoBTN = "danger" %}
+
+            {% elseif cabecera.estado == 2 %}
+                {% set estado = "Aprobado"  %}
+                {% set tipoBTN = "success" %}
+
+            {% endif %}
+
+
+
+            {% set act = "" %}
+
+            {% if cabecera.estado == 1 %}
+                {% set act = "disabled" %}
+
+            {% elseif cabecera. estado == 2 %}
+                {% set act = "disabled" %}
+            {% endif %}
+
+
+            <h6 class="section-title h1" style="float:left;">
+                Orden de recepción # {{ orden }}
+                <span class="badge badge-{{ tipoBTN }}" style="font-size: 16px; vertical-align:super; ">{{ estado }}</span>
+            </h6>
+
+            <!-- Button trigger modal -->
+            <button type="button" {{ act }} class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="float:right; ">
+                Terminar Orden
+            </button>
+
+
+            <br><br><br>
+
+
+                <br>
+            <div class="row">
+                <div class="col-lg-12 ">
+                    <nav>
+
+                        <!-------------------------- titulos de tabs ---------------------->
+                        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link active" id="nav-vistaPrevia-tab" data-toggle="tab" href="#nav-vistaPrevia" role="tab" aria-controls="nav-vistaPrevia" aria-selected="true">Agregar linea</a>
+                            <a class="nav-item nav-link" id="nav-cabecera-tab" data-toggle="tab" href="#nav-cabecera" role="tab" aria-controls="nav-cabecera" aria-selected="false">lineas</a>
+                            <a class="nav-item nav-link" id="nav-editarList-tab" data-toggle="tab" href="#nav-editarList" role="tab" aria-controls="nav-editarList" aria-selected="false">Modificar lista cabecera</a>
+                        </div>
+                    </nav>
+
+                    <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+
+
+                        <!-------------------------- tab 1 ---------------------->
+                        <div class="tab-pane fade show active" id="nav-vistaPrevia" role="tabpanel" aria-labelledby="nav-vistaPrevia-tab">
+
+
+                            <div class="alert alert-info" role="alert">
+                                Lista de los artículos a solicitar
+                                <a class="btn btn-info" href="/gestionar/articulos" role="button" style="float:right; clear:right;">Agregar elementos a la lista</a>
+
+                                <br>
+                                <br>
+                            </div>
+
+
+                            {{ form_start(formularioIngreso) }}
+                            <table class="table">
+                                <tr>
+                                    <th>Artículo</th>
+                                    <th>Familia</th>
+                                    <th>Marca</th>
+                                    <th>Modelo</th>
+                                    <th>Cantidad</th>
+                                    <th style="width:100px;"></th>
+                                </tr>
+
+
+                                {% for datos in listaArticulo %}
+                                    <tr>
+                                        <td>{{ datos.articulo }}</td>
+                                        <td>{{ datos.familia }}</td>
+                                        <td>{{ datos.marca }}</td>
+                                        <td>{{ datos.modelo }}</td>
+                                        <td style="width:30px;">
+                                            {{ form_widget(formularioIngreso["cantidad"~loop.index0] ) }}
+                                            {{ form_widget(formularioIngreso["articulo"~loop.index0],{'attr':{'type':'hidden'} }) }}
+                                            {{ form_widget(formularioIngreso["marca"~loop.index0]) }}
+                                            {{ form_widget(formularioIngreso["modelo"~loop.index0]) }}
+                                            {{ form_widget(formularioIngreso["idArticulo"~loop.index0]) }}
+                                            {{ form_widget(formularioIngreso["familia"~loop.index0]) }}
+                                        </td>
+                                      <!-- <td><img src="/imagenes/codRojo.png"></td>  -->
+                                    </tr>
+                                {% endfor %}
+                            </table>
+
+                            {{ form_end(formularioIngreso) }}
+                        </div>
+
+                        <!-------------------------- tab 2 ---------------------->
+                        <div class="tab-pane fade" id="nav-cabecera" role="tabpanel" aria-labelledby="nav-cabecera-tab">
+
+                            <div class="alert alert-info" role="alert">
+                                Quitar
+                            </div>
+
+
+
+                            <table class="table">
+                                <tr>
+                                    <th>Artículo</th>
+                                    <th>Marca</th>
+                                    <th>Modelo</th>
+                                    <th>Cantidad</th>
+                                </tr>
+                                {{ form_start(formPedido) }}
+
+                                {% for linea in lineas %}
+
+                                    <tr>
+                                        <td>{{ linea.articulo }}</td>
+                                        <td>{{ linea.marca }}</td>
+                                        <td>{{ linea.modelo }}</td>
+                                        <td>{{ linea.cantidad }}</td>
+                                        <td>{{ form_row(formPedido[linea.id]) }}</td>
+                                    </tr>
+
+                                {% endfor %}
+
+
+                            </table>{{ form_end(formPedido) }}
+
+
+
+
+
+
+                        </div>
+
+                        <!-------------------------- tab 3 ---------------------->
+                        <div class="tab-pane fade" id="nav-editarList" role="tabpanel" aria-labelledby="nav-editarList-tab">
+                            {{ form_start(editarCabecera) }}
+                            {{ form_widget(editarCabecera )}}
+                            {{ form_end(editarCabecera) }}
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ./Tabs -->
+
+    </div>
+
+
+
+{% endblock %}

@@ -56,15 +56,25 @@ class GestionarArticulosController extends AbstractController
 
 
 
-
       /* ********************************************************************** */
       /* *************** FORMULARIO DE MARCA ********************************* */
       /* ********************************************************************* */
 
       $formArticulos = $this -> createFormBuilder()
       -> add('articulo', TextType::class)
-      -> add('familia', ChoiceType::class, array('choices' => array('Seleccioná una familia' => $listaFamilia )  ) )
-      -> add('marca', ChoiceType::class, array('choices' => array('Seleccioná una marca' => $listaMarca )  ) )
+      -> add('familia', ChoiceType::class, array('choices' => array('Seleccioná una familia' => $listaFamilia) ) )
+
+      -> add('marca', ChoiceType::class, array('choices' => array('Seleccioná una marca' => $listaMarca ),
+
+      'choice_attr' => function($choiceValue, $key, $value) {
+        return ['value' =>  $value, 'class' => $key];
+        },
+
+      ) )
+
+
+
+
       -> add('modelo', TextType::class)
       -> add('detalle', TextType::class)
       -> add('save', SubmitType::class, array('label' => 'Guardar'));
@@ -90,18 +100,18 @@ class GestionarArticulosController extends AbstractController
           $em->persist($art);
           $em->flush();
 
+          $idArticulo = $art->getId();
 
           //////////////////stock//////////////////////
           $stock = new Stock();
 
           $stock -> setFamilia($rta["familia"]);
+          $stock -> setIdArticulo($idArticulo);
           $stock -> setArticulo($rta["articulo"]);
           $stock -> setMarca($rta["marca"]);
           $stock -> setModelo($rta["modelo"]);
           $stock -> setDetalle($rta["detalle"]);
           $stock -> setCantidad(0);
-
-          print_r($stock);
 
           $em->persist($stock);
           $em->flush();
