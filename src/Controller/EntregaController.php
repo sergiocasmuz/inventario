@@ -71,7 +71,7 @@ class EntregaController extends AbstractController
       $ecabe = $em -> getRepository(ECabecera::class) -> find($orden);
       if($ecabe->getEstado() == 2 ){$act = true; }else{ $act =false;}
 
-      $listaArticulos = $this->getDoctrine()->getRepository(Articulos::class)->findAll();
+        $listaArticulos = $this->getDoctrine()->getRepository(Articulos::class)->findAll();
 
 
       $formularioIngreso = $this->createFormBuilder();

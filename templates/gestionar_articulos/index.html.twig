@@ -12,60 +12,21 @@
         });
     </script>
 
+
+    <style>
+      .borrar, .editar{visibility:hidden;}
+
+      tr:hover .editar{visibility: visible;}
+      tr:hover .borrar{visibility: visible;}
+
+    </style>
+
     <br>
 
 
-    <!-- Modal nuevo articulo-->
-    <div class="modal fade" id="articuloN" tabindex="-1" role="dialog" aria-labelledby="articuloNLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="exampleModalLabel"> Crear artículo</h3>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                    <div class="modal-body">
-                      {{ form_start(formArticulo) }}
-                      {{ form_widget(formArticulo) }}
-                      {{ form_end(formArticulo) }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ------------------------------------------->
 
 
 
-
-
-    <!-- Modal nuevo marca-->
-    <div class="modal fade" id="marcaN" tabindex="-1" role="dialog" aria-labelledby="marcaNLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="exampleModalLabel"> Nuevo marca</h3>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                    <div class="modal-body">
-
-                    </div>
-
-
-                </div>
-
-
-            </div>
-        </div>
-    </div>
-    <!-- ------------------------------------------->
 
     <div class="container">
 
@@ -101,24 +62,17 @@
                         <!-------------------------- tab 1 ---------------------->
                         <div class="tab-pane fade show active" id="nav-vistaPrevia" role="tabpanel" aria-labelledby="nav-vistaPrevia-tab">
 
+                        <div class="row row justify-content-between">
 
-                            <div class="alert alert-info" role="alert">
-                                Lista de los artículos
+                          <div class="col-8">
 
-                                <button type="button" class="btn btn-info" id="articuloN" data-toggle="modal" data-target="#articuloN" style="float:right; clear:right;">
-                                    Nuevo artículo
-                                </button>
-                                <br>
-                                <br>
-                            </div>
-
-
-
+                            <br>
+                            <h4>Lista de artículos</h4>
+                            <br>
                             <table class="table">
                                 <tr>
-                                    <th>#</th>
-                                    <th>Familia</th>
                                     <th>Artículo</th>
+                                    <th>Familia</th>
                                     <th>Marca</th>
                                     <th>Modelo</th>
                                     <th style="width:100px;"></th>
@@ -127,15 +81,11 @@
                                 {% for articulo in articulos %}
                                   <tr>
                                     <td>
-                                      {{articulo.id}}
+                                      {{articulo.articulo}}
                                     </td>
 
                                     <td>
                                       {{articulo.familia}}
-                                    </td>
-
-                                    <td>
-                                      {{articulo.articulo}}
                                     </td>
 
                                     <td>
@@ -146,16 +96,53 @@
                                       {{articulo.modelo}}
                                     </td>
 
+                                    <td style="text-align:right;">
+                                      <a href="/gestionar/articuloBorrar/{{ articulo.id  }}" class="borrar" >
+                                        <img src="/imagenes/borrar.png">
+                                      </a>
+
+                                      <a href="/gestionar/articuloEditar/{{ articulo.id  }}" class="editar">
+                                        <img src="/imagenes/editar.png"  >
+                                      </a>
+                                    </td>
+
 
                                   </tr>
                                 {% endfor %}
-
-
-
                             </table>
+                          </div>
+
+
+                          <div class="col-4"  >
+
+                            <h4>{{articulos|length}} Articulos disponibles</h4>
+                            <br>
+
+                            <div class="alert alert-info " >
+
+                              <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text" id="inputGroup-sizing-default">Buscar</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                              </div>
+
+                            </div>
+
+                            <div class="alert alert-info " >
+                              <p> * Al enviar el formulario se modificarán todos los campos afectados a esta marca.</p>
+                              <hr>
+
+                              {{ form_start(formArticulo) }}
+                              {{ form_widget(formArticulo) }}
+                              {{ form_end(formArticulo) }}
+
+                            </div>
+
 
 
                         </div>
+                      </div>
 
                         <!-------------------------- tab 2 ---------------------->
                         <div class="tab-pane fade" id="nav-cabecera" role="tabpanel" aria-labelledby="nav-cabecera-tab">

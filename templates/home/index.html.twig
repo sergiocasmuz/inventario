@@ -17,12 +17,10 @@
     </style>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-
-
     <script>
 
 
-
+        google.charts.load('current', {'packages':['bar']});
         google.charts.load('current', {packages: ['corechart', 'bar']});
              google.charts.setOnLoadCallback(drawStuff);
 
@@ -37,41 +35,34 @@
 
                 ['Artículo', 'Cantidad'],
                 {% for art in art %}
-                    ['{{ art.articulo }}', '{{ art.cantidad }}'],
+                    ['{{ art.articulo }}', {{ art.cantidad }}],
                 {% endfor %}
 
 
             ]);
-
-
-
 
             var options = {
 
 
                 title: 'Cantidad de artículos disponibles',
                 width: 900,
+                height: 400,
                 legend: { position: 'none' },
                 chart: { title: 'Cantidad de Atículos disponibles',
                     subtitle: 'Stock actual',
                 },
                 bars: 'horizontal', // Required for Material Bar Charts.
+
                 axes: {
-                    x: {
-                        0: { side: 'top', label: 'Cantidad'} // Top x-axis.
-                    }
-                },
-
-
-
-                bar: { groupWidth: "90%" }
-
+           x: {
+             0: { side: 'top', label: 'Unidades'} // Top x-axis.
+           }
+         },
+         bar: { groupWidth: "90%" }
 
 
 
             };
-
-
 
 
 
@@ -100,5 +91,5 @@
 
 
 
-    
+
 {% endblock %}

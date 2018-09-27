@@ -126,4 +126,101 @@ class GestionarArticulosController extends AbstractController
             'articulos' => $articulos,
         ]);
     }
+
+
+    /**
+     * @Route("gestionar/articuloBorrar/{idArticulo}", name="articulo_borrar")
+     */
+    public function borrar(Request $request, $idArticulo)
+    {
+
+      $em = $this -> getDoctrine() -> getManager();
+      $articulo = $em -> getRepository(Articulos::class) -> find($idArticulo);
+
+
+              $em -> remove($articulo);
+              $em -> flush();
+
+              return $this->redirect("/gestionar/articulos");
+
+
+    }
+
+
+    /**
+     * @Route("gestionar/articuloEditar/{idArticulo}", name="articulo_editar")
+     */
+    public function editar(Request $request, $idArticulo)
+    {
+      $em = $this -> getDoctrine() -> getManager();
+      $articulo = $em -> getRepository(Articulos::class) -> find($idArticulo);
+      $articuloList = $em -> getRepository(Articulos::class) -> findBy(array(), array('articulo' => 'ASC') );
+
+      $familia = $em -> getRepository(Familia::class) -> findBy(array(), array('familia' => "ASC") );
+      $marca = $em -> getRepository(Marca::class) -> findBy(array(), array('marca' => "ASC") );
+
+
+      $cFamilia = count($familia);
+
+      $listaFamilia[$articulo->getFamilia()] = false;
+      for ($i=0; $i < $cFamilia; $i++) {
+              $listaFamilia[$familia[$i]->getFamilia()] = $familia[$i]->getFamilia();
+      }
+
+
+      $cMarca = count($marca);
+
+      $listaMarca[$articulo->getMarca()] = 'false';
+      for ($i=0; $i < $cMarca; $i++) {
+              $listaMarca[$marca[$i]->getMarca()] = $marca[$i]->getMarca();
+      }
+
+
+      $formEditar = $this -> createFormBuilder()
+
+      -> add('articulo', TextType::class, array( 'attr' => array( 'value' => $articulo->getArticulo() ) ) )
+      -> add('familia', ChoiceType::class, array('choices' => array('Seleccioná una familia' => $listaFamilia) ) )
+
+      -> add('marca', ChoiceType::class, array('choices' => array('Seleccioná una marca' => $listaMarca ),
+
+      'choice_attr' => function($choiceValue, $key, $value) {
+        return ['value' =>  $value, 'class' => $key];
+        },
+
+      ) )
+
+
+      -> add('modelo', TextType::class, array( 'attr' => array( 'value' => $articuloList[0]->getModelo() ) ))
+      -> add('detalle', TextType::class, array( 'attr' => array( 'value' => $articuloList[0]->getDetalle() ) ))
+      -> add('save', SubmitType::class, array('label' => 'Guardar'));
+
+      $formEditar = $formEditar->getForm();
+
+      $formEditar = $formEditar -> handleRequest($request);
+
+          if ($formEditar->isSubmitted() && $formEditar->isValid()) {
+              $rta = $formEditar->getData();
+
+                $articulo -> setArticulo($rta["articulo"]);
+                $articulo -> setFamilia($rta["familia"]);
+                $articulo -> setMarca($rta["marca"]);
+                $articulo -> setModelo($rta["modelo"]);
+                $articulo -> setDetalle($rta["detalle"]);
+
+                $em -> persist($articulo);
+                $em -> flush();
+
+                return $this->redirect("/gestionar/articulos");
+            }
+
+
+            return $this->render('gestionar_articulos/editar.html.twig', [
+                'formEditar' =>$formEditar -> createView(),
+                'articulo' => $articuloList,
+                'idArticulo' => $articulo->getId()
+            ]);
+
+    }
+
+
 }

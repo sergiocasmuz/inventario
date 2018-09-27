@@ -326,7 +326,6 @@ class IngresoController extends AbstractController
             return $this->redirect("control");
         }
 
-
         $cabe = $em -> getRepository(ICabecera::class)->find($orden);
 
         return $this->render('ingreso/ingr_linea.html.twig', [
