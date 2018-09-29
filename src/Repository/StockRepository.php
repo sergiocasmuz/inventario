@@ -2,7 +2,8 @@
 
 namespace App\Repository;
 
-use App\Entity\Stock;
+use App\Entity\stock;
+use App\Entity\NrosIdentificacion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -10,43 +11,19 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Stock|null find($id, $lockMode = null, $lockVersion = null)
  * @method Stock|null findOneBy(array $criteria, array $orderBy = null)
  * @method Stock[]    findAll()
+ * @method Stock[]    findAr($buscarNro)
  * @method Stock[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class StockRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Stock::class);
+        parent::__construct($registry, stock::class);
     }
 
-//    /**
-//     * @return Stock[] Returns an array of Stock objects
-//     */
-
-/*
-    public function findAllSuma($flia)
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.familia = :val')
-            ->setParameter('val', $flia)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult();
 
 
-    }
-*/
 
-    /*
-    public function findOneBySomeField($value): ?Stock
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+
+
 }

@@ -1,8 +1,53 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+
+
 
 {% block body %}
+
+{% set familia = "flecha" %}{% set articulo = "flecha" %}{% set marca = "flecha" %}{% set modelo = "flecha" %}{% set cantidad = "flecha" %}
+
+{% if orden is not defined %}
+  {% set orden = " " %}
+  {% endif %}
+
+
+{% if orden == "familia" %}
+  {% set familia = "slct" %}
+  {% else %}
+  {% set familia = "flecha" %}
+{% endif %}
+
+{% if orden == "articulo" %}
+  {% set articulo = "slct" %}
+  {% else %}
+  {% set articulo = "flecha" %}
+{% endif %}
+
+{% if orden == "marca" %}
+  {% set marca = "slct" %}
+  {% else %}
+  {% set marca = "flecha" %}
+{% endif %}
+
+{% if orden == "modelo" %}
+  {% set modelo = "slct" %}
+  {% else %}
+  {% set modelo = "flecha" %}
+{% endif %}
+
+{% if orden == "cantidad" %}
+  {% set cantidad = "slct" %}
+  {% else %}
+  {% set cantidad = "flecha" %}
+{% endif %}
+
+
+<style>
+  .ord{transform: rotate(90deg);}
+  .tablita td{padding-left: 30px;}
+</style>
 
 
 <br>
@@ -37,34 +82,77 @@
     <br>
 
 	<div class="alert alert-info" role="alert">
-	  Detalle de los artículos en depósito	
+	  Detalle de los artículos en depósito
+
+    <br>
+    <br>
+    <br>
+
+
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-default">Buscar</span>
+      </div>
+      <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+    </div>
+
+
+
+
 	</div>
 
 
 
-    <table class="table">
+    <table class="table tablita">
             <tr>
-                <th>#</th>
-                <th>Familia</th>
-                <th>Artículo</th>
-                <th>Marca</th>
-                <th>Modelo</th>
-                <th style="width:100px; text-align: center;">Stock disponible</th>
+                <th>
+                  <a href="/stock/familia">
+                    <img src="/imagenes/{{familia}}.png" id="familia" class="ord">
+                    Familia
+                  </a>
+                </th>
+
+                <th>
+                  <a href="/stock/articulo">
+                    <img src="/imagenes/{{articulo}}.png" id="articulo" class="ord">
+                    Artículo
+                  </a>
+                </th>
+
+                <th>
+                  <a href="/stock/marca">
+                    <img src="/imagenes/{{marca}}.png" id="marca" class="ord">
+                    Marca
+                  </a>
+                </th>
+
+                <th>
+                  <a href="/stock/modelo">
+                    <img src="/imagenes/{{modelo}}.png" id="stock" class="ord">
+                    Modelo
+                  </a>
+                </th>
+
+                <th>
+                  <a href="/stock/cantidad">
+                    <img src="/imagenes/{{cantidad}}.png" id="modelo" class="ord" >
+                      Stock
+                    </a>
+                </th>
             </tr>
 
             {% for art in art %}
                 <tr>
-                    <th>{{ art.id }}</th>
                     <td>{{ art.familia }}</td>
                     <td>{{ art.articulo }}</td>
                     <td>{{ art.marca }}</td>
                     <td>{{ art.modelo }}</td>
-                    <td style="width:100px; text-align: center;">{{ art.cantidad }}</td>
+                    <td>{{ art.cantidad }}</td>
                 </tr>
 
             {% endfor %}
         </table>
    </div>
 
-    
+
 {% endblock %}

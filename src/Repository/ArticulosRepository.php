@@ -3,8 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Articulos;
+use App\Entity\NrosIdentificacion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+
+
+
 
 /**
  * @method Articulos|null find($id, $lockMode = null, $lockVersion = null)
@@ -18,6 +22,13 @@ class ArticulosRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Articulos::class);
     }
+
+
+
+
+
+
+
 
 //    /**
 //     * @return Articulos[] Returns an array of Articulos objects
