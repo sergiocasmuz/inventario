@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ELineasRepository")
@@ -24,7 +27,7 @@ class ELineas
     /**
      * @ORM\Column(type="integer")
      */
-    private $id_Articulo;
+    private $idArticulo;
 
 
     /**
@@ -40,12 +43,24 @@ class ELineas
 
     private $marca;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+
+    private $familia;
+
 
     /**
      * @ORM\Column(type="string", length=255)
      */
 
     private $modelo;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Blank()
+     */
+    private $nroSerie;
 
 
 /////////////////////////////////////
@@ -67,6 +82,11 @@ class ELineas
         return $this->modelo;
     }
 
+    public function getFamilia()
+    {
+        return $this->familia;
+    }
+
 
     public function setArticulo($articulo)
     {
@@ -85,6 +105,13 @@ class ELineas
     public function setModelo($modelo): self
     {
         $this->modelo = $modelo;
+
+        return $this;
+    }
+
+    public function setFamilia($familia): self
+    {
+        $this->familia = $familia;
 
         return $this;
     }
@@ -118,12 +145,12 @@ class ELineas
 
     public function getIdArticulo(): ?int
     {
-        return $this->id_Articulo;
+        return $this->idArticulo;
     }
 
-    public function setIdArticulo(int $id_Articulo): self
+    public function setIdArticulo(int $idArticulo): self
     {
-        $this->id_Articulo = $id_Articulo;
+        $this->idArticulo = $idArticulo;
 
         return $this;
     }
@@ -139,4 +166,19 @@ class ELineas
 
         return $this;
     }
+
+
+    public function getNroSerie()
+    {
+        return $this->nroSerie;
+    }
+
+    public function setNroSerie($nroSerie): self
+    {
+        $this->nroSerie = $nroSerie;
+
+        return $this;
+    }
+
+
 }

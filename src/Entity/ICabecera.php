@@ -32,6 +32,7 @@ class ICabecera
      */
     private $receptor;
 
+
     /**
      * @return mixed
      */
@@ -104,6 +105,8 @@ class ICabecera
         return $this->id;
     }
 
+
+
     public function getFecha(): ?\DateTimeInterface
     {
         return $this->fecha;
@@ -140,4 +143,10 @@ class ICabecera
 
         return $this;
     }
+
+
+
+
+
+
 }

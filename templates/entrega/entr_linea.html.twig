@@ -17,7 +17,7 @@
     <br>
 
     {% set fecha = cabecera.fecha.date | split(' ') %}
-  
+
 
     <div class="container">
 
@@ -29,7 +29,7 @@
 
             {% if cabecera.estado == 0 %}
                 {% set estado = "En proceso"  %}
-                {% set tipoBTN = "secondary" %}
+                {% set tipoBTN = "light" %}
 
             {% elseif cabecera.estado == 1 %}
                 {% set estado = "Pendiente"  %}
@@ -37,7 +37,23 @@
 
             {% elseif cabecera.estado == 2 %}
                 {% set estado = "Aprobado"  %}
+                {% set tipoBTN = "primary" %}
+
+            {% elseif cabecera.estado == 3 %}
+                {% set estado = "Rechazado"  %}
+                {% set tipoBTN = "danger" %}
+
+            {% elseif cabecera.estado == 4 %}
+                {% set estado = "En tránsito"  %}
+                {% set tipoBTN = "warning" %}
+
+            {% elseif cabecera.estado == 5 %}
+                {% set estado = "Finalizado"  %}
                 {% set tipoBTN = "success" %}
+
+            {% elseif cabecera.estado == 6 %}
+                {% set estado = "En espera"  %}
+                {% set tipoBTN = "secondary " %}
 
             {% endif %}
 
@@ -53,8 +69,65 @@
             {% endif %}
 
 
+
+
+            {% set fecha = cabecera.fecha.date | split(' ') %}
+            <!-- Modal -->
+        <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLabel"> Orden de recepción # {{ orden }} </h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+
+
+
+                  <div class="alert alert-info" role="alert">
+                      <br>
+                      <h5>Fecha: {{ fecha[0]|date("m/d/Y") }} </h5>
+                      <h5 style="float: left;">Preoveedor: {{ cabecera.destino }}</h5>
+                      <br><br><br>
+                  </div>
+
+                    <table class="table">
+                                        <tr>
+                                            <th>Artículo</th>
+                                            <th>Familia</th>
+                                            <th>Marca</th>
+                                            <th>Modelo</th>
+                                            <th>Nro Serie</th>
+                                        </tr>
+
+                    {% for d in lineas %}
+                    <tr>
+                        <td>{{ d.articulo }}</td>
+                        <td>{{ d.familia }}</td>
+                        <td>{{ d.marca }}</td>
+                        <td>{{ d.modelo }}</td>
+                        <td>{{ d.nroSerie }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+
+
+              </div>
+              <div class="modal-footer">
+
+                  {{ form_start(formularioOrden) }}
+                  {{ form_widget(formularioOrden) }}
+                  {{ form_end(formularioOrden) }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+
             <h6 class="section-title h1" style="float:left;">
-                Orden de recepción # {{ orden }}
+                Orden de entrega # {{ orden }}
                 <span class="badge badge-{{ tipoBTN }}" style="font-size: 16px; vertical-align:super; ">{{ estado }}</span>
             </h6>
 
@@ -71,30 +144,55 @@
             <div class="row">
                 <div class="col-lg-12 ">
                     <nav>
-
                         <!-------------------------- titulos de tabs ---------------------->
                         <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link active" id="nav-vistaPrevia-tab" data-toggle="tab" href="#nav-vistaPrevia" role="tab" aria-controls="nav-vistaPrevia" aria-selected="true">Agregar linea</a>
-                            <a class="nav-item nav-link" id="nav-cabecera-tab" data-toggle="tab" href="#nav-cabecera" role="tab" aria-controls="nav-cabecera" aria-selected="false">lineas</a>
+                            <a class="nav-item nav-link active" id="nav-vistaPrevia-tab" data-toggle="tab" href="#nav-vistaPrevia" role="tab" aria-controls="nav-vistaPrevia" aria-selected="true">Artículos</a>
+                            <a class="nav-item nav-link" id="nav-cabecera-tab" data-toggle="tab" href="#nav-cabecera" role="tab" aria-controls="nav-cabecera" aria-selected="false">Agregar artículos</a>
                             <a class="nav-item nav-link" id="nav-editarList-tab" data-toggle="tab" href="#nav-editarList" role="tab" aria-controls="nav-editarList" aria-selected="false">Modificar lista cabecera</a>
                         </div>
                     </nav>
 
                     <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
 
-
                         <!-------------------------- tab 1 ---------------------->
                         <div class="tab-pane fade show active" id="nav-vistaPrevia" role="tabpanel" aria-labelledby="nav-vistaPrevia-tab">
+                          <div class="alert alert-info" role="alert">
+                              Quitar
+                          </div>
+
+                          <table class="table">
+                              <tr>
+                                  <th>Artículo</th>
+                                  <th>Marca</th>
+                                  <th>Modelo</th>
+                                  <th>Nro Serie</th>
+                              </tr>
+                              {{ form_start(formPedido) }}
+
+                              {% for linea in lineas %}
+                                  <tr>
+                                      <td>{{ linea.articulo }}</td>
+                                      <td>{{ linea.marca }}</td>
+                                      <td>{{ linea.modelo }}</td>
+                                      <td>{{ linea.nroSerie }}</td>
+                                      <td>{{ form_row(formPedido[linea.id]) }}</td>
+                                  </tr>
+                              {% endfor %}
+                          </table>{{ form_end(formPedido) }}
+                        </div>
+
+                        <!-------------------------- tab 2 ---------------------->
+                        <div class="tab-pane fade" id="nav-cabecera" role="tabpanel" aria-labelledby="nav-cabecera-tab">
+
+
+
 
 
                             <div class="alert alert-info" role="alert">
-                                Lista de los artículos a solicitar
-                                <a class="btn btn-info" href="/gestionar/articulos" role="button" style="float:right; clear:right;">Agregar elementos a la lista</a>
-
-                                <br>
-                                <br>
+                              <br>
+                                Lista de los artículos a entregar
+                              <br>
                             </div>
-
 
                             {{ form_start(formularioIngreso) }}
                             <table class="table">
@@ -103,10 +201,9 @@
                                     <th>Familia</th>
                                     <th>Marca</th>
                                     <th>Modelo</th>
-                                    <th>Cantidad</th>
+                                    <th>Nro de serie</th>
                                     <th style="width:100px;"></th>
                                 </tr>
-
 
                                 {% for datos in listaArticulo %}
                                     <tr>
@@ -114,60 +211,23 @@
                                         <td>{{ datos.familia }}</td>
                                         <td>{{ datos.marca }}</td>
                                         <td>{{ datos.modelo }}</td>
-                                        <td style="width:30px;">
+                                        <td style="width:150px;">
                                             {{ form_widget(formularioIngreso["cantidad"~loop.index0] ) }}
                                             {{ form_widget(formularioIngreso["articulo"~loop.index0],{'attr':{'type':'hidden'} }) }}
                                             {{ form_widget(formularioIngreso["marca"~loop.index0]) }}
                                             {{ form_widget(formularioIngreso["modelo"~loop.index0]) }}
                                             {{ form_widget(formularioIngreso["idArticulo"~loop.index0]) }}
                                             {{ form_widget(formularioIngreso["familia"~loop.index0]) }}
+                                            {{ form_widget(formularioIngreso["nroSerie"~loop.index0]) }}
+                                        </td>
+                                        <td>
+                                          {{ form_widget(formularioIngreso["save"~loop.index0]) }}
                                         </td>
                                       <!-- <td><img src="/imagenes/codRojo.png"></td>  -->
                                     </tr>
                                 {% endfor %}
                             </table>
-
                             {{ form_end(formularioIngreso) }}
-                        </div>
-
-                        <!-------------------------- tab 2 ---------------------->
-                        <div class="tab-pane fade" id="nav-cabecera" role="tabpanel" aria-labelledby="nav-cabecera-tab">
-
-                            <div class="alert alert-info" role="alert">
-                                Quitar
-                            </div>
-
-
-
-                            <table class="table">
-                                <tr>
-                                    <th>Artículo</th>
-                                    <th>Marca</th>
-                                    <th>Modelo</th>
-                                    <th>Cantidad</th>
-                                </tr>
-                                {{ form_start(formPedido) }}
-
-                                {% for linea in lineas %}
-
-                                    <tr>
-                                        <td>{{ linea.articulo }}</td>
-                                        <td>{{ linea.marca }}</td>
-                                        <td>{{ linea.modelo }}</td>
-                                        <td>{{ linea.cantidad }}</td>
-                                        <td>{{ form_row(formPedido[linea.id]) }}</td>
-                                    </tr>
-
-                                {% endfor %}
-
-
-                            </table>{{ form_end(formPedido) }}
-
-
-
-
-
-
                         </div>
 
                         <!-------------------------- tab 3 ---------------------->

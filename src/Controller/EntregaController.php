@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Articulos;
 use App\Entity\ECabecera;
 use App\Entity\ELineas;
+use App\Entity\stock;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -13,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityRepository;
 
 class EntregaController extends AbstractController
 {
@@ -26,6 +28,7 @@ class EntregaController extends AbstractController
 
         $formularioCabecera = $this->createFormBuilder()
             ->add('fecha', DateType::class)
+            ->add('nroDetTicket', IntegerType::class)
             ->add('dependenciaDeDestino', TextType::class)
             ->add('recibe', TextType::class)
             ->add('save', SubmitType::class, array('label' => 'Siguiente'))
@@ -40,6 +43,7 @@ class EntregaController extends AbstractController
             $formCabe = new ECabecera();
 
             $formCabe -> setFecha($cabe["fecha"]);
+            $formCabe -> setNroTicket($cabe["nroDetTicket"]);
             $formCabe -> setDestino($cabe["dependenciaDeDestino"]);
             $formCabe -> setRecibe($cabe["recibe"]);
             $formCabe -> setEstado(0);
@@ -49,7 +53,7 @@ class EntregaController extends AbstractController
 
             ///////el nro de orden corresponde con el id de la cabecera
             $orden = $formCabe->getId();
-            return $this->redirect("/orden/{$orden}");
+            return $this->redirect("/entr_linea/{$orden}");
         }
 
         return $this->render('entrega/entr_cabecera.html.twig',
@@ -59,42 +63,34 @@ class EntregaController extends AbstractController
 
 
     /**
-     * @Route("/entr_linea/{orden}", name="entrega3a")
+     * @Route("/entr_linea/{orden}", name="entrega34")
      */
 
-
-    public function linea($orden)
+    public function linea(Request $request ,$orden)
     {
       $em = $this -> getDoctrine() -> getManager();
       /* *************** FORMULARIO NUEVA ORDEN (LINEAS)******************** */
 
       $ecabe = $em -> getRepository(ECabecera::class) -> find($orden);
-      if($ecabe->getEstado() == 2 ){$act = true; }else{ $act =false;}
-
-        $listaArticulos = $this->getDoctrine()->getRepository(Articulos::class)->findAll();
-
-
+      $listaArticulos = $em -> getRepository(Articulos::class)->findAll();
       $formularioIngreso = $this->createFormBuilder();
-
 
      $articulosTotales = 0;
      $articulosTotales = count($listaArticulos);
 
       for($i=0; $i < $articulosTotales; $i++) {
 
+        $stock = $em -> getRepository(stock::class) -> findByIdArticulo($listaArticulos[$i]->getId());//////rescatar el stock disponible
+        $disponible = $stock[0] -> getCantidad();
 
-        $ArticuloEnLineas = $em -> getRepository(ELineas::class) -> findLineas($listaArticulos[$i]->getId(),$orden);
-
-        if( empty($ArticuloEnLineas)   ){  $rta = 0; }
-          else{
-                  $rta = $ArticuloEnLineas[0]->getCantidad();
-              }
+                    if($ecabe->getEstado() == 0 ){$act = false; }else{ $act = true;}  ///////corrobora el estado  2 = aprobado
+                    if($disponible == 0){ $label= "sin stock";$act = true; }else{$label="Agregar a la orden";}///// corrobora el stock
 
           $formularioIngreso->add('idArticulo'.$i, HiddenType::class,
               array('attr' => array('value' => $listaArticulos[$i]->getId() )));
 
-          $formularioIngreso->add('cantidad'.$i, IntegerType::class,
-              array('attr' => array('value' => $rta, 'min' => 0) ) );
+          $formularioIngreso->add('cantidad'.$i, HiddenType::class,
+              array('attr' => array('value' => 1, 'min' =>0 , 'max' => 1) ) );
 
           $formularioIngreso->add('articulo'.$i, HiddenType::class,
               array('attr' => array('value' => $listaArticulos[$i]->getArticulo() )));
@@ -108,68 +104,44 @@ class EntregaController extends AbstractController
           $formularioIngreso->add('familia'.$i, HiddenType::class,
               array('attr' => array('value' => $listaArticulos[$i]->getFamilia() )));
 
+          $formularioIngreso->add('nroSerie'.$i, TextType::class,  array('attr' => array('value' => 0)));
+
+          $formularioIngreso->add('save'.$i, SubmitType::class, array('label' => $label, 'attr' => array('disabled' => $act, 'id' =>$listaArticulos[$i]->getId()) ));
       }
 
-      $formularioIngreso->add('save', SubmitType::class, array('label' => 'Agregar a la orden', 'attr' => array('disabled' => $act) ));
+
       $formularioIngreso = $formularioIngreso->getForm();
 
       $formularioIngreso = $formularioIngreso -> handleRequest($request);
 
       /* *************** RESPUESTA DE "NUEVA ORDEN (LINEAS)" ******************* */
 
-      if ($formularioIngreso->isSubmitted() && $formularioIngreso->isValid() && $act == false) {
+      if ($formularioIngreso->isSubmitted() && $formularioIngreso->isValid() ) {
+
+          $em = $this -> getDoctrine() -> getManager();
 
           $respuesta = $formularioIngreso->getData();
 
-          $arRep = $em -> getRepository(Articulos::class) -> findAll();
+          $pressString=$formularioIngreso ->getClickedButton()->getName();
 
-          $cantArt = count($arRep);
-
-          for($f=0; $f < $cantArt; $f++){
+          $pressREG = intval(preg_replace('/[^0-9]+/', '', $pressString));///////obtener nros
 
 
-            $ilRep = $em -> getRepository(ILineas::class);
-
-              $iLineas = new ILineas();
 
 
-              $eLineas->setOrden($orden);
-              $eLineas->setIdArticulo($respuesta["idArticulo".$f]);
-              $eLineas->setCantidad($respuesta["cantidad".$f]);
-              $eLineas->setArticulo($respuesta["articulo".$f]);
-              $eLineas->setMarca($respuesta["marca".$f]);
-              $eLineas->setModelo($respuesta["modelo".$f]);
-              $eLineas->setFamilia($respuesta["familia".$f]);
+          $elineas = new ELineas();
 
-              $idArt = $respuesta["idArticulo".$f];
+          $elineas->setOrden($orden);
+          $elineas->setIdArticulo($respuesta["idArticulo".$pressREG]);
+          $elineas->setCantidad($respuesta["cantidad".$pressREG]);
+          $elineas->setArticulo($respuesta["articulo".$pressREG]);
+          $elineas->setMarca($respuesta["marca".$pressREG]);
+          $elineas->setModelo($respuesta["modelo".$pressREG]);
+          $elineas->setNroSerie($respuesta["nroSerie".$pressREG]);
+          $elineas->setFamilia($respuesta["familia".$pressREG]);
 
-              $query = $em -> createQuery("SELECT u FROM App\Entity\ELineas u WHERE u.orden = '$orden' and u.idArticulo= '$idArt' ");
-
-              $rtaDQL = $query->getResult();
-
-              $existencia = count($rtaDQL);
-
-              if($existencia == 0){
-
-                      if($respuesta["cantidad".$f] != 0){
-
-                          $em->persist($eLineas);
-                          $em->flush();
-                      }
-              }
-              else{
-                      if($respuesta["cantidad".$f] != 0){
-
-                          $elRep2 = $em -> getRepository(ELineas::class)->find($rtaDQL[0] -> getId());
-
-                          $elRep2 -> setCantidad($respuesta["cantidad".$f]);
-                          $em->flush();
-                      }
-              }
-
-
-          }
-
+          $em -> persist($elineas);
+          $em -> flush();
 
           return $this->redirect("/entr_linea/{$orden}");
 
@@ -185,10 +157,8 @@ class EntregaController extends AbstractController
 
       $editarCabecera ->add('nombreForm', HiddenType::class,array('attr' => array('value' => 'editarCabecera')));
       $editarCabecera ->add('fecha', DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd','attr' => array("value" => date("Y-m-d") )));
-      $editarCabecera ->add('proveedor', TextType::class, array('attr' => array('value'=> $cab->getProveedor())) );
-      $editarCabecera ->add('receptor', TextType::class, array('attr' => array('value'=> $cab->getReceptor())));
-      $editarCabecera ->add('remito', TextType::class, array('attr' => array('value'=> $cab->getRemito())));
-      $editarCabecera ->add('suministro', TextType::class, array('attr' => array('value'=> $cab->getSuministro())));
+      $editarCabecera ->add('destino', TextType::class, array('attr' => array('value'=> $cab->getDestino())) );
+      $editarCabecera ->add('recibe', TextType::class, array('attr' => array('value'=> $cab->getRecibe())));
 
       $editarCabecera ->add('save', SubmitType::class, array('label' => 'Siguiente', 'attr' => array("disabled" => $act)  ));
       $editarCabecera = $editarCabecera ->getForm();
@@ -206,10 +176,8 @@ class EntregaController extends AbstractController
               $ECabecera = $eManager->getRepository(ECabecera::class)->find($orden);
 
               $ECabecera -> setFecha($rta["fecha"]);
-              $ECabecera -> setProveedor($rta["proveedor"]);
-              $ECabecera -> setReceptor($rta["receptor"]);
-              $ECabecera -> setRemito($rta["remito"]);
-              $ECabecera -> setSuministro($rta["suministro"]);
+              $ECabecera -> setDestino($rta["destino"]);
+              $ECabecera -> setRecibe($rta["recibe"]);
 
               $eManager->persist($ECabecera);
               $eManager->flush();
@@ -233,13 +201,10 @@ class EntregaController extends AbstractController
 
 
       foreach ($lineas as $a ) {
-
-
           $formPedido->add($a->getId(), SubmitType::class, array('label' => 'Eliminar línea', 'attr' => array("disabled" => $act)));
       }
 
       $formPedido = $formPedido->getForm();
-
       $formPedido = $formPedido-> handleRequest($request);
 
 
@@ -263,9 +228,8 @@ class EntregaController extends AbstractController
           $em->flush();
 
           $activar = "quitar";
-          //return $this->redirect("/ingr_linea/{$orden}/quitar");
+          return $this->redirect("/entr_linea/{$orden}");
       }
-
 
       /* *********************************************************************** */
       /* ************ FORMULARIO CONFIRMAR ORDEN ******************************* */
@@ -298,7 +262,7 @@ class EntregaController extends AbstractController
 
 
 
-          return $this->redirect("control");
+          return $this->redirect("/ordenEntrega");
       }
 
 
@@ -311,7 +275,7 @@ class EntregaController extends AbstractController
           'formularioOrden' => $formularioOrden -> createView(),
           'listaArticulo' => $listaArticulos,
           'lineas' => $lineas,
-          'activar' => $activar,
+          'activar' => $act,
           'orden' => $orden,
           'cabecera' => $cabe,
 

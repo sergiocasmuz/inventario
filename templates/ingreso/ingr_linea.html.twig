@@ -147,8 +147,8 @@
 
                         <!-------------------------- titulos de tabs ---------------------->
                         <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link active" id="nav-vistaPrevia-tab" data-toggle="tab" href="#nav-vistaPrevia" role="tab" aria-controls="nav-vistaPrevia" aria-selected="true">Agregar linea</a>
-                            <a class="nav-item nav-link" id="nav-cabecera-tab" data-toggle="tab" href="#nav-cabecera" role="tab" aria-controls="nav-cabecera" aria-selected="false">lineas</a>
+                            <a class="nav-item nav-link active" id="nav-vistaPrevia-tab" data-toggle="tab" href="#nav-vistaPrevia" role="tab" aria-controls="nav-vistaPrevia" aria-selected="true">Artículos</a>
+                            <a class="nav-item nav-link" id="nav-cabecera-tab" data-toggle="tab" href="#nav-cabecera" role="tab" aria-controls="nav-cabecera" aria-selected="false">Agregar artículos</a>
                             <a class="nav-item nav-link" id="nav-editarList-tab" data-toggle="tab" href="#nav-editarList" role="tab" aria-controls="nav-editarList" aria-selected="false">Modificar lista cabecera</a>
                         </div>
                     </nav>
@@ -158,86 +158,85 @@
 
                         <!-------------------------- tab 1 ---------------------->
                         <div class="tab-pane fade show active" id="nav-vistaPrevia" role="tabpanel" aria-labelledby="nav-vistaPrevia-tab">
+                          <div class="alert alert-info" role="alert">
+                              Quitar
+                          </div>
 
 
-                            <div class="alert alert-info" role="alert">
-                                Lista de los artículos a solicitar
-                                <a class="btn btn-info" href="/gestionar/articulos" role="button" style="float:right; clear:right;">Agregar elementos a la lista</a>
 
-                                <br>
-                                <br>
-                            </div>
+                          <table class="table">
+                              <tr>
+                                  <th>Artículo</th>
+                                  <th>Marca</th>
+                                  <th>Modelo</th>
+                                  <th>Cantidad</th>
+                              </tr>
+                              {{ form_start(formPedido) }}
+
+                              {% for linea in lineas %}
+
+                                  <tr>
+                                      <td>{{ linea.articulo }}</td>
+                                      <td>{{ linea.marca }}</td>
+                                      <td>{{ linea.modelo }}</td>
+                                      <td>{{ linea.cantidad }}</td>
+                                      <td>{{ form_row(formPedido[linea.id]) }}</td>
+                                  </tr>
+
+                              {% endfor %}
 
 
-                            {{ form_start(formularioIngreso) }}
-                            <table class="table">
-                                <tr>
-                                    <th>Artículo</th>
-                                    <th>Familia</th>
-                                    <th>Marca</th>
-                                    <th>Modelo</th>
-                                    <th>Cantidad</th>
-                                    <th style="width:100px;"></th>
-                                </tr>
+                          </table>{{ form_end(formPedido) }}
 
 
-                                {% for datos in listaArticulo %}
-                                    <tr>
-                                        <td>{{ datos.articulo }}</td>
-                                        <td>{{ datos.familia }}</td>
-                                        <td>{{ datos.marca }}</td>
-                                        <td>{{ datos.modelo }}</td>
-                                        <td style="width:30px;">
-                                            {{ form_widget(formularioIngreso["cantidad"~loop.index0] ) }}
-                                            {{ form_widget(formularioIngreso["articulo"~loop.index0],{'attr':{'type':'hidden'} }) }}
-                                            {{ form_widget(formularioIngreso["marca"~loop.index0]) }}
-                                            {{ form_widget(formularioIngreso["modelo"~loop.index0]) }}
-                                            {{ form_widget(formularioIngreso["idArticulo"~loop.index0]) }}
-                                            {{ form_widget(formularioIngreso["familia"~loop.index0]) }}
-                                        </td>
-                                      <!-- <td><img src="/imagenes/codRojo.png"></td>  -->
-                                    </tr>
-                                {% endfor %}
-                            </table>
-
-                            {{ form_end(formularioIngreso) }}
                         </div>
 
                         <!-------------------------- tab 2 ---------------------->
                         <div class="tab-pane fade" id="nav-cabecera" role="tabpanel" aria-labelledby="nav-cabecera-tab">
 
-                            <div class="alert alert-info" role="alert">
-                                Quitar
-                            </div>
 
 
+                          <div class="alert alert-info" role="alert">
+                              Lista de los artículos a solicitar
+                              <a class="btn btn-info" href="/gestionar/articulos" role="button" style="float:right; clear:right;">Agregar elementos a la lista</a>
 
-                            <table class="table">
-                                <tr>
-                                    <th>Artículo</th>
-                                    <th>Marca</th>
-                                    <th>Modelo</th>
-                                    <th>Cantidad</th>
-                                </tr>
-                                {{ form_start(formPedido) }}
-
-                                {% for linea in lineas %}
-
-                                    <tr>
-                                        <td>{{ linea.articulo }}</td>
-                                        <td>{{ linea.marca }}</td>
-                                        <td>{{ linea.modelo }}</td>
-                                        <td>{{ linea.cantidad }}</td>
-                                        <td>{{ form_row(formPedido[linea.id]) }}</td>
-                                    </tr>
-
-                                {% endfor %}
+                              <br>
+                              <br>
+                          </div>
 
 
-                            </table>{{ form_end(formPedido) }}
+                          {{ form_start(formularioIngreso) }}
+                          <table class="table">
+                              <tr>
+                                  <th>Artículo</th>
+                                  <th>Familia</th>
+                                  <th>Marca</th>
+                                  <th>Modelo</th>
+                                  <th>Cantidad</th>
+                                  <th style="width:100px;"></th>
+                              </tr>
 
 
+                              {% for datos in listaArticulo %}
+                                  <tr>
+                                      <td>{{ datos.articulo }}</td>
+                                      <td>{{ datos.familia }}</td>
+                                      <td>{{ datos.marca }}</td>
+                                      <td>{{ datos.modelo }}</td>
+                                      <td style="width:30px;">
+                                          {{ form_widget(formularioIngreso["cantidad"~loop.index0] ) }}
+                                          {{ form_widget(formularioIngreso["articulo"~loop.index0],{'attr':{'type':'hidden'} }) }}
+                                          {{ form_widget(formularioIngreso["marca"~loop.index0]) }}
+                                          {{ form_widget(formularioIngreso["modelo"~loop.index0]) }}
+                                          {{ form_widget(formularioIngreso["idArticulo"~loop.index0]) }}
+                                          {{ form_widget(formularioIngreso["familia"~loop.index0]) }}
+                                      </td>
+                                    <!-- <td><img src="/imagenes/codRojo.png"></td>  -->
+                                  </tr>
+                              {% endfor %}
+                          </table>
 
+                          {{ form_end(formularioIngreso) }}
 
 
 

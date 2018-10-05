@@ -29,12 +29,9 @@ class StockController extends AbstractController
 
         $art = $repository->getRepository(stock::class)->findAll();
 
-
         return $this->render('stock/stock.html.twig', ['art' => $art]);
 
-
 }
-
 
 	/**
 	 * @Route("/stock/{orden}", name="stock_orden")
@@ -47,16 +44,12 @@ class StockController extends AbstractController
 
 			$art = $repository->getRepository(stock::class) ->findBy(array(), array( $orden => 'DESC' )) ;
 
-
-
 				return $this->render('stock/stock.html.twig', ['art' => $art]);
 			}
-
 
 			/**
 			 * @Route("/stock/buscar/{buscar}", name="stock_filtro")
 			 */
-
 
 			public function list_buscar($buscar)
 				{

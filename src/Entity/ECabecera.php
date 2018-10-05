@@ -41,6 +41,11 @@ class ECabecera
         return $this->id;
     }
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $nroTicket;
+
 
 
     public function getFecha(): ?\DateTimeInterface
@@ -89,6 +94,19 @@ class ECabecera
     public function setEstado(string $estado): self
     {
         $this->estado = $estado;
+
+        return $this;
+    }
+
+
+    public function getNroTicket(): ?int
+    {
+        return $this->nroTicket;
+    }
+
+    public function setNroTicket(string $nroTicket): self
+    {
+        $this->nroTicket = $nroTicket;
 
         return $this;
     }

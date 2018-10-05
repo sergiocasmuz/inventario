@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method ELineas|null find($id, $lockMode = null, $lockVersion = null)
  * @method ELineas|null findOneBy(array $criteria, array $orderBy = null)
  * @method ELineas[]    findAll()
+ * @method ELineas[]    findLineas($idArt, $orden)
  * @method ELineas[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ELineasRepository extends ServiceEntityRepository
@@ -19,22 +20,17 @@ class ELineasRepository extends ServiceEntityRepository
         parent::__construct($registry, ELineas::class);
     }
 
-//    /**
-//     * @return ELineas[] Returns an array of ELineas objects
-//     */
-    /*
-    public function findByExampleField($value)
+    public function findLineas($idArt, $orden)
     {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.idArticulo = :idArt and i.orden = :orden')
+            ->setParameter('idArt', $idArt)
+            ->setParameter('orden', $orden)
+            ->orderBy('i.id', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?ELineas
