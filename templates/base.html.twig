@@ -15,6 +15,42 @@
             {% block head_css %}
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
             {% endblock %}
+
+
+
+        <style>
+        .boxCuadro{margin-left: 35px;
+                    border:2px solid #fff;
+                    -webkit-transition: border 1.5s;}
+
+        .boxCuadro:hover{border:2px solid #3a7999;
+                        }
+
+        .boxCuadro:hover .cuadradoTexto{
+                                      background: rgba(0,0,0,0);
+                                      color: #3a7999;
+                                    }
+
+        .cuadrado{
+                  width:45px;
+                  height:45px;
+
+                }
+
+        .cuadrado img{padding:10px 0px 0px 10px;}
+
+        .cuadradoTexto{height:45px;
+                      width:110px;
+                    background:#fed0d0;
+                  -webkit-transition: background 1s;}
+
+        .cuadradoTexto div{
+                            text-align: center;
+                            padding-left:25px;
+                            padding-right:25px;
+                          }
+        </style>
+
         {% endblock %}
 
     </head>
