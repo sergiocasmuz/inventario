@@ -78,39 +78,26 @@ class EntregaController extends AbstractController
       $listaArticulos = $em -> getRepository(Articulos::class)->findAll();
       $formularioIngreso = $this->createFormBuilder();
 
-     $articulosTotales = 0;
-     $articulosTotales = count($listaArticulos);
 
-      for($i=0; $i < $articulosTotales; $i++) {
 
-        $stock = $em -> getRepository(stock::class) -> findByIdArticulo($listaArticulos[$i]->getId());//////rescatar el stock disponible
-        $disponible = $stock[0] -> getCantidad();
 
-            if($ecabe->getEstado() == 0 ){$act = false; }else{ $act = true;}  ///////corrobora el estado  2 = aprobado
-            if($disponible == 0){ $label= "sin stock";$act = true; }else{$label="Agregar a la orden";}///// corrobora el stock
+          $formularioIngreso->add('idArticulo', TextType::class);
 
-          $formularioIngreso->add('idArticulo'.$i, HiddenType::class,
-              array('attr' => array('value' => $listaArticulos[$i]->getId() )));
-
-          $formularioIngreso->add('cantidad'.$i, HiddenType::class,
+          $formularioIngreso->add('cantidad', TextType::class,
               array('attr' => array('value' => 1, 'min' =>0 , 'max' => 1) ) );
 
-          $formularioIngreso->add('articulo'.$i, HiddenType::class,
-              array('attr' => array('value' => $listaArticulos[$i]->getArticulo() )));
+          $formularioIngreso->add('articulo', TextType::class);
 
-          $formularioIngreso->add('marca'.$i, HiddenType::class,
-              array('attr' => array('value' => $listaArticulos[$i]->getMarca() )));
+          $formularioIngreso->add('marca', TextType::class);
 
-          $formularioIngreso->add('modelo'.$i, HiddenType::class,
-              array('attr' => array('value' => $listaArticulos[$i]->getModelo() )));
+          $formularioIngreso->add('modelo', TextType::class);
 
-          $formularioIngreso->add('familia'.$i, HiddenType::class,
-              array('attr' => array('value' => $listaArticulos[$i]->getFamilia() )));
+          $formularioIngreso->add('familia', TextType::class);
 
-          $formularioIngreso->add('nroSerie'.$i, TextType::class,  array('attr' => array('value' => '0','class' =>"nroSerie",'disabled' => $act)));
+          $formularioIngreso->add('nroSerie', TextType::class, array('attr' =>array("class" => 'nroSerie' )));
 
-          $formularioIngreso->add('save'.$i, SubmitType::class, array('label' => $label, 'attr' => array('disabled' => $act, 'id' =>$listaArticulos[$i]->getId(), 'class'=>"btn" ) ));
-      }
+          $formularioIngreso->add('save', SubmitType::class);
+
 
 
       $formularioIngreso = $formularioIngreso->getForm();
@@ -157,6 +144,9 @@ class EntregaController extends AbstractController
 
 
       $cab = $em -> getRepository(ECabecera::class) -> find($orden);
+
+      if($cab->getEstado() == 0 ){$act = false; }else{ $act = true;}  ///////corrobora el estado  2 = aprobado
+
 
       $editarCabecera = $this->createFormBuilder();
 

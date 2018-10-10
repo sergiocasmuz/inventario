@@ -21,7 +21,7 @@
           /*
           envio del formulario con enter
           */
-          $('.nroSerie').keyup(function(e) {
+          $('.serie').keyup(function(e) {
 
           //  consolelog(e.keyCode );
 
@@ -29,10 +29,23 @@
 
                 var id = $(this).attr("id");
                 var numero = id.replace(/\D/g,""); /////elimina cualquier caracter no numerico
-                
-                var formulario = "#form_save"+numero;
+                var valor = $("#txt_"+numero).val();
 
-                $(formulario).click();
+                var idArt = $("#idArt_"+numero).text();
+                var art = $("#art_"+numero).text();
+                var mar = $("#mar_"+numero).text();
+                var mod = $("#mod_"+numero).text();
+                var fam = $("#fam_"+numero).text();
+
+                var formulario = "#btn_"+numero;
+                $(".nroSerie").val(valor);
+                $("#form_idArticulo").val(idArt);
+                $("#form_articulo").val(art);
+                $("#form_marca").val(mar);
+                $("#form_modelo").val(mod);
+                $("#form_familia").val(fam);
+
+                $(form_save).click();
 
                 //return false;
               }
@@ -44,6 +57,10 @@
 
 
     </script>
+
+    {{ form_start(formularioIngreso) }}
+    {{  form_widget(formularioIngreso)}}
+    {{ form_end(formularioIngreso) }}
 
     <br>
 
@@ -223,9 +240,10 @@
                               <br>
                             </div>
 
-                            {{ form_start(formularioIngreso) }}
+
                             <table class="table">
                                 <tr>
+                                    <th>#</th>
                                     <th>Artículo</th>
                                     <th>Familia</th>
                                     <th>Marca</th>
@@ -236,27 +254,25 @@
 
                                 {% for datos in listaArticulo %}
                                     <tr>
-                                        <td>{{ datos.articulo }}</td>
-                                        <td>{{ datos.familia }}</td>
-                                        <td>{{ datos.marca }}</td>
-                                        <td>{{ datos.modelo }}</td>
+                                        <td id="idArt_{{loop.index0}}"><b>{{ datos.id }}</b></td>
+                                        <td id="art_{{loop.index0}}">{{ datos.articulo }}</td>
+                                        <td id="fam_{{loop.index0}}">{{ datos.familia }}</td>
+                                        <td id="mar_{{loop.index0}}">{{ datos.marca }}</td>
+                                        <td id="mod_{{loop.index0}}">{{ datos.modelo }}</td>
                                         <td style="width:150px;">
-                                            {{ form_widget(formularioIngreso["cantidad"~loop.index0] ) }}
-                                            {{ form_widget(formularioIngreso["articulo"~loop.index0],{'attr':{'type':'hidden'} }) }}
-                                            {{ form_widget(formularioIngreso["marca"~loop.index0]) }}
-                                            {{ form_widget(formularioIngreso["modelo"~loop.index0]) }}
-                                            {{ form_widget(formularioIngreso["idArticulo"~loop.index0]) }}
-                                            {{ form_widget(formularioIngreso["familia"~loop.index0]) }}
-                                            {{ form_widget(formularioIngreso["nroSerie"~loop.index0]) }}
+
+
+                                            <input type="text" id="txt_{{loop.index0}}" class="serie" >
                                         </td>
                                         <td>
-                                          {{ form_widget(formularioIngreso["save"~loop.index0]) }}
+                                          <button id="btn_{{loop.index0}}" class="boton">click!</button>
                                         </td>
+
                                       <!-- <td><img src="/imagenes/codRojo.png"></td>  -->
                                     </tr>
                                 {% endfor %}
                             </table>
-                            {{ form_end(formularioIngreso) }}
+
                         </div>
 
                         <!-------------------------- tab 3 ---------------------->
