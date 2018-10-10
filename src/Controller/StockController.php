@@ -29,6 +29,11 @@ class StockController extends AbstractController
 
         $art = $repository->getRepository(stock::class)->findAll();
 
+
+				//$edificios = api::get('edificios');
+
+        //return $this->render('stock/stock.html.twig', ['art' => $art, 'edificios' => $edificios]);
+
         return $this->render('stock/stock.html.twig', ['art' => $art]);
 
 }

@@ -8,10 +8,41 @@
 
 
     <script>
-        $(document).ready(function(){
+
+    $(document).ready(function() {
 
 
-        });
+
+
+
+
+
+
+          /*
+          envio del formulario con enter
+          */
+          $('.nroSerie').keyup(function(e) {
+
+          //  consolelog(e.keyCode );
+
+              if(e.keyCode == 13) {
+
+                var id = $(this).attr("id");
+                var numero = id.replace(/\D/g,""); /////elimina cualquier caracter no numerico
+                
+                var formulario = "#form_save"+numero;
+
+                $(formulario).click();
+
+                //return false;
+              }
+          });
+
+
+          });
+
+
+
     </script>
 
     <br>
@@ -183,8 +214,6 @@
 
                         <!-------------------------- tab 2 ---------------------->
                         <div class="tab-pane fade" id="nav-cabecera" role="tabpanel" aria-labelledby="nav-cabecera-tab">
-
-
 
 
 

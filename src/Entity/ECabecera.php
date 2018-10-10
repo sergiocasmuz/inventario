@@ -34,6 +34,11 @@ class ECabecera
     /**
      * @ORM\Column(type="integer")
      */
+    private $legajo;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
     private $estado;
 
     public function getId(): ?int
@@ -107,6 +112,19 @@ class ECabecera
     public function setNroTicket(string $nroTicket): self
     {
         $this->nroTicket = $nroTicket;
+
+        return $this;
+    }
+
+
+    public function getLegajo(): ?int
+    {
+        return $this->legajo;
+    }
+
+    public function setLegajo(string $legajo): self
+    {
+        $this->legajo = $legajo;
 
         return $this;
     }

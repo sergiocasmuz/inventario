@@ -1,9 +1,5 @@
 {% extends 'base.html.twig' %}
 
-
-{% block title %}Hello {{ controller_name }}!{% endblock %}
-
-
 {% set conProceso = 0 %}
 {% set conPendiente = 0 %}
 {% set conAprobado = 0  %}
@@ -36,11 +32,7 @@
       {% endif %}
 {% endfor %}
 
-
-
 {% block body %}
-
-
 
     <script>
         $(document).ready(function(){
@@ -49,6 +41,7 @@
                 var a = $(this).attr('id');
                 window.location.href = "/entr_linea/"+a+"";
             })
+
         });
     </script>
 
@@ -69,45 +62,11 @@
         tr:hover .detalle{ display:block; }
         tr:hover .imp{ display:block; }
 
-
-
-        .boxCuadro{margin-left: 35px;
-                    border:2px solid #fff;
-                    -webkit-transition: border 1.5s;}
-
-        .boxCuadro:hover{border:2px solid #3a7999;
-                        }
-
-        .boxCuadro:hover .cuadradoTexto{
-                                      background: rgba(0,0,0,0);
-                                      color: #3a7999;
-                                    }
-
-        .cuadrado{
-                  width:45px;
-                  height:45px;
-
-                }
-
-        .cuadrado img{padding:10px 0px 0px 10px;}
-
-        .cuadradoTexto{height:45px;
-                      width:110px;
-                    background:#fed0d0;
-                  -webkit-transition: background 1s;}
-
-        .cuadradoTexto div{
-                            text-align: center;
-                            padding-left:25px;
-                            padding-right:25px;
-                          }
-
-
-
-
-
     </style>
+
  <div class="container  ">
+
+
      <br>
      <!-- ./Tabs -->
      <section id="tabs">
@@ -142,7 +101,7 @@
                          <div class="alert alert-info" role="alert">
                              <div style="float:left; margin-right:50px;">Pendientes <span class="badge badge-danger">{{ conPendiente }}  </span></div>
                             <div></div>
-                            <div style="">En proceso <span class="badge badge-secondary">{{ conProceso }} </span></div>
+                             <div style="">En proceso <span class="badge badge-secondary">{{ conProceso }} </span></div>
                              <div style="">Rechazado <span class="badge badge-secondary">{{ conRechazado }} </span></div>
                              <div style="">En tránsito <span class="badge badge-secondary">{{ conTransito }} </span></div>
                              <div style="">Finalizado <span class="badge badge-secondary">{{ conFinalizado }} </span></div>
@@ -154,7 +113,7 @@
 
                      <!-------------------------- tab 2 ---------------------->
                      <div class="tab-pane fade show active" id="nav-envio" role="tabpanel" aria-labelledby="nav-envio-tab">
-  <br>
+                       <br>
                           <section class="row">
 
                             <!---------------------------------->

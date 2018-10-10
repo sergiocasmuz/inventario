@@ -75,7 +75,7 @@ foreach ($elines as $line){
 
                 case 1: ///////////PENDIENTE
                         $formularioEstado -> add("btnA".$a->getId(), SubmitType::class,
-                        array("label" => 'Aceptar',
+                        array("label" => 'Autorizar',
                         'attr' => array('class' => 'btn-info' )) );
 
 
@@ -87,7 +87,7 @@ foreach ($elines as $line){
 
                 case 2://///////////////////ACEPTADO
                             $formularioEstado -> add("btnA".$a->getId(), SubmitType::class,
-                            array("label" => 'Entregar',
+                            array("label" => 'Iniciar entrega',
                             'attr' => array('class' => ' btn-info' )) );
 
                             $formularioEstado -> add("btnB".$a->getId(), HiddenType::class,
@@ -108,8 +108,11 @@ foreach ($elines as $line){
 
 
                     case 4://///// ////////////////en tránsito
+
+
+
                                 $formularioEstado -> add("btnA".$a->getId(), SubmitType::class,
-                                array("label" => 'Finalizado',
+                                array("label" => 'Confirmar entrega',
                                 'attr' => array('class' => ' btn-success' )) );
 
                                 $formularioEstado -> add("btnB".$a->getId(), SubmitType::class,
@@ -150,16 +153,6 @@ foreach ($elines as $line){
             if($exRegular == 1){$bot="btnA";} else{$bot="btnB";} //////variable btn
 
             $orden = intval(preg_replace('/[^0-9]+/', '', $cadena));
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-            print_r($bot);
-            echo "<br>".$orden;
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
             $eCabe = $emLines -> getRepository(ECabecera::class)->find($orden);
@@ -213,9 +206,11 @@ foreach ($elines as $line){
 
                   case 4:
                         if($bot=="btnA"){
-                                          restarStock($orden,$em);
-                                          $eCabe -> setEstado(5); ///////finalizar
-                                          $emLines->flush();
+
+                                          return $this->redirect("/validar/orden/entrega/".$orden);
+                                          //restarStock($orden,$em);
+                                          //$eCabe -> setEstado(5); ///////finalizar
+                                          //$emLines->flush();
                                         }
 
                         elseif($bot=="btnB"){
@@ -241,9 +236,11 @@ foreach ($elines as $line){
 
         }
 
+
+
+
         return $this->render('ordenes/entrega.html.twig', [
             'ordenes' => $ecabecera,
-            'lineas' => $elineas,
             'formularioEstado' => $formularioEstado -> createView()
         ]);
     }

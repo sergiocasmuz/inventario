@@ -1,0 +1,27 @@
+{% extends 'validar.html.twig' %}
+
+{% block body %}
+
+{% block container %}
+
+<style>
+    .container{
+              width: 600px;
+              margin-top:50px;}
+</style>
+
+  <div class="jumbotron">
+      <h1>Finalizar orden de entrega</h1>
+  </div>
+
+  <section class="container">
+    {{ form_start(editarCabecera) }}
+    {{ form_widget(editarCabecera) }}
+    {{ form_end(editarCabecera) }}
+
+    <button class="btn btn-primary">Cancelar</button>
+  </section>
+{% endblock %}
+
+
+{% endblock %}

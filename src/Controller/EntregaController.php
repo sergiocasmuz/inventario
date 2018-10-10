@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,10 +28,11 @@ class EntregaController extends AbstractController
       $em = $this -> getDoctrine() -> getManager();
 
         $formularioCabecera = $this->createFormBuilder()
-            ->add('fecha', DateType::class)
+            ->add('fecha', DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd','attr' => array("value" => date("Y-m-d") )))
             ->add('nroDetTicket', IntegerType::class)
             ->add('dependenciaDeDestino', TextType::class)
-            ->add('recibe', TextType::class)
+            ->add('recibe', HiddenType::class)
+            ->add('legajo', HiddenType::class)
             ->add('save', SubmitType::class, array('label' => 'Siguiente'))
             ->getForm();
 
@@ -45,7 +47,8 @@ class EntregaController extends AbstractController
             $formCabe -> setFecha($cabe["fecha"]);
             $formCabe -> setNroTicket($cabe["nroDetTicket"]);
             $formCabe -> setDestino($cabe["dependenciaDeDestino"]);
-            $formCabe -> setRecibe($cabe["recibe"]);
+            $formCabe -> setRecibe("...");
+            $formCabe -> setLegajo(0);
             $formCabe -> setEstado(0);
 
             $em -> persist($formCabe);
@@ -83,8 +86,8 @@ class EntregaController extends AbstractController
         $stock = $em -> getRepository(stock::class) -> findByIdArticulo($listaArticulos[$i]->getId());//////rescatar el stock disponible
         $disponible = $stock[0] -> getCantidad();
 
-                    if($ecabe->getEstado() == 0 ){$act = false; }else{ $act = true;}  ///////corrobora el estado  2 = aprobado
-                    if($disponible == 0){ $label= "sin stock";$act = true; }else{$label="Agregar a la orden";}///// corrobora el stock
+            if($ecabe->getEstado() == 0 ){$act = false; }else{ $act = true;}  ///////corrobora el estado  2 = aprobado
+            if($disponible == 0){ $label= "sin stock";$act = true; }else{$label="Agregar a la orden";}///// corrobora el stock
 
           $formularioIngreso->add('idArticulo'.$i, HiddenType::class,
               array('attr' => array('value' => $listaArticulos[$i]->getId() )));
@@ -104,9 +107,9 @@ class EntregaController extends AbstractController
           $formularioIngreso->add('familia'.$i, HiddenType::class,
               array('attr' => array('value' => $listaArticulos[$i]->getFamilia() )));
 
-          $formularioIngreso->add('nroSerie'.$i, TextType::class,  array('attr' => array('value' => 0)));
+          $formularioIngreso->add('nroSerie'.$i, TextType::class,  array('attr' => array('value' => '0','class' =>"nroSerie",'disabled' => $act)));
 
-          $formularioIngreso->add('save'.$i, SubmitType::class, array('label' => $label, 'attr' => array('disabled' => $act, 'id' =>$listaArticulos[$i]->getId()) ));
+          $formularioIngreso->add('save'.$i, SubmitType::class, array('label' => $label, 'attr' => array('disabled' => $act, 'id' =>$listaArticulos[$i]->getId(), 'class'=>"btn" ) ));
       }
 
 
@@ -127,9 +130,9 @@ class EntregaController extends AbstractController
           $pressREG = intval(preg_replace('/[^0-9]+/', '', $pressString));///////obtener nros
 
 
-
-
           $elineas = new ELineas();
+
+          if($respuesta["nroSerie".$pressREG] != 0){
 
           $elineas->setOrden($orden);
           $elineas->setIdArticulo($respuesta["idArticulo".$pressREG]);
@@ -139,6 +142,8 @@ class EntregaController extends AbstractController
           $elineas->setModelo($respuesta["modelo".$pressREG]);
           $elineas->setNroSerie($respuesta["nroSerie".$pressREG]);
           $elineas->setFamilia($respuesta["familia".$pressREG]);
+
+        }
 
           $em -> persist($elineas);
           $em -> flush();
@@ -159,6 +164,7 @@ class EntregaController extends AbstractController
       $editarCabecera ->add('fecha', DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd','attr' => array("value" => date("Y-m-d") )));
       $editarCabecera ->add('destino', TextType::class, array('attr' => array('value'=> $cab->getDestino())) );
       $editarCabecera ->add('recibe', TextType::class, array('attr' => array('value'=> $cab->getRecibe())));
+      $editarCabecera ->add('legajo', TextType::class, array('attr' => array('value'=> $cab->getLegajo())));
 
       $editarCabecera ->add('save', SubmitType::class, array('label' => 'Siguiente', 'attr' => array("disabled" => $act)  ));
       $editarCabecera = $editarCabecera ->getForm();
@@ -178,6 +184,7 @@ class EntregaController extends AbstractController
               $ECabecera -> setFecha($rta["fecha"]);
               $ECabecera -> setDestino($rta["destino"]);
               $ECabecera -> setRecibe($rta["recibe"]);
+              $ECabecera -> setLegajo($rta["legajo"]);
 
               $eManager->persist($ECabecera);
               $eManager->flush();
