@@ -31,6 +31,13 @@
     })
 
 
+    $("#circulo").mouseenter(function(){
+      $("#btns").css("opacity","1");
+
+        $("#btns").mouseleave(function(){
+              $("#btns").css("opacity","0");
+            });
+    });
 
   })
 
@@ -70,7 +77,9 @@ body{background:rgb(71, 88, 87) ;}
 
 
 
-  #btns{   position: fixed;
+  #btns{
+
+          position: fixed;
           z-index: 1;
           float: left;
           margin-top:15%;
@@ -81,9 +90,25 @@ body{background:rgb(71, 88, 87) ;}
           text-align: center;
           padding-top: 50px;
           color:#fff;
-          opacity: .8;
+          opacity: 0;
           border-radius:10px;
+          transition: opacity .5s;
           }
+
+      #circulo{
+              position: absolute;
+              margin-top: 20%;
+              margin-left:5px;
+              background:#000;
+              width:50px;
+              height:50px;
+              border-radius:50px;
+              padding: 9px;
+              opacity: .5;
+      }
+
+
+
 
   #btnImprimir, #btnCerrar{ width: 90px;}
 
@@ -136,6 +161,11 @@ body{background:rgb(71, 88, 87) ;}
 {% elseif mesT == 12 %}
   {% set mes = "diciembre" %}
 {% endif %}
+
+
+<section id="circulo">
+  <img src="/imagenes/impresoraB.png">
+</section>
 
 <section id="btns">
   <p>Selecciones una opción</p>
