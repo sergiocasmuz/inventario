@@ -7,20 +7,6 @@
 {% block body %}
 
 
-    <script>
-
-    $(document).ready(function() {
-
-
-          });
-
-
-
-    </script>
-
-
-
-
 
 
 
@@ -224,7 +210,7 @@
 
 
                                           {{ form_start(forms[datos.id]) }}
-                                          <td style="width:150px;">
+                                          <td style="width:260px;">
                                           {{ form_row(forms[datos.id].nroSerie) }}
                                           {{ form_row(forms[datos.id].idArticulo , {'attr': {'value': datos.id}}) }}
                                           {{ form_row(forms[datos.id].orden , {'attr': {'value': orden}}) }}
@@ -232,24 +218,25 @@
                                           {{ form_row(forms[datos.id].marca , {'attr': {'value': datos.marca}}) }}
                                           {{ form_row(forms[datos.id].familia , {'attr': {'value': datos.familia}}) }}
                                           {{ form_row(forms[datos.id].modelo , {'attr': {'value': datos.modelo}}) }}
+                                          {{ form_row(forms[datos.id].save) }}
                                           </td>
 
 
-
-
-
-
-
-
-                                          <td>
-                                            {{ form_row(forms[datos.id].save) }}
-
-                                          </td>
 
                                           {{ form_end(forms[datos.id]) }}
 
 
+                                          <style>
+                                            #elineas_save{float:right;
+                                            width: 120px;
+                                            margin-top:-40px;
+                                          }
 
+                                            #elineas_nroSerie{
+                                                          float: left;
+                                                          width: 100px;
+                                                        }
+                                          </style>
 
                                       <!-- <td><img src="/imagenes/codRojo.png"></td>  -->
                                     </tr>

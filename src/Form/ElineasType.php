@@ -21,9 +21,9 @@ class ElineasType extends AbstractType
             ->add('marca', HiddenType::class)
             ->add('familia', HiddenType::class)
             ->add('modelo', HiddenType::class)
-            ->add('nroSerie', TextType::class)
+            ->add('nroSerie', TextType::class, array('label' => ' '))
             ->add('cantidad', HiddenType::class)
-            ->add('save', SubmitType::class, array('label' => 'Siguiente'  ))
+            ->add('save', SubmitType::class, array('label' => 'Agregar linea'  ))
         ;
     }
 

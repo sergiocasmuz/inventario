@@ -8,6 +8,8 @@
     .container{
               width: 600px;
               margin-top:50px;}
+
+    #form_save{float:right;}
 </style>
 
   <div class="jumbotron">
@@ -19,7 +21,9 @@
     {{ form_widget(editarCabecera) }}
     {{ form_end(editarCabecera) }}
 
-    <button class="btn btn-primary">Cancelar</button>
+    <a href="/ordenEntrega" >
+    <button class="btn btn-danger">Cancelar</button>
+  </a>
   </section>
 {% endblock %}
 

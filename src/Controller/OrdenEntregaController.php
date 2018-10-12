@@ -36,18 +36,8 @@ function borrarOrden($orden,$em){
                         $em -> remove($eCa);
                         $em -> flush();
                         }
-////
-function restarStock($orden,$em){
 
-$elines = $em -> getRepository(ELineas::class)->findByOrden($orden);
-foreach ($elines as $line){
-        $stock = $em -> getRepository(stock::class) -> findByIdArticulo($line->getIdArticulo());
-        $resta = $stock[0]->getCantidad() - $line -> getCantidad();
 
-        $stock[0] -> setCantidad($resta);
-        $em->flush();
-        }
-}
 /***********************fin de funciones*************************/
 
         $elineas = array();
@@ -208,9 +198,7 @@ foreach ($elines as $line){
                         if($bot=="btnA"){
 
                                           return $this->redirect("/validar/orden/entrega/".$orden);
-                                          //restarStock($orden,$em);
-                                          //$eCabe -> setEstado(5); ///////finalizar
-                                          //$emLines->flush();
+
                                         }
 
                         elseif($bot=="btnB"){

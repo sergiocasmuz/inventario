@@ -25,6 +25,19 @@ class ValidarOrdenEntregaController extends AbstractController
     public function index(Request $request, $orden)
     {
 
+/* *************** FUNCION ******************************** */
+      function restarStock($orden,$em){
+
+      $elines = $em -> getRepository(ELineas::class)->findByOrden($orden);
+      foreach ($elines as $line){
+              $stock = $em -> getRepository(stock::class) -> findByIdArticulo($line->getIdArticulo());
+              $resta = ($stock[0]->getCantidad()) - ($line -> getCantidad());
+
+              $stock[0] -> setCantidad($resta);
+              $em->flush();
+              }
+      }
+
       /* *************** FORMULARIO DE CABECERA ******************************** */
       $em = $this -> getDoctrine() -> getManager();
       $cab = $em -> getRepository(ECabecera::class) -> find($orden);
@@ -32,12 +45,12 @@ class ValidarOrdenEntregaController extends AbstractController
       $editarCabecera = $this->createFormBuilder();
 
       $editarCabecera ->add('nombreForm', HiddenType::class,array('attr' => array('value' => 'editarCabecera')));
-      $editarCabecera ->add('fecha', DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd','attr' => array("value" => date("Y-m-d") )));
+      $editarCabecera ->add('fecha', DateType::class,array('widget' => 'single_text', 'format' => 'dd-mm-yyyy','attr' => array("value" => date("d-m-Y") )));
       $editarCabecera ->add('destino', TextType::class, array('attr' => array('value'=> $cab->getDestino())) );
-      $editarCabecera ->add('recibe', TextType::class, array('attr' => array('value'=> $cab->getRecibe())) );
-      $editarCabecera ->add('legajo', TextType::class, array('attr' => array('value'=> $cab->getLegajo())) );
+      $editarCabecera ->add('recibe', TextType::class, array('attr' => array('value'=> '', "placeholder"=>"Obligatorio", "autofocus" => true )) );
+      $editarCabecera ->add('legajo', IntegerType::class, array('attr' => array('value'=> '', "placeholder" => "Obligatorio")) );
 
-      $editarCabecera ->add('save', SubmitType::class, array('label' => 'Siguiente' ));
+      $editarCabecera ->add('save', SubmitType::class, array('label' => 'Siguiente', 'attr' => array('class' => 'btn btn-primary') ));
       $editarCabecera = $editarCabecera ->getForm();
 
       $editarCabecera->handleRequest($request);
@@ -58,22 +71,19 @@ class ValidarOrdenEntregaController extends AbstractController
               $ECabecera -> setLegajo($rta["legajo"]);
               $ECabecera -> setEstado(5); ///////finalizar
 
+              restarStock($orden,$em);
+
               $eManager->persist($ECabecera);
               $eManager->flush();
-
 
               ///////el nro de orden corresponde con el id de la cabecera
               $orden = $ECabecera->getId();
 
               return $this->redirect("/ordenEntrega");
-
       }
 
       $repCabecera = $this->getDoctrine()->getRepository(ECabecera::class);
       $cabe = $repCabecera->find($orden);
-
-
-
 
         return $this->render('validar_orden_entrega/index.html.twig', [
             'editarCabecera' => $editarCabecera ->createView(),
