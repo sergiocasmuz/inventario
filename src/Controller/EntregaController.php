@@ -6,6 +6,8 @@ use App\Entity\Articulos;
 use App\Entity\ECabecera;
 use App\Entity\ELineas;
 use App\Entity\stock;
+use App\Form\ElineasType;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -76,85 +78,60 @@ class EntregaController extends AbstractController
 
       $ecabe = $em -> getRepository(ECabecera::class) -> find($orden);
       $listaArticulos = $em -> getRepository(Articulos::class)->findAll();
-      $formularioIngreso = $this->createFormBuilder();
+
+      $forms = [];
+      foreach ($listaArticulos as $articulo) {
+
+        $form = $this-> createForm(ElineasType::class);
+        $form = $form -> handleRequest($request);
 
 
+        if (   $form->isSubmitted() ) {
 
+          $rtaBTN = $form -> getData();
 
-          $formularioIngreso->add('idArticulo', TextType::class);
-
-          $formularioIngreso->add('cantidad', TextType::class,
-              array('attr' => array('value' => 1, 'min' =>0 , 'max' => 1) ) );
-
-          $formularioIngreso->add('articulo', TextType::class);
-
-          $formularioIngreso->add('marca', TextType::class);
-
-          $formularioIngreso->add('modelo', TextType::class);
-
-          $formularioIngreso->add('familia', TextType::class);
-
-          $formularioIngreso->add('nroSerie', TextType::class, array('attr' =>array("class" => 'nroSerie' )));
-
-          $formularioIngreso->add('save', SubmitType::class);
-
-
-
-      $formularioIngreso = $formularioIngreso->getForm();
-
-      $formularioIngreso = $formularioIngreso -> handleRequest($request);
-
-      /* *************** RESPUESTA DE "NUEVA ORDEN (LINEAS)" ******************* */
-
-      if ($formularioIngreso->isSubmitted() && $formularioIngreso->isValid() ) {
-
-          $em = $this -> getDoctrine() -> getManager();
-
-          $respuesta = $formularioIngreso->getData();
-
-          $pressString=$formularioIngreso ->getClickedButton()->getName();
-
-          $pressREG = intval(preg_replace('/[^0-9]+/', '', $pressString));///////obtener nros
-
+          foreach ($rtaBTN as $key => $value) { $datos[$key] = $value;  }
 
           $elineas = new ELineas();
 
-          if($respuesta["nroSerie".$pressREG] != 0){
-
           $elineas->setOrden($orden);
-          $elineas->setIdArticulo($respuesta["idArticulo".$pressREG]);
-          $elineas->setCantidad($respuesta["cantidad".$pressREG]);
-          $elineas->setArticulo($respuesta["articulo".$pressREG]);
-          $elineas->setMarca($respuesta["marca".$pressREG]);
-          $elineas->setModelo($respuesta["modelo".$pressREG]);
-          $elineas->setNroSerie($respuesta["nroSerie".$pressREG]);
-          $elineas->setFamilia($respuesta["familia".$pressREG]);
-
-        }
+          $elineas->setIdArticulo($datos["idArticulo"]);
+          $elineas->setCantidad(1);
+          $elineas->setArticulo($datos["articulo"]);
+          $elineas->setMarca($datos["marca"]);
+          $elineas->setModelo($datos["modelo"]);
+          $elineas->setNroSerie($datos["nroSerie"]);
+          $elineas->setFamilia($datos["familia"]);
 
           $em -> persist($elineas);
           $em -> flush();
 
           return $this->redirect("/entr_linea/{$orden}");
 
+
+    }
+
+
+        $form = $form -> createView();
+        $forms[$articulo->getId()] = $form;
+
       }
 
 
       /* *************** FORMULARIO DE CABECERA ******************************** */
 
+      $ecabe = $em -> getRepository(ECabecera::class) -> find($orden);
 
-      $cab = $em -> getRepository(ECabecera::class) -> find($orden);
-
-      if($cab->getEstado() == 0 ){$act = false; }else{ $act = true;}  ///////corrobora el estado  2 = aprobado
+      if($ecabe->getEstado() == 0 ){$act = false; }else{ $act = true;}  ///////corrobora el estado  2 = aprobado
 
 
       $editarCabecera = $this->createFormBuilder();
 
       $editarCabecera ->add('nombreForm', HiddenType::class,array('attr' => array('value' => 'editarCabecera')));
       $editarCabecera ->add('fecha', DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd','attr' => array("value" => date("Y-m-d") )));
-      $editarCabecera ->add('destino', TextType::class, array('attr' => array('value'=> $cab->getDestino())) );
-      $editarCabecera ->add('recibe', TextType::class, array('attr' => array('value'=> $cab->getRecibe())));
-      $editarCabecera ->add('legajo', TextType::class, array('attr' => array('value'=> $cab->getLegajo())));
+      $editarCabecera ->add('destino', TextType::class, array('attr' => array('value'=> $ecabe->getDestino())) );
+      $editarCabecera ->add('recibe', TextType::class, array('attr' => array('value'=> $ecabe->getRecibe())));
+      $editarCabecera ->add('legajo', TextType::class, array('attr' => array('value'=> $ecabe->getLegajo())));
 
       $editarCabecera ->add('save', SubmitType::class, array('label' => 'Siguiente', 'attr' => array("disabled" => $act)  ));
       $editarCabecera = $editarCabecera ->getForm();
@@ -266,7 +243,6 @@ class EntregaController extends AbstractController
       $cabe = $em -> getRepository(ECabecera::class)->find($orden);
 
       return $this->render('entrega/entr_linea.html.twig', [
-          'formularioIngreso' => $formularioIngreso->createView(),
           'editarCabecera' => $editarCabecera->createView(),
           'formPedido' => $formPedido->createView(),
           'formularioOrden' => $formularioOrden -> createView(),
@@ -275,6 +251,7 @@ class EntregaController extends AbstractController
           'activar' => $act,
           'orden' => $orden,
           'cabecera' => $cabe,
+          'forms' => $forms
 
                ]);
 

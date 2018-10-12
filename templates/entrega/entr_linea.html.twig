@@ -12,55 +12,17 @@
     $(document).ready(function() {
 
 
-
-
-
-
-
-
-          /*
-          envio del formulario con enter
-          */
-          $('.serie').keyup(function(e) {
-
-          //  consolelog(e.keyCode );
-
-              if(e.keyCode == 13) {
-
-                var id = $(this).attr("id");
-                var numero = id.replace(/\D/g,""); /////elimina cualquier caracter no numerico
-                var valor = $("#txt_"+numero).val();
-
-                var idArt = $("#idArt_"+numero).text();
-                var art = $("#art_"+numero).text();
-                var mar = $("#mar_"+numero).text();
-                var mod = $("#mod_"+numero).text();
-                var fam = $("#fam_"+numero).text();
-
-                var formulario = "#btn_"+numero;
-                $(".nroSerie").val(valor);
-                $("#form_idArticulo").val(idArt);
-                $("#form_articulo").val(art);
-                $("#form_marca").val(mar);
-                $("#form_modelo").val(mod);
-                $("#form_familia").val(fam);
-
-                $(form_save).click();
-
-                //return false;
-              }
-          });
-
-
           });
 
 
 
     </script>
 
-    {{ form_start(formularioIngreso) }}
-    {{  form_widget(formularioIngreso)}}
-    {{ form_end(formularioIngreso) }}
+
+
+
+
+
 
     <br>
 
@@ -259,14 +221,35 @@
                                         <td id="fam_{{loop.index0}}">{{ datos.familia }}</td>
                                         <td id="mar_{{loop.index0}}">{{ datos.marca }}</td>
                                         <td id="mod_{{loop.index0}}">{{ datos.modelo }}</td>
-                                        <td style="width:150px;">
 
 
-                                            <input type="text" id="txt_{{loop.index0}}" class="serie" >
-                                        </td>
-                                        <td>
-                                          <button id="btn_{{loop.index0}}" class="boton">click!</button>
-                                        </td>
+                                          {{ form_start(forms[datos.id]) }}
+                                          <td style="width:150px;">
+                                          {{ form_row(forms[datos.id].nroSerie) }}
+                                          {{ form_row(forms[datos.id].idArticulo , {'attr': {'value': datos.id}}) }}
+                                          {{ form_row(forms[datos.id].orden , {'attr': {'value': orden}}) }}
+                                          {{ form_row(forms[datos.id].articulo , {'attr': {'value': datos.articulo}}) }}
+                                          {{ form_row(forms[datos.id].marca , {'attr': {'value': datos.marca}}) }}
+                                          {{ form_row(forms[datos.id].familia , {'attr': {'value': datos.familia}}) }}
+                                          {{ form_row(forms[datos.id].modelo , {'attr': {'value': datos.modelo}}) }}
+                                          </td>
+
+
+
+
+
+
+
+
+                                          <td>
+                                            {{ form_row(forms[datos.id].save) }}
+
+                                          </td>
+
+                                          {{ form_end(forms[datos.id]) }}
+
+
+
 
                                       <!-- <td><img src="/imagenes/codRojo.png"></td>  -->
                                     </tr>
