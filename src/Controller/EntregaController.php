@@ -77,16 +77,19 @@ class EntregaController extends AbstractController
       /* *************** FORMULARIO NUEVA ORDEN (LINEAS)******************** */
 
       $ecabe = $em -> getRepository(ECabecera::class) -> find($orden);
+      if($ecabe->getEstado() == 0 || $ecabe->getEstado() == 3 ){$act = false; }else{ $act = true;}  ///////corrobora el estado  2 = aprobado
+
       $listaArticulos = $em -> getRepository(Articulos::class)->findAll();
 
       $forms = [];
       foreach ($listaArticulos as $articulo) {
 
         $form = $this-> createForm(ElineasType::class);
+        $form->add('save', SubmitType::class, array('label' => 'Agregar linea', 'attr' => array("disabled" => $act)  ));
         $form = $form -> handleRequest($request);
 
 
-        if (   $form->isSubmitted() ) {
+        if (   $form->isSubmitted() && $act == false ) {
 
           $rtaBTN = $form -> getData();
 
@@ -122,7 +125,7 @@ class EntregaController extends AbstractController
 
       $ecabe = $em -> getRepository(ECabecera::class) -> find($orden);
 
-      if($ecabe->getEstado() == 0 ){$act = false; }else{ $act = true;}  ///////corrobora el estado  2 = aprobado
+      if($ecabe->getEstado() == 0 || $ecabe->getEstado() == 3){$act = false; }else{ $act = true;}  ///////corrobora el estado  2 = aprobado
 
 
       $editarCabecera = $this->createFormBuilder();

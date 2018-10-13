@@ -185,7 +185,7 @@ function borrarOrden($orden,$em){
 
 
                 case 2:
-                      $eCabe -> setEstado(4); ///////en tránsito
+                      $eCabe -> setEstado(3); ///////en tránsito
                       $emLines->flush();
                     break;
 

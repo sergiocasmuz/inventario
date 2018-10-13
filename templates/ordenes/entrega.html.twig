@@ -62,6 +62,8 @@
         tr:hover .detalle{ display:block; }
         tr:hover .imp{ display:block; }
 
+        .btn{width:130px;}
+
     </style>
 
  <div class="container  ">
@@ -101,11 +103,11 @@
                          <div class="alert alert-info" role="alert">
                              <div style="float:left; margin-right:50px;">Pendientes <span class="badge badge-danger">{{ conPendiente }}  </span></div>
                             <div></div>
-                             <div style="">En proceso <span class="badge badge-secondary">{{ conProceso }} </span></div>
-                             <div style="">Rechazado <span class="badge badge-secondary">{{ conRechazado }} </span></div>
-                             <div style="">En tránsito <span class="badge badge-secondary">{{ conTransito }} </span></div>
-                             <div style="">Finalizado <span class="badge badge-secondary">{{ conFinalizado }} </span></div>
-                             <div style="">Aprobado <span class="badge badge-secondary">{{ conAprobado }} </span></div>
+                             <div>En proceso <span class="badge badge-secondary">{{ conProceso }} </span></div>
+                             <div>Rechazado <span class="badge badge-secondary">{{ conRechazado }} </span></div>
+                             <div>En tránsito <span class="badge badge-secondary">{{ conTransito }} </span></div>
+                             <div>Finalizado <span class="badge badge-secondary">{{ conFinalizado }} </span></div>
+                             <div>Aprobado <span class="badge badge-secondary">{{ conAprobado }} </span></div>
                          </div>
                         <br>
 
@@ -185,7 +187,7 @@
 
                               <section class="cuadradoTexto">
                                 <div>{{ conFinalizado }}</div>
-                                <div style="font-size:10px;">En proceso</div>
+                                <div style="font-size:10px;">Finalizado</div>
                               </section>
                             </section>
 

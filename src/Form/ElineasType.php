@@ -14,6 +14,8 @@ class ElineasType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+
         $builder
             ->add('idArticulo', HiddenType::class)
             ->add('orden', HiddenType::class)
@@ -23,7 +25,7 @@ class ElineasType extends AbstractType
             ->add('modelo', HiddenType::class)
             ->add('nroSerie', TextType::class, array('label' => ' '))
             ->add('cantidad', HiddenType::class)
-            ->add('save', SubmitType::class, array('label' => 'Agregar linea'  ))
+            
         ;
     }
 
