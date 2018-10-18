@@ -99,8 +99,6 @@ function borrarOrden($orden,$em){
 
                     case 4://///// ////////////////en tránsito
 
-
-
                                 $formularioEstado -> add("btnA".$a->getId(), SubmitType::class,
                                 array("label" => 'Confirmar entrega',
                                 'attr' => array('class' => ' btn-success' )) );
@@ -185,7 +183,7 @@ function borrarOrden($orden,$em){
 
 
                 case 2:
-                      $eCabe -> setEstado(3); ///////en tránsito
+                      $eCabe -> setEstado(4); ///////en tránsito
                       $emLines->flush();
                     break;
 

@@ -6,7 +6,7 @@
 
     public static function get ($entity) {
 
-        $result = file_get_contents("http://127.0.0.1:8000/api/edificios.json");
+        $result = file_get_contents("http://127.0.0.1:8001/api/dependencias.json");
 
         $result = json_decode($result);
 
