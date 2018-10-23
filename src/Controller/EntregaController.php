@@ -7,6 +7,7 @@ use App\Entity\ECabecera;
 use App\Entity\ELineas;
 use App\Entity\stock;
 use App\Form\ElineasType;
+use App\Entity\NrosIdentificacion;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -58,7 +59,7 @@ class EntregaController extends AbstractController
 
             ///////el nro de orden corresponde con el id de la cabecera
             $orden = $formCabe->getId();
-            return $this->redirect("/entr_linea/{$orden}");
+            return $this->redirect("/agregar/agregar/{$orden}");
         }
 
         return $this->render('entrega/entr_cabecera.html.twig',
@@ -73,52 +74,92 @@ class EntregaController extends AbstractController
 
     public function linea(Request $request ,$orden)
     {
-      $em = $this -> getDoctrine() -> getManager();
-      /* *************** FORMULARIO NUEVA ORDEN (LINEAS)******************** */
+              $em = $this -> getDoctrine() -> getManager();
+              $ecabe = $em -> getRepository(ECabecera::class) -> find($orden);
+              if($ecabe->getEstado() == 0 || $ecabe->getEstado() == 3 ){$act = false; }else{ $act = true;}  ///////corrobora el estado  2 = aprobado
 
-      $ecabe = $em -> getRepository(ECabecera::class) -> find($orden);
-      if($ecabe->getEstado() == 0 || $ecabe->getEstado() == 3 ){$act = false; }else{ $act = true;}  ///////corrobora el estado  2 = aprobado
+              $formBuscar = $this -> createFormBuilder()
+              ->add('buscar', TextType::class)
+              ->add('ok', SubmitType::class)
+              ->getForm()
+              ->handleRequest($request);
 
-      $listaArticulos = $em -> getRepository(Articulos::class)->findAll();
+              if ( $formBuscar->isSubmitted() && $formBuscar->isValid() ) {
 
-      $forms = [];
-      foreach ($listaArticulos as $articulo) {
+                  $forms = [];
+                  $rta = $formBuscar -> getData();
+                  $buscar = $em -> getRepository(NrosIdentificacion::class) -> findByNroArticulo($rta["buscar"]) ;
+                  $listaArticulos = $em -> getRepository(Articulos::class)->find($buscar[0]->getIdArticulo());
 
-        $form = $this-> createForm(ElineasType::class);
-        $form->add('save', SubmitType::class, array('label' => 'Agregar linea', 'attr' => array("disabled" => $act)  ));
-        $form = $form -> handleRequest($request);
+                  $form = $this-> createFormBuilder();
+                  $form->add('idArticulo', HiddenType::class, array( 'label' => 'idArticulo', 'attr' => array('value' =>  $listaArticulos->getId()  )  ));
+                  $form->add('articulo', HiddenType::class, array('label' => $listaArticulos->getArticulo(), 'attr' => array('value' =>  $listaArticulos->getArticulo()  )  ));
+                  $form->add('familia', HiddenType::class, array('label' => $listaArticulos->getFamilia(), 'attr' =>array( 'value' => $listaArticulos->getFamilia() )  ));
+                  $form->add('marca', HiddenType::class, array('label' => $listaArticulos->getMarca(), 'attr' =>array( 'value' => $listaArticulos->getMarca() )  ));
+                  $form->add('modelo', HiddenType::class, array('label' => $listaArticulos->getModelo(), 'attr' => array('value' => $listaArticulos->getModelo() )  ));
+                  $form->add('nroArticulo', TextType::class  );
+                  $form->add('save', SubmitType::class, array('label' => 'Agregar linea', 'attr' => array("disabled" => $act)  ));
+                  $form = $form -> getForm();
+                  $form = $form -> handleRequest($request);
+
+                        $form = $form -> createView();
+                        $forms[] = $form;
+              }
+
+              else{
+
+                $forms = [];
+
+                $listaArticulos = $em -> getRepository(Articulos::class)->findAll();
+
+                foreach ($listaArticulos as $articulo) {
+
+                  $form = $this-> createFormBuilder();
+                  $form->add('idArticulo', HiddenType::class, array( 'label' => 'idArticulo', 'attr' => array('value' =>  $articulo->getId()  )  ));
+                  $form->add('articulo', HiddenType::class, array('label' => $articulo->getArticulo(), 'attr' => array('value' =>  $articulo->getArticulo()  )  ));
+                  $form->add('familia', HiddenType::class, array('label' => $articulo->getFamilia(), 'attr' =>array( 'value' => $articulo->getFamilia() )  ));
+                  $form->add('marca', HiddenType::class, array('label' => $articulo->getMarca(), 'attr' =>array( 'value' => $articulo->getMarca() )  ));
+                  $form->add('modelo', HiddenType::class, array('label' => $articulo->getModelo(), 'attr' => array('value' => $articulo->getModelo() )  ));
+                  $form->add('nroArticulo', TextType::class  );
+                  $form->add('save', SubmitType::class, array('label' => 'Agregar linea', 'attr' => array("disabled" => $act)  ));
+                  $form = $form -> getForm();
+                  $form = $form -> handleRequest($request);
+
+          ///////////////////////////////////////////////////////////////////
+                  if (   $form -> isSubmitted() && $form -> isValid() ) {
+
+                    $rtaBTN = $form -> getData();
 
 
-        if (   $form->isSubmitted() && $act == false ) {
+                    $elineas = new ELineas();
 
-          $rtaBTN = $form -> getData();
+                    $elineas->setOrden($orden);
+                    $elineas->setIdArticulo($rtaBTN["idArticulo"]);
+                    $elineas->setCantidad(1);
+                    $elineas->setArticulo($rtaBTN["articulo"]);
+                    $elineas->setMarca($rtaBTN["marca"]);
+                    $elineas->setModelo($rtaBTN["modelo"]);
+                    $elineas->setNroSerie($rtaBTN["nroArticulo"]);
+                    $elineas->setFamilia($rtaBTN["familia"]);
 
-          foreach ($rtaBTN as $key => $value) { $datos[$key] = $value;  }
+                    $em -> persist($elineas);
+                    $em -> flush();
 
-          $elineas = new ELineas();
+                    return $this->redirect("/entr_linea/{$orden}");
 
-          $elineas->setOrden($orden);
-          $elineas->setIdArticulo($datos["idArticulo"]);
-          $elineas->setCantidad(1);
-          $elineas->setArticulo($datos["articulo"]);
-          $elineas->setMarca($datos["marca"]);
-          $elineas->setModelo($datos["modelo"]);
-          $elineas->setNroSerie($datos["nroSerie"]);
-          $elineas->setFamilia($datos["familia"]);
+                    }
+          ///////////////////////////////////////////////////////////////////
 
-          $em -> persist($elineas);
-          $em -> flush();
+                  $form = $form -> createView();
+                  $forms[] = $form;
 
-          return $this->redirect("/entr_linea/{$orden}");
+                  }
 
 
-    }
+              }
 
 
-        $form = $form -> createView();
-        $forms[$articulo->getId()] = $form;
 
-      }
 
 
       /* *************** FORMULARIO DE CABECERA ******************************** */
@@ -237,8 +278,6 @@ class EntregaController extends AbstractController
 
           $em = $this -> getDoctrine() -> getManager();
 
-
-
           return $this->redirect("/ordenEntrega");
       }
 
@@ -254,7 +293,8 @@ class EntregaController extends AbstractController
           'activar' => $act,
           'orden' => $orden,
           'cabecera' => $cabe,
-          'forms' => $forms
+          'forms' => $forms,
+          'formBuscar' => $formBuscar -> createView()
 
                ]);
 

@@ -1,9 +1,6 @@
 {% extends 'base.html.twig' %}
 
 
-
-
-
 {% block body %}
 
 {% set familia = "flecha" %}{% set articulo = "flecha" %}{% set marca = "flecha" %}{% set modelo = "flecha" %}{% set cantidad = "flecha" %}
@@ -43,26 +40,57 @@
   {% set cantidad = "flecha" %}
 {% endif %}
 
+<script>
+    $(document).ready(function(){
+
+        var val = "{{error}}";
+        if(val == 1){
+          $("#errorModal").css("display","block");
+        }
+
+        $("#cerrarError").click(function(){
+            $("#errorModal").css("display","none");
+        })
+    });
+</script>
+
 
 <style>
   .ord{transform: rotate(90deg);}
   .tablita td{padding-left: 30px;}
-
-
-
-
-    .box1, .box2{float: left;}
-
-    .box2{margin-left:100px;
+  .box1, .box2{float: left;}
+  .box2{margin-left:100px;
           margin-top:50px;}
-
-
 
 </style>
 
+<br>
+<br>
 
-<br>
-<br>
+<!-- Modal error -->
+<div class="modal show" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Mensaje de error</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>No se encontraron articulos con el número ingresado. <br> Click
+          <a href="/gestionar/articulos"> aqui </a>
+        para asignar número de artículo</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="cerrarError">Cerrar</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
    <div class="container">
 
@@ -109,26 +137,23 @@
     <br>
 
 	<div class="alert alert-info" role="alert">
-	  Detalle de los artículos en depósito
+	  Busqueda por número de artículo
 
     <br>
     <br>
-    <br>
 
-
-    <div class="input-group mb-3">
+    <div class="input-group">
       <div class="input-group-prepend">
         <span class="input-group-text" id="inputGroup-sizing-default">Buscar</span>
       </div>
-      <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-    </div>
 
 
-
-
+      <div style="width:90%;">
+    {{ form_start(formBusqueda) }}
+    {{ form_widget(formBusqueda.buscar, {'attr': {'class' : 'form-control',  'aria-describedby' : "inputGroup-sizing-default", "aria-label" :"Sizing example input" } }) }}
+    {{ form_end(formBusqueda) }}
+    </div></div>
 	</div>
-
-
     <table class="table tablita">
             <tr>
                 <th>

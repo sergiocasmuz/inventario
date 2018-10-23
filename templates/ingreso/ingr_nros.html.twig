@@ -2,12 +2,7 @@
 
 {% block title %}{% endblock %}
 
-
-
-
-
 {% block body %}
-
 
     <script>
         $(document).ready(function(){
@@ -37,14 +32,12 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title" id="exampleModalLabel"> Orden de recepción # {{ orden }} </h3>
+        <h3 class="modal-title" id="exampleModalLabel"> Orden de recepción # {{ cabecera.id }} </h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-
-
 
           <div class="alert alert-info" role="alert">
               <h5>Fecha: {{ fecha[0]|date("m/d/Y") }} </h5>
@@ -125,7 +118,7 @@
 
 
             <h6 class="section-title h1" style="float:left;">
-                Orden de recepción # {{ orden }}
+                Orden de recepción # {{ cabecera.id }}
                 <span class="badge badge-{{ tipoBTN }}" style="font-size: 16px; vertical-align:super; ">{{ estado }}</span>
             </h6>
 
@@ -159,9 +152,12 @@
                         <!-------------------------- tab 1 ---------------------->
                         <div class="tab-pane fade show active" id="nav-vistaPrevia" role="tabpanel" aria-labelledby="nav-vistaPrevia-tab">
                           <div class="alert alert-info" role="alert">
-                              Quitar
-                          </div>
 
+                            {{form_start(formNumero)}}
+                            {{form_widget(formNumero)}}
+                            {{form_end(formNumero)}}
+
+                          </div>
 
 
                           <table class="table">
@@ -171,7 +167,8 @@
                                   <th>Modelo</th>
                                   <th>Cantidad</th>
                               </tr>
-                              {{ form_start(formPedido) }}
+
+
 
                               {% for linea in lineas %}
 
@@ -180,13 +177,16 @@
                                       <td>{{ linea.marca }}</td>
                                       <td>{{ linea.modelo }}</td>
                                       <td>{{ linea.cantidad }}</td>
-                                      <td>{{ form_row(formPedido[linea.id]) }}</td>
+
                                   </tr>
 
                               {% endfor %}
 
 
-                          </table>{{ form_end(formPedido) }}
+
+
+
+                          </table>
 
 
                         </div>
@@ -196,49 +196,6 @@
 
 
 
-                          <div class="alert alert-info" role="alert">
-                            {{form_start(formNumero)}}
-                            {{form_widget(formNumero)}}
-                            {{form_end(formNumero)}}
-                              <a class="btn btn-info" href="/gestionar/articulos" role="button" style="float:right; clear:right;">Agregar elementos a la lista</a>
-
-                              <br>
-                              <br>
-                          </div>
-
-
-                          {{ form_start(formularioIngreso) }}
-                          <table class="table">
-                              <tr>
-                                  <th>Artículo</th>
-                                  <th>Familia</th>
-                                  <th>Marca</th>
-                                  <th>Modelo</th>
-                                  <th>Cantidad</th>
-                                  <th style="width:100px;"></th>
-                              </tr>
-
-
-                              {% for datos in listaArticulo %}
-                                  <tr>
-                                      <td>{{ datos.articulo }}</td>
-                                      <td>{{ datos.familia }}</td>
-                                      <td>{{ datos.marca }}</td>
-                                      <td>{{ datos.modelo }}</td>
-                                      <td style="width:30px;">
-                                          {{ form_widget(formularioIngreso["cantidad"~loop.index0] ) }}
-                                          {{ form_widget(formularioIngreso["articulo"~loop.index0],{'attr':{'type':'hidden'} }) }}
-                                          {{ form_widget(formularioIngreso["marca"~loop.index0]) }}
-                                          {{ form_widget(formularioIngreso["modelo"~loop.index0]) }}
-                                          {{ form_widget(formularioIngreso["idArticulo"~loop.index0]) }}
-                                          {{ form_widget(formularioIngreso["familia"~loop.index0]) }}
-                                      </td>
-                                    <!-- <td><img src="/imagenes/codRojo.png"></td>  -->
-                                  </tr>
-                              {% endfor %}
-                          </table>
-
-                          {{ form_end(formularioIngreso) }}
 
 
 
@@ -246,9 +203,7 @@
 
                         <!-------------------------- tab 3 ---------------------->
                         <div class="tab-pane fade" id="nav-editarList" role="tabpanel" aria-labelledby="nav-editarList-tab">
-                            {{ form_start(editarCabecera) }}
-                            {{ form_widget(editarCabecera )}}
-                            {{ form_end(editarCabecera) }}
+
                         </div>
 
                     </div>

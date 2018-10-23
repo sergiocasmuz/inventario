@@ -20,72 +20,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityRepository;
 
-class IngresoController extends AbstractController
+class IAgregarController extends AbstractController
 {
 
     /**
-     * @Route("/ordenIngreso", name="entrega3")
-     */
-    public function index(Request $request)
-    {
-
-        $em = $this -> getDoctrine() -> getManager();
-
-        /* *************** FORMULARIO NUEVA ORDEN (ENCABEZADO) ******************* */
-
-        $formularioCabecera = $this->createFormBuilder();
-        $formularioCabecera ->add('nombreForm', HiddenType::class,array('attr' => array('value' => 'editarCabecera')));
-        $formularioCabecera ->add('fecha', DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd','attr' => array("value" => date("Y-m-d") )));
-        $formularioCabecera ->add('proveedor', TextType::class);
-        $formularioCabecera ->add('receptor', TextType::class);
-        $formularioCabecera ->add('remito', TextType::class);
-        $formularioCabecera ->add('suministro', TextType::class);
-
-        $formularioCabecera ->add('save', SubmitType::class, array('label' => 'Siguiente'));
-        $formularioCabecera = $formularioCabecera ->getForm();
-
-        $formularioCabecera->handleRequest($request);
-
-
-        /* **************** RESPUESTA NUEVA ORDEN (ENCABEZADO) ******************* */
-
-        if ($formularioCabecera->isSubmitted() && $formularioCabecera->isValid()) {
-
-            $rta = $formularioCabecera ->getData();
-            $nombreForm = $rta["nombreForm"];
-            $Cabecera = new ICabecera();
-
-            if($nombreForm == "editarCabecera") {
-
-
-                $Cabecera -> setFecha($rta["fecha"]);
-                $Cabecera -> setProveedor($rta["proveedor"]);
-                $Cabecera -> setReceptor($rta["receptor"]);
-                $Cabecera -> setRemito($rta["remito"]);
-                $Cabecera -> setSuministro($rta["suministro"]);
-                $Cabecera -> seteSTADO(0);
-
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($Cabecera);
-                $entityManager->flush();
-
-                ///////el nro de orden corresponde con el id de la cabecera
-                $orden = $Cabecera->getId();
-
-                 return $this->redirect("/ingreso/articulos/{$orden}");
-          }
-      }
-
-        return $this->render('ingreso/ingr_cabecera.html.twig',////////////
-            ['formularioCabecera' => $formularioCabecera->createView()]);
-            }
-
-
-    /**
-     * @Route("/ingr_linea/{orden}/{activar}", name="entrega")
+     * @Route("/ingreso/agregar/{orden}", name="ent")
      */
 
-    public function linea(Request $request, $orden, $activar)
+    public function agregar(Request $request, $orden)
     {
 
         $em = $this -> getDoctrine() -> getManager();
@@ -106,16 +48,26 @@ class IngresoController extends AbstractController
             $rta = $formNumero -> getData();
             $nro = $rta["nroArticulo"];
             $nrosIdentificacion = $em -> getRepository(NrosIdentificacion::class) -> findByNroArticulo($nro); ////busco el "id" del articulo
-            $idArt = $nrosIdentificacion[0]->getIdArticulo();
-            $listaArticulos = $repository -> findById($idArt); ///recupero los datos del articulo
-              return $this->redirect("/ingr_linea/{$orden}/agregar/");
+
+            if(empty($nrosIdentificacion)){ $listaArticulos = $repository->findAll();}////////si no encuentro articulos
+            else{
+              $idArt = $nrosIdentificacion[0]->getIdArticulo();
+              $listaArticulos = $repository -> findById($idArt); ///recupero los datos del articulo
+              }
+
+
+
+
           }
           else{  $listaArticulos = $repository->findAll();}
 
 
         /* *************** FORMULARIO NUEVA ORDEN (LINEAS)******************** */
 
+
         $icabe = $em -> getRepository(ICabecera::class) -> find($orden);
+
+        if (empty($icabe)){ return $this->redirect("/ingreso/articulos/{$orden}/");}
 
         if($icabe->getEstado() == 2 ){$act = true; }else{ $act =false;}
 
@@ -161,20 +113,20 @@ class IngresoController extends AbstractController
         if ($formularioIngreso->isSubmitted() && $formularioIngreso->isValid() && $act == false) {
 
             $respuesta = $formularioIngreso->getData();
-
             $arRep = $em -> getRepository(Articulos::class) -> findAll();
-
             $cantArt = count($arRep);
 
             for($f=0; $f < $cantArt; $f++){
-
 
               $ilRep = $em -> getRepository(ILineas::class);
 
                 $iLineas = new ILineas();
 
+
+
                 $iLineas->setOrden($orden);
                 $iLineas->setIdArticulo($respuesta["idArticulo".$f]);
+
                 $iLineas->setCantidad($respuesta["cantidad".$f]);
                 $iLineas->setArticulo($respuesta["articulo".$f]);
                 $iLineas->setMarca($respuesta["marca".$f]);
@@ -195,15 +147,16 @@ class IngresoController extends AbstractController
 
                             $em->persist($iLineas);
                             $em->flush();
+                            return $this->redirect("/ingreso/articulos/{$orden}");
                         }
                 }
                 else{
                         if($respuesta["cantidad".$f] != 0){
 
                             $ilRep2 = $em -> getRepository(ILineas::class)->find($rtaDQL[0] -> getId());
-
                             $ilRep2 -> setCantidad($respuesta["cantidad".$f]);
                             $em->flush();
+                            return $this->redirect("/ingreso/articulos/{$orden}");
                         }
                 }
 
@@ -211,105 +164,12 @@ class IngresoController extends AbstractController
             }
 
 
-            return $this->redirect("/ingr_linea/{$orden}/agregar/");
+
 
         }
 
 
-        /* *************** FORMULARIO DE CABECERA ******************************** */
-
-
-        $cab = $em -> getRepository(ICabecera::class) -> find($orden);
-
-        $editarCabecera = $this->createFormBuilder();
-
-        $editarCabecera ->add('nombreForm', HiddenType::class,array('attr' => array('value' => 'editarCabecera')));
-        $editarCabecera ->add('fecha', DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd','attr' => array("value" => date("Y-m-d") )));
-        $editarCabecera ->add('proveedor', TextType::class, array('attr' => array('value'=> $cab->getProveedor())) );
-        $editarCabecera ->add('receptor', TextType::class, array('attr' => array('value'=> $cab->getReceptor())));
-        $editarCabecera ->add('remito', TextType::class, array('attr' => array('value'=> $cab->getRemito())));
-        $editarCabecera ->add('suministro', TextType::class, array('attr' => array('value'=> $cab->getSuministro())));
-
-        $editarCabecera ->add('save', SubmitType::class, array('label' => 'Siguiente', 'attr' => array("disabled" => $act)  ));
-        $editarCabecera = $editarCabecera ->getForm();
-
-        $editarCabecera->handleRequest($request);
-
-        /* *************** RESPUESTA DE "FORMULARIO DE CABECERA" ***************** */
-
-
-        if ( $editarCabecera->isSubmitted() && $editarCabecera->isValid() && $act == false ) {
-
-            $rta = $editarCabecera->getData();
-
-                $eManager = $this->getDoctrine()->getManager();
-                $ICabecera = $eManager->getRepository(ICabecera::class)->find($orden);
-
-                $ICabecera -> setFecha($rta["fecha"]);
-                $ICabecera -> setProveedor($rta["proveedor"]);
-                $ICabecera -> setReceptor($rta["receptor"]);
-                $ICabecera -> setRemito($rta["remito"]);
-                $ICabecera -> setSuministro($rta["suministro"]);
-
-                $eManager->persist($ICabecera);
-                $eManager->flush();
-
-                ///////el nro de orden corresponde con el id de la cabecera
-                $orden = $ICabecera->getId();
-
-                return $this->redirect("/ingr_linea/{$orden}/cabecera");
-
-        }
-
-        $repCabecera = $this->getDoctrine()->getRepository(ICabecera::class);
-        $cabe = $repCabecera->find($orden);
-
-        /* *************** FORMULARIO QUITAR LINEAS ****************************** */
-
-        $lineas = $this->getDoctrine()->getRepository(ILineas::class);
-        $lineas = $lineas->findByOrden($orden);
-
-        $formPedido = $this->createFormBuilder();
-
-
-        foreach ($lineas as $a ) {
-
-
-            $formPedido->add($a->getId(), SubmitType::class, array('label' => 'Eliminar línea', 'attr' => array("disabled" => $act)));
-        }
-
-        $formPedido = $formPedido->getForm();
-
-        $formPedido = $formPedido-> handleRequest($request);
-
-
-        /* *********************************************************************** */
-        /* *************** RESPUESTA DE "QUITAR LINEAS" ************************** */
-        /* *********************************************************************** */
-
-        if ($formPedido->isSubmitted() && $formPedido->isValid() && $act == false) {
-
-            $rta = $formPedido -> getData();
-
-
-            $idBorrar=$formPedido->getClickedButton()->getName();
-
-
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $iLineas = $entityManager->getRepository(ILineas::class)->find($idBorrar);
-
-            $entityManager->remove($iLineas);
-            $entityManager->flush();
-
-            $activar = "quitar";
-            //return $this->redirect("/ingr_linea/{$orden}/quitar");
-        }
-
-
-        /* *********************************************************************** */
         /* ************ FORMULARIO CONFIRMAR ORDEN ******************************* */
-        /* *********************************************************************** */
 
         $formularioOrden = $this -> createFormBuilder();
 
@@ -331,40 +191,26 @@ class IngresoController extends AbstractController
             $iCabe -> setEstado(1);
             $emLines->flush();
 
-
             $ilines = $emLines -> getRepository(ILineas::class)->findByOrden($orden);
-
             $emStock = $this -> getDoctrine() -> getManager();
-
-
-
-            return $this->redirect("control");
+            return $this->redirect("/ordenes");
         }
 
         $cabe = $em -> getRepository(ICabecera::class)->find($orden);
+        $lineas = $this->getDoctrine()->getRepository(ILineas::class);
+        $lineas = $lineas->findByOrden($orden);
 
-        return $this->render('ingreso/ingr_linea.html.twig', [
+        return $this->render('ingreso/agregar.html.twig', [
             'formularioIngreso' => $formularioIngreso->createView(),
-            'editarCabecera' => $editarCabecera->createView(),
-            'formPedido' => $formPedido->createView(),
             'formularioOrden' => $formularioOrden -> createView(),
             'listaArticulo' => $listaArticulos,
             'lineas' => $lineas,
-            'activar' => $activar,
             'orden' => $orden,
             'cabecera' => $cabe,
             'formNumero' => $formNumero -> createView(),
 
                  ]);
 
-
     }
-
-
-
-
-
-
-
 
 }

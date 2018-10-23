@@ -113,9 +113,16 @@ class ArticuloController extends AbstractController
         $art->setMarca('HP');
         $entityManager->flush();
 
+
+
+
+
+
         return $this->render('articulo/art_list.html.twig', ['art' => $art]);
 
+
     }
+
 
 
     /**
@@ -139,6 +146,6 @@ class ArticuloController extends AbstractController
         return $this->render('articulo/art_list.html.twig', ['art' => $art]);
 
     }
-    
-    
+
+
 }

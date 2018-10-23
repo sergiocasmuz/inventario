@@ -3,13 +3,26 @@
 {% block title %}{% endblock %}
 
 
-
 {% block body %}
 
+<script>
+$(document).ready(function(){
+
+    var val = "{{validacion}}";
+    if(val == "1"){
+      $("#errorModal").css("display","block");
+    }
+
+    $("#cerrarError").click(function(){
+        $("#errorModal").css("display","none");
+
+        window.location.href = "/agregar/articulos/{{orden}}";
+    })
+});
+</script>
+
     <br>
-
     {% set fecha = cabecera.fecha.date | split(' ') %}
-
 
     <div class="container">
 
@@ -49,8 +62,6 @@
 
             {% endif %}
 
-
-
             {% set act = "" %}
 
             {% if cabecera.estado == 1 %}
@@ -60,10 +71,33 @@
                 {% set act = "disabled" %}
             {% endif %}
 
-
-
-
             {% set fecha = cabecera.fecha.date | split(' ') %}
+
+
+            <!-- Modal error -->
+            <div class="modal show" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true"  >
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Mensaje de error</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>No se encontraron artículos con el código ingresado</p>
+                    <p>Click  <a href="/gestionar/articulos">aquí</a> para asignar códigas a artículos</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="cerrarError">Cerrar</button>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
             <!-- Modal -->
         <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg" role="document">
@@ -117,7 +151,6 @@
           </div>
         </div>
 
-
             <h6 class="section-title h1" style="float:left;">
                 Orden de entrega # {{ orden }}
                 <span class="badge badge-{{ tipoBTN }}" style="font-size: 16px; vertical-align:super; ">{{ estado }}</span>
@@ -127,55 +160,27 @@
             <button type="button" {{ act }} class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="float:right; ">
                 Terminar Orden
             </button>
+            <br>
+            <br>
+            <br>
+            <br>
 
-
-            <br><br><br>
-
-
-                <br>
             <div class="row">
                 <div class="col-lg-12 ">
                     <nav>
                         <!-------------------------- titulos de tabs ---------------------->
                         <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link active" id="nav-vistaPrevia-tab" href="/agregar/articulos/{{orden}}" role="tab" aria-controls="nav-vistaPrevia" aria-selected="true">Artículos</a>
-                            <a class="nav-item nav-link" id="nav-cabecera-tab" href="/agregar/agregar/{{orden}}" role="tab" aria-controls="nav-cabecera" aria-selected="false">Agregar artículos</a>
-                            <a class="nav-item nav-link" id="nav-editarList-tab" data-toggle="tab" href="#nav-editarList" role="tab" aria-controls="nav-editarList" aria-selected="false">Modificar lista cabecera</a>
+                            <a class="nav-item nav-link" id="nav-vistaPrevia-tab"   href="/agregar/agregar/{{orden}}" role="tab" aria-controls="nav-vistaPrevia" aria-selected="true">Artículos</a>
+                            <a class="nav-item nav-link active" id="nav-cabecera-tab"  href="/agregar/articulos/{{orden}}" role="tab" aria-controls="nav-cabecera" aria-selected="false">Agregar artículos</a>
                         </div>
                     </nav>
 
                     <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
 
                         <!-------------------------- tab 1 ---------------------->
-                        <div class="tab-pane fade show active" id="nav-vistaPrevia" role="tabpanel" aria-labelledby="nav-vistaPrevia-tab">
-                          <div class="alert alert-info" role="alert">
-                              Quitar
-                          </div>
-
-                          <table class="table">
-                              <tr>
-                                  <th>Artículo</th>
-                                  <th>Marca</th>
-                                  <th>Modelo</th>
-                                  <th>Nro Serie</th>
-                              </tr>
-                              {{ form_start(formPedido) }}
-
-                              {% for linea in lineas %}
-                                  <tr>
-                                      <td>{{ linea.articulo }}</td>
-                                      <td>{{ linea.marca }}</td>
-                                      <td>{{ linea.modelo }}</td>
-                                      <td>{{ linea.nroSerie }}</td>
-                                      <td>{{ form_row(formPedido[linea.id]) }}</td>
-                                  </tr>
-                              {% endfor %}
-                          </table>{{ form_end(formPedido) }}
-                        </div>
 
                         <!-------------------------- tab 2 ---------------------->
-                        <div class="tab-pane fade" id="nav-cabecera" role="tabpanel" aria-labelledby="nav-cabecera-tab">
-
+                        <div class="tab-pane fade show active" id="nav-cabecera" role="tabpanel" aria-labelledby="nav-cabecera-tab">
 
 
                             <div class="alert alert-info" role="alert">
@@ -222,11 +227,7 @@
                         </div>
 
                         <!-------------------------- tab 3 ---------------------->
-                        <div class="tab-pane fade" id="nav-editarList" role="tabpanel" aria-labelledby="nav-editarList-tab">
-                            {{ form_start(editarCabecera) }}
-                            {{ form_widget(editarCabecera )}}
-                            {{ form_end(editarCabecera) }}
-                        </div>
+
 
                     </div>
                 </div>

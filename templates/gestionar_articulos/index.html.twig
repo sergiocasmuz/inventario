@@ -96,7 +96,11 @@
                                       {{articulo.modelo}}
                                     </td>
 
-                                    <td style="text-align:right;">
+                                    <td style="text-align:right; width:115px;">
+                                      <a href="/gestionar/codigos/{{ articulo.id  }}" class="borrar">
+                                        <img src="/imagenes/codNegro.png" class ="editar"   data-toggle="modal" data-target="#codModal"  style="cursor:pointer;">
+                                      </a>
+
                                       <a href="/gestionar/articuloBorrar/{{ articulo.id  }}" class="borrar" >
                                         <img src="/imagenes/borrar.png">
                                       </a>
@@ -130,7 +134,7 @@
                             </div>
 
                             <div class="alert alert-info " >
-                              <p> * Al enviar el formulario se modificarán todos los campos afectados a esta marca.</p>
+                              <p>   </p>
                               <hr>
 
                               {{ form_start(formArticulo) }}

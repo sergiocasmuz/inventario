@@ -10,6 +10,7 @@ use App\Entity\ICabecera;
 use App\Entity\ILineas;
 use App\Entity\Marca;
 use App\Entity\stock;
+use App\Entity\NrosIdentificacion;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -17,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -76,7 +78,7 @@ class GestionarArticulosController extends AbstractController
 
 
       -> add('modelo', TextType::class)
-      -> add('detalle', TextType::class)
+      -> add('detalle', TextareaType::class)
       -> add('save', SubmitType::class, array('label' => 'Guardar'));
 
       $formArticulos = $formArticulos->getForm();
@@ -214,10 +216,41 @@ class GestionarArticulosController extends AbstractController
             }
 
 
+
+
+            $agregarNro = $this -> createFormBuilder()
+
+            -> add('idArt', HiddenType::class)
+            -> add('nro', TextType::class)
+            -> add('save', SubmitType::class, array('label'=>'Guardar número' ,'attr' => array('class' => 'btn btn-primary')));
+
+            $agregarNro = $agregarNro->getForm();
+            $agregarNro = $agregarNro -> handleRequest($request);
+
+            if ($agregarNro->isSubmitted() && $agregarNro->isValid()) {
+
+                  $rta = $agregarNro -> getData();
+
+                  //$nrosIdentiaficacion = $em -> getRepository(NrosIdentificacion::class)->;
+                $nrosIdentiaficacion = new NrosIdentificacion();
+
+                $nrosIdentiaficacion -> setIdArticulo($rta["idArt"]);
+                $nrosIdentiaficacion -> setNroArticulo($rta["nro"]);
+
+                  $em -> persist($nrosIdentiaficacion);
+                  $em -> flush();
+
+
+            }
+
+
+
+
             return $this->render('gestionar_articulos/editar.html.twig', [
                 'formEditar' =>$formEditar -> createView(),
                 'articulo' => $articuloList,
-                'idArticulo' => $articulo->getId()
+                'idArticulo' => $articulo->getId(),
+                'agregarNro' => $agregarNro -> createView()
             ]);
 
     }

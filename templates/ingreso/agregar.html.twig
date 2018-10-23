@@ -12,19 +12,6 @@
     <script>
         $(document).ready(function(){
 
-            var a = '{{ activar }}';
-
-
-            if (a == 'quitar'){
-
-                $('#nav-cabecera-tab').attr('class','nav-item nav-link active');
-                $('#nav-vistaPrevia-tab').attr('class','nav-item nav-link');
-                $('#nav-editarList-tab').attr('class','nav-item nav-link');
-
-                $("#nav-vistaPrevia").attr('class','tab-pane fade');
-                $("#nav-cabecera").attr('class','tab-pane fade show active');
-                $("#nav-editarList").attr('class','tab-pane fade');
-            }
 
         });
     </script>
@@ -92,7 +79,6 @@
 
     <div class="container">
 
-
         <br>
         <section id="tabs">
 
@@ -111,7 +97,6 @@
                 {% set tipoBTN = "success" %}
 
             {% endif %}
-
 
 
             {% set act = "" %}
@@ -134,11 +119,7 @@
                 Terminar Orden
             </button>
 
-
-
-
             <br><br><br>
-
 
                 <br>
             <div class="row">
@@ -147,9 +128,8 @@
 
                         <!-------------------------- titulos de tabs ---------------------->
                         <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link active" id="nav-vistaPrevia-tab" data-toggle="tab" href="#nav-vistaPrevia" role="tab" aria-controls="nav-vistaPrevia" aria-selected="true">Artículos</a>
-                            <a class="nav-item nav-link" id="nav-cabecera-tab" data-toggle="tab" href="#nav-cabecera" role="tab" aria-controls="nav-cabecera" aria-selected="false">Agregar artículos</a>
-                            <a class="nav-item nav-link" id="nav-editarList-tab" data-toggle="tab" href="#nav-editarList" role="tab" aria-controls="nav-editarList" aria-selected="false">Modificar lista cabecera</a>
+                            <a class="nav-item nav-link" id="nav-vistaPrevia-tab" href="/ingreso/articulos/{{orden}}"  aria-controls="nav-vistaPrevia" aria-selected="true">Artículos</a>
+                            <a class="nav-item nav-link active" id="nav-cabecera-tab" href="/ingreso/agregar/{{orden}}" aria-controls="nav-cabecera" aria-selected="false">Agregar artículos</a>
                         </div>
                     </nav>
 
@@ -157,42 +137,12 @@
 
 
                         <!-------------------------- tab 1 ---------------------->
-                        <div class="tab-pane fade show active" id="nav-vistaPrevia" role="tabpanel" aria-labelledby="nav-vistaPrevia-tab">
-                          <div class="alert alert-info" role="alert">
-                              Quitar
-                          </div>
-
-
-
-                          <table class="table">
-                              <tr>
-                                  <th>Artículo</th>
-                                  <th>Marca</th>
-                                  <th>Modelo</th>
-                                  <th>Cantidad</th>
-                              </tr>
-                              {{ form_start(formPedido) }}
-
-                              {% for linea in lineas %}
-
-                                  <tr>
-                                      <td>{{ linea.articulo }}</td>
-                                      <td>{{ linea.marca }}</td>
-                                      <td>{{ linea.modelo }}</td>
-                                      <td>{{ linea.cantidad }}</td>
-                                      <td>{{ form_row(formPedido[linea.id]) }}</td>
-                                  </tr>
-
-                              {% endfor %}
-
-
-                          </table>{{ form_end(formPedido) }}
-
+                        <div class="tab-pane fade" id="nav-vistaPrevia" role="tabpanel" aria-labelledby="nav-vistaPrevia-tab">
 
                         </div>
 
                         <!-------------------------- tab 2 ---------------------->
-                        <div class="tab-pane fade" id="nav-cabecera" role="tabpanel" aria-labelledby="nav-cabecera-tab">
+                        <div class="tab-pane fade show active" id="nav-cabecera" role="tabpanel" aria-labelledby="nav-cabecera-tab">
 
 
 
@@ -200,9 +150,7 @@
                             {{form_start(formNumero)}}
                             {{form_widget(formNumero)}}
                             {{form_end(formNumero)}}
-                              <a class="btn btn-info" href="/gestionar/articulos" role="button" style="float:right; clear:right;">Agregar elementos a la lista</a>
 
-                              <br>
                               <br>
                           </div>
 
@@ -246,9 +194,7 @@
 
                         <!-------------------------- tab 3 ---------------------->
                         <div class="tab-pane fade" id="nav-editarList" role="tabpanel" aria-labelledby="nav-editarList-tab">
-                            {{ form_start(editarCabecera) }}
-                            {{ form_widget(editarCabecera )}}
-                            {{ form_end(editarCabecera) }}
+
                         </div>
 
                     </div>

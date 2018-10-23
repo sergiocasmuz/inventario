@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Doctrine\ORM\EntityRepository;
 use App\Entity\stock;
+use App\Entity\Articulos;
 use App\Entity\NrosIdentificacion;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -19,22 +20,47 @@ use Symfony\Component\Routing\Annotation\Route;
 class StockController extends AbstractController
 {
 	/**
-     * @Route("/stock", name="stock")
-     */
+    * @Route("/stock", name="stock")
+    */
 
-	public function list()
+	public function list(Request $request)
     {
-
-        $repository = $this->getDoctrine() -> getManager();
+				$error = 0;
+				$em = $this -> getDoctrine() -> getManager();
+				$repository = $this->getDoctrine() -> getManager();
 
         $art = $repository->getRepository(stock::class)->findAll();
 
 
-				//$edificios = api::get('edificios');
+				$formBusqueda = $this -> createFormBuilder()
 
-        //return $this->render('stock/stock.html.twig', ['art' => $art, 'edificios' => $edificios]);
+				-> add('buscar', TextType::class)
+			 	-> getForm()
+       	-> handleRequest($request);
 
-        return $this->render('stock/stock.html.twig', ['art' => $art]);
+				if ($formBusqueda->isSubmitted() && $formBusqueda->isValid() ) {
+
+					$rta = $formBusqueda -> getData();
+
+					$nros = $em -> getRepository(NrosIdentificacion::class) -> findByNroArticulo($rta["buscar"]) ;
+					if(count($nros) != 0){
+															$error = "0";
+															$art = $em -> getRepository(stock::class) -> findByIdArticulo($nros[0]->getIdArticulo());
+														}
+										else{
+															$error = "1"; ////NO SE ENCONTRARON ARTICULOS	ARTICULOS
+															$art = $repository->getRepository(stock::class)->findAll();
+															}
+
+				}
+
+
+
+        return $this->render('stock/stock.html.twig', [
+					'error' => $error,
+					'art' => $art,
+					'formBusqueda' => $formBusqueda -> createView()
+				]);
 
 }
 
@@ -42,33 +68,44 @@ class StockController extends AbstractController
 	 * @Route("/stock/{orden}", name="stock_orden")
 	 */
 
-	public function list_filtro($orden)
+	public function list_filtro(Request $request, $orden)
 		{
+			$error = 0;
+			$em = $this -> getDoctrine() -> getManager();
+			$repository = $this->getDoctrine() -> getManager();
 
-			 $repository = $this->getDoctrine() -> getManager();
+			$art = $repository->getRepository(stock::class)->findBy(array(), array( $orden => 'DESC' ));
 
-			$art = $repository->getRepository(stock::class) ->findBy(array(), array( $orden => 'DESC' )) ;
 
-				return $this->render('stock/stock.html.twig', ['art' => $art]);
+			$formBusqueda = $this -> createFormBuilder()
+
+			-> add('buscar', TextType::class)
+			-> getForm()
+			-> handleRequest($request);
+
+			if ($formBusqueda->isSubmitted() && $formBusqueda->isValid() ) {
+
+				$rta = $formBusqueda -> getData();
+
+				$nros = $em -> getRepository(NrosIdentificacion::class) -> findByNroArticulo($rta["buscar"]) ;
+				if(count($nros) != 0){
+														$error = "0";
+														$art = $em -> getRepository(stock::class) -> findByIdArticulo($nros[0]->getIdArticulo(), array( $orden => 'DESC'));
+													}
+									else{
+														$error = "1"; ////NO SE ENCONTRARON ARTICULOS	ARTICULOS
+														$art = $repository->getRepository(stock::class)->findBy(array(), array( $orden => 'DESC' ));
+														}
+
+
 			}
 
-			/**
-			 * @Route("/stock/buscar/{buscar}", name="stock_filtro")
-			 */
-
-			public function list_buscar($buscar)
-				{
-
-					 $repository = $this->getDoctrine() -> getManager();
-						$art = $repository -> getRepository(NrosIdentificacion::class) -> findArt('845973050573') ;
-
-							print_r($art);
-
-						return $this->render('stock/stock.html.twig', ['art' => $art]);
-					}
+			return $this->render('stock/stock.html.twig', [
+				'error' => $error,
+				'art' => $art,
+				'formBusqueda' => $formBusqueda -> createView()
+			]);
 
 
-
-
-
+}
 }

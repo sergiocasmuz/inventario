@@ -2,14 +2,10 @@
 
 {% block title %}{% endblock %}
 
-
-
 {% block body %}
 
     <br>
-
     {% set fecha = cabecera.fecha.date | split(' ') %}
-
 
     <div class="container">
 
@@ -49,8 +45,6 @@
 
             {% endif %}
 
-
-
             {% set act = "" %}
 
             {% if cabecera.estado == 1 %}
@@ -59,8 +53,6 @@
             {% elseif cabecera. estado == 2 %}
                 {% set act = "disabled" %}
             {% endif %}
-
-
 
 
             {% set fecha = cabecera.fecha.date | split(' ') %}
@@ -118,6 +110,11 @@
         </div>
 
 
+
+
+
+
+
             <h6 class="section-title h1" style="float:left;">
                 Orden de entrega # {{ orden }}
                 <span class="badge badge-{{ tipoBTN }}" style="font-size: 16px; vertical-align:super; ">{{ estado }}</span>
@@ -127,20 +124,18 @@
             <button type="button" {{ act }} class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="float:right; ">
                 Terminar Orden
             </button>
+            <br>
+            <br>
+            <br>
+            <br>
 
-
-            <br><br><br>
-
-
-                <br>
             <div class="row">
                 <div class="col-lg-12 ">
                     <nav>
                         <!-------------------------- titulos de tabs ---------------------->
                         <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link active" id="nav-vistaPrevia-tab" href="/agregar/articulos/{{orden}}" role="tab" aria-controls="nav-vistaPrevia" aria-selected="true">Artículos</a>
-                            <a class="nav-item nav-link" id="nav-cabecera-tab" href="/agregar/agregar/{{orden}}" role="tab" aria-controls="nav-cabecera" aria-selected="false">Agregar artículos</a>
-                            <a class="nav-item nav-link" id="nav-editarList-tab" data-toggle="tab" href="#nav-editarList" role="tab" aria-controls="nav-editarList" aria-selected="false">Modificar lista cabecera</a>
+                            <a class="nav-item nav-link active" id="nav-vistaPrevia-tab"   href="/agregar/agregar/{{orden}}" role="tab" aria-controls="nav-vistaPrevia" aria-selected="true">Artículos</a>
+                            <a class="nav-item nav-link" id="nav-cabecera-tab"  href="/agregar/articulos/{{orden}}" role="tab" aria-controls="nav-cabecera" aria-selected="false">Agregar artículos</a>
                         </div>
                     </nav>
 
@@ -174,59 +169,9 @@
                         </div>
 
                         <!-------------------------- tab 2 ---------------------->
-                        <div class="tab-pane fade" id="nav-cabecera" role="tabpanel" aria-labelledby="nav-cabecera-tab">
-
-
-
-                            <div class="alert alert-info" role="alert">
-                              <br>
-                                {{form_start(formBuscar)}}
-                                {{form_widget(formBuscar)}}
-                                {{form_end(formBuscar)}}
-
-                            </div>
-
-
-                            <table class="table">
-                                <tr>
-                                    <th>#</th>
-                                    <th>Artículo</th>
-                                    <th>Familia</th>
-                                    <th>Marca</th>
-                                    <th>Modelo</th>
-                                    <th>Nro de serie</th>
-                                    <th style="width:100px;"></th>
-                                </tr>
-
-                                {% for forms in forms %}
-
-                                  {{form_start(forms)}}
-                                    <tr>
-                                      <td>{{loop.index0}}</td>
-
-                                      <td>  {{form_label(forms.articulo)}}  </td>
-                                      <td>  {{form_label(forms.familia)}}  </td>
-                                      <td>  {{form_label(forms.marca)}}  </td>
-                                      <td>  {{form_label(forms.modelo)}}  </td>
-                                      <td>  {{form_widget(forms.nroArticulo)}}  </td>
-
-                                      <td>  {{form_widget(forms.save)}}  </td>
-
-
-
-                                    </tr>
-                                  {{form_end(forms)}}
-                                {% endfor %}
-                            </table>
-
-                        </div>
 
                         <!-------------------------- tab 3 ---------------------->
-                        <div class="tab-pane fade" id="nav-editarList" role="tabpanel" aria-labelledby="nav-editarList-tab">
-                            {{ form_start(editarCabecera) }}
-                            {{ form_widget(editarCabecera )}}
-                            {{ form_end(editarCabecera) }}
-                        </div>
+
 
                     </div>
                 </div>

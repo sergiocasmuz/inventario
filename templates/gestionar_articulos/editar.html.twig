@@ -8,11 +8,15 @@
 {% set activo = "" %}
 
 
+
     <script>
         $(document).ready(function(){
 
         });
     </script>
+
+
+
 
     <style media="screen">
       .activo{background: rgb(147, 182, 221)}
@@ -97,7 +101,12 @@
                                           {{articulo.modelo}}
                                         </td>
 
-                                        <td style="text-align:right;">
+                                        <td style="text-align:right; width:110px;">
+
+                                          <a href="/gestionar/codigos/{{ articulo.id  }}" class="borrar">
+                                            <img src="/imagenes/codNegro.png" class ="editar"   data-toggle="modal" data-target="#codModal"  style="cursor:pointer;">
+                                          </a>
+
                                           <a href="/gestionar/articuloBorrar/{{ articulo.id  }}" class="borrar">
                                             <img src="/imagenes/borrar.png">
                                           </a>
@@ -105,9 +114,8 @@
                                           <a href="/gestionar/articuloEditar/{{ articulo.id  }}" class ="editar">
                                             <img src="/imagenes/editar.png"  >
                                           </a>
+
                                         </td>
-
-
                                       </tr>
                                     {% endfor %}
                                 </table>
@@ -130,15 +138,16 @@
                                 </div>
 
                                   <div class="alert alert-info " >
-                                    <p> * Al enviar el formulario se modificarán todos los campos afectados a esta marca.</p>
+                                    <p></p>
                                     <hr>
 
                                     {{ form_start(formEditar) }}
-                                    {{ form_widget(formEditar) }}
+                                    {{ form_row(formEditar) }}
                                     {{ form_end(formEditar) }}
-
                                   </div>
                                 </div>
+
+
 
                         </div>
 

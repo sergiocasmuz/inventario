@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+
+<script>
+    $(document).ready(function(){
+
+        var val = "{{validacion}}";
+        if(val != ""){
+          $("#errorModal").css("display","block");
+        }
+
+        $("#cerrarError").click(function(){
+            $("#errorModal").css("display","none");
+        })
+    });
+</script>
+
+<!-- Modal error -->
+<div class="modal show" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Mensaje de error</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>{{validacion}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="cerrarError">Cerrar</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="container">
+
+<div class="jumbotron">
+
+  <section class="row">
+    <section class="col-6">
+      <h4>Artículo # {{articulo.id}}</h4>
+      <h5>{{articulo.articulo}}</h5>
+    </section>
+
+    <section class="col-6">
+      <h5>Familia: {{articulo.familia}}</h5>
+      <h5>Marca: {{articulo.marca}}</h5>
+      <h5>Modelo: {{articulo.modelo}}</h5>
+    </section>
+
+    <p style="margin-left:15px;">{{articulo.detalle}}</p>
+  </section>
+  <hr>
+
+  <a href="/gestionar/articulos">
+    <button class="btn btn-info">Volver a Gestionar Artículos</button>
+  </a>
+</div>
+
+<sction class="row">
+  <section class="col-6">
+    <table class="table table-hover">
+      {% for numeros in numeros %}
+        <tr>
+            <td>{{ numeros.nroArticulo }}</td>
+            <td>
+              <a href="/gestionar/borrarNro/{{ numeros.id  }}/{{articulo.id}}" class="borrar">
+                <img src="/imagenes/borrar.png">
+              </a>
+            </td>
+        </tr>
+      {%  endfor %}
+    </table>
+  </section>
+
+  <section class="col-6 alert alert-info" >
+      {{ form_start(formNumero) }}
+      {{ form_widget(formNumero) }}
+      {{ form_end(formNumero) }}
+  </section>
+
+
+
+</section>
+
+
+
+{% endblock %}

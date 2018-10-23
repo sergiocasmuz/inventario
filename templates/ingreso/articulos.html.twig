@@ -12,7 +12,6 @@
     <script>
         $(document).ready(function(){
 
-            var a = '{{ activar }}';
 
 
             if (a == 'quitar'){
@@ -147,9 +146,8 @@
 
                         <!-------------------------- titulos de tabs ---------------------->
                         <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link active" id="nav-vistaPrevia-tab" data-toggle="tab" href="#nav-vistaPrevia" role="tab" aria-controls="nav-vistaPrevia" aria-selected="true">Artículos</a>
-                            <a class="nav-item nav-link" id="nav-cabecera-tab" data-toggle="tab" href="#nav-cabecera" role="tab" aria-controls="nav-cabecera" aria-selected="false">Agregar artículos</a>
-                            <a class="nav-item nav-link" id="nav-editarList-tab" data-toggle="tab" href="#nav-editarList" role="tab" aria-controls="nav-editarList" aria-selected="false">Modificar lista cabecera</a>
+                            <a class="nav-item nav-link active" id="nav-vistaPrevia-tab" href="/ingreso/articulos/{{orden}}" aria-controls="nav-vistaPrevia" aria-selected="true">Artículos</a>
+                            <a class="nav-item nav-link" id="nav-cabecera-tab" href="/ingreso/agregar/{{orden}}" aria-controls="nav-cabecera" aria-selected="false">Agregar artículos</a>
                         </div>
                     </nav>
 
@@ -191,65 +189,6 @@
 
                         </div>
 
-                        <!-------------------------- tab 2 ---------------------->
-                        <div class="tab-pane fade" id="nav-cabecera" role="tabpanel" aria-labelledby="nav-cabecera-tab">
-
-
-
-                          <div class="alert alert-info" role="alert">
-                            {{form_start(formNumero)}}
-                            {{form_widget(formNumero)}}
-                            {{form_end(formNumero)}}
-                              <a class="btn btn-info" href="/gestionar/articulos" role="button" style="float:right; clear:right;">Agregar elementos a la lista</a>
-
-                              <br>
-                              <br>
-                          </div>
-
-
-                          {{ form_start(formularioIngreso) }}
-                          <table class="table">
-                              <tr>
-                                  <th>Artículo</th>
-                                  <th>Familia</th>
-                                  <th>Marca</th>
-                                  <th>Modelo</th>
-                                  <th>Cantidad</th>
-                                  <th style="width:100px;"></th>
-                              </tr>
-
-
-                              {% for datos in listaArticulo %}
-                                  <tr>
-                                      <td>{{ datos.articulo }}</td>
-                                      <td>{{ datos.familia }}</td>
-                                      <td>{{ datos.marca }}</td>
-                                      <td>{{ datos.modelo }}</td>
-                                      <td style="width:30px;">
-                                          {{ form_widget(formularioIngreso["cantidad"~loop.index0] ) }}
-                                          {{ form_widget(formularioIngreso["articulo"~loop.index0],{'attr':{'type':'hidden'} }) }}
-                                          {{ form_widget(formularioIngreso["marca"~loop.index0]) }}
-                                          {{ form_widget(formularioIngreso["modelo"~loop.index0]) }}
-                                          {{ form_widget(formularioIngreso["idArticulo"~loop.index0]) }}
-                                          {{ form_widget(formularioIngreso["familia"~loop.index0]) }}
-                                      </td>
-                                    <!-- <td><img src="/imagenes/codRojo.png"></td>  -->
-                                  </tr>
-                              {% endfor %}
-                          </table>
-
-                          {{ form_end(formularioIngreso) }}
-
-
-
-                        </div>
-
-                        <!-------------------------- tab 3 ---------------------->
-                        <div class="tab-pane fade" id="nav-editarList" role="tabpanel" aria-labelledby="nav-editarList-tab">
-                            {{ form_start(editarCabecera) }}
-                            {{ form_widget(editarCabecera )}}
-                            {{ form_end(editarCabecera) }}
-                        </div>
 
                     </div>
                 </div>

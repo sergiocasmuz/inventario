@@ -37,10 +37,7 @@
     <script>
         $(document).ready(function(){
 
-            $("* .detalle").click(function(){
-                var a = $(this).attr('id');
-                window.location.href = "/entr_linea/"+a+"";
-            })
+
 
         });
     </script>
@@ -256,8 +253,9 @@
                                <tr>
 
                                    <td style=" width:50px;">
+                                     <a href="/agregar/agregar/{{orden.id}}" >
                                       <img src="/imagenes/ojo.png"  id="{{ orden.id }}" class="detalle" title="Ver detalle">
-
+                                    </a>
                                    </td>
 
                                    <td style=" width:50px;">
