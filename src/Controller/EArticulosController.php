@@ -2,20 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Articulos;
 use App\Entity\ECabecera;
 use App\Entity\ELineas;
-use App\Entity\stock;
 use App\Form\ElineasType;
-use App\Entity\NrosIdentificacion;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityRepository;
@@ -88,7 +81,7 @@ class EArticulosController extends AbstractController
           $ilines = $emLines -> getRepository(ELineas::class)->findByOrden($orden);
           $em = $this -> getDoctrine() -> getManager();
 
-          return $this->redirect("/agregar/agregar/{$orden}");
+          return $this->redirect("/ordenEntrega");
       }
 
       return $this->render('e_articulos/articulos.html.twig', [

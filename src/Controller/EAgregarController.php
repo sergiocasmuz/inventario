@@ -4,17 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Articulos;
 use App\Entity\ECabecera;
-use App\Entity\ELineas;
-use App\Entity\stock;
-use App\Form\ElineasType;
 use App\Entity\NrosIdentificacion;
+use App\Entity\ELineas;
+use App\Form\ElineasType;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,6 +25,8 @@ class EAgregarController extends AbstractController
 
     public function linea(Request $request ,$orden)
     {
+
+
               $validacion = 0;
               $em = $this -> getDoctrine() -> getManager();
               $ecabe = $em -> getRepository(ECabecera::class) -> find($orden);
@@ -46,8 +45,6 @@ class EAgregarController extends AbstractController
                   $buscar = $em -> getRepository(NrosIdentificacion::class) -> findByNroArticulo($rta["buscar"]) ;
                   if(count($buscar) != 0 ){
                   $listaArticulos = $em -> getRepository(Articulos::class)->find($buscar[0]->getIdArticulo());
-
-
 
                   $form = $this-> createFormBuilder();
                   $form->add('idArticulo', HiddenType::class, array( 'label' => 'idArticulo', 'attr' => array('value' =>  $listaArticulos->getId()  )  ));
@@ -184,9 +181,7 @@ class EAgregarController extends AbstractController
 
 
               /* *************** RESPUESTA DE FORMULARIO CONFIRMAR ORDEN *************** */
-
               if ($formularioOrden->isSubmitted() && $formularioOrden->isValid() && $act == false ) {
-
 
                   $emLines = $this->getDoctrine() -> getManager();
 
@@ -194,14 +189,9 @@ class EAgregarController extends AbstractController
                   $iCabe -> setEstado(1);
                   $em->flush();
 
-
                   $ilines = $emLines -> getRepository(ELineas::class)->findByOrden($orden);
 
-                  $em = $this -> getDoctrine() -> getManager();
-
-
-
-                  return $this->redirect("/agregar/articulos/{$orden}");
+                  return $this->redirect("/ordenEntrega");
               }
 
 

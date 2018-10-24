@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Articulos;
 use App\Entity\ECabecera;
 use App\Entity\ELineas;
 use App\Entity\stock;
@@ -11,7 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -47,8 +45,8 @@ class ValidarOrdenEntregaController extends AbstractController
       $editarCabecera ->add('nombreForm', HiddenType::class,array('attr' => array('value' => 'editarCabecera')));
       $editarCabecera ->add('fecha', DateType::class,array('widget' => 'single_text', 'format' => 'dd-mm-yyyy','attr' => array("value" => date("d-m-Y") )));
       $editarCabecera ->add('destino', TextType::class, array('attr' => array('value'=> $cab->getDestino())) );
-      $editarCabecera ->add('recibe', TextType::class, array('attr' => array('value'=> '', "placeholder"=>"Obligatorio", "autofocus" => true )) );
-      $editarCabecera ->add('legajo', IntegerType::class, array('attr' => array('value'=> '', "placeholder" => "Obligatorio")) );
+      $editarCabecera ->add('recibe', TextType::class, array('attr' => array('value'=>  $cab->getRecibe(), "autofocus" => true )) );
+      $editarCabecera ->add('legajo', IntegerType::class, array('attr' => array('value'=>  $cab->getLegajo())) );
 
       $editarCabecera ->add('save', SubmitType::class, array('label' => 'Siguiente', 'attr' => array('class' => 'btn btn-primary') ));
       $editarCabecera = $editarCabecera ->getForm();

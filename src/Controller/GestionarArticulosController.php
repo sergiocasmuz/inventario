@@ -3,19 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Articulos;
-use App\Entity\ECabecera;
-use App\Entity\ELineas;
 use App\Entity\Familia;
 use App\Entity\ICabecera;
-use App\Entity\ILineas;
 use App\Entity\Marca;
 use App\Entity\stock;
 use App\Entity\NrosIdentificacion;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -238,6 +233,5 @@ class GestionarArticulosController extends AbstractController
             ]);
 
     }
-
 
 }

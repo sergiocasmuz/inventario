@@ -4,9 +4,7 @@ namespace App\Controller;
 
 use App\Entity\ECabecera;
 use App\Entity\ELineas;
-use App\Entity\stock;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

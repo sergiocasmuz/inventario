@@ -10,7 +10,6 @@ use App\Entity\Marca;
 use App\Entity\stock;
 use App\Entity\NrosIdentificacion;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -283,10 +282,7 @@ class IngresoController extends AbstractController
         $formPedido = $formPedido-> handleRequest($request);
 
 
-        /* *********************************************************************** */
         /* *************** RESPUESTA DE "QUITAR LINEAS" ************************** */
-        /* *********************************************************************** */
-
         if ($formPedido->isSubmitted() && $formPedido->isValid() && $act == false) {
 
             $rta = $formPedido -> getData();
@@ -307,10 +303,7 @@ class IngresoController extends AbstractController
         }
 
 
-        /* *********************************************************************** */
         /* ************ FORMULARIO CONFIRMAR ORDEN ******************************* */
-        /* *********************************************************************** */
-
         $formularioOrden = $this -> createFormBuilder();
 
         $formularioOrden -> add('nombreForm', HiddenType::class, array( 'attr' => array('value' => 'formularioOrden' ) ) );
@@ -321,9 +314,7 @@ class IngresoController extends AbstractController
 
 
         /* *************** RESPUESTA DE FORMULARIO CONFIRMAR ORDEN *************** */
-
         if ($formularioOrden->isSubmitted() && $formularioOrden->isValid() && $act == false ) {
-
 
             $emLines = $this->getDoctrine() -> getManager();
 
@@ -331,14 +322,10 @@ class IngresoController extends AbstractController
             $iCabe -> setEstado(1);
             $emLines->flush();
 
-
             $ilines = $emLines -> getRepository(ILineas::class)->findByOrden($orden);
-
             $emStock = $this -> getDoctrine() -> getManager();
 
-
-
-            return $this->redirect("control");
+            return $this->redirect("/ordenEntrega");
         }
 
         $cabe = $em -> getRepository(ICabecera::class)->find($orden);
