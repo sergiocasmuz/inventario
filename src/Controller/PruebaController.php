@@ -13,7 +13,11 @@ class PruebaController extends AbstractController
      */
     public function index()
     {
-        $dep = api::get('dependencias');
+
+
+      echo  '<img src="barcode.php?text=0123456789&size=40&codetype=Code39&print=true" />';
+
+    $dep = "hola";
 
         return $this->render('prueba/index.html.twig', [
             'dep' => $dep,

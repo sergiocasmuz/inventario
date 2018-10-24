@@ -14,8 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ArticuloController extends AbstractController
 {
-
-
     /**
      * @Route("/articulo/list", name="articulo_list")
      */

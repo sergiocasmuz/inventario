@@ -57,11 +57,7 @@ class GestionarArticulosController extends AbstractController
       }
 
 
-
-      /* ********************************************************************** */
       /* *************** FORMULARIO DE MARCA ********************************* */
-      /* ********************************************************************* */
-
       $formArticulos = $this -> createFormBuilder()
       -> add('articulo', TextType::class)
       -> add('familia', ChoiceType::class, array('choices' => array('Seleccioná una familia' => $listaFamilia) ) )
@@ -73,9 +69,6 @@ class GestionarArticulosController extends AbstractController
         },
 
       ) )
-
-
-
 
       -> add('modelo', TextType::class)
       -> add('detalle', TextareaType::class)
@@ -139,13 +132,10 @@ class GestionarArticulosController extends AbstractController
       $em = $this -> getDoctrine() -> getManager();
       $articulo = $em -> getRepository(Articulos::class) -> find($idArticulo);
 
-
               $em -> remove($articulo);
               $em -> flush();
 
               return $this->redirect("/gestionar/articulos");
-
-
     }
 
 
@@ -215,9 +205,6 @@ class GestionarArticulosController extends AbstractController
                 return $this->redirect("/gestionar/articulos");
             }
 
-
-
-
             $agregarNro = $this -> createFormBuilder()
 
             -> add('idArt', HiddenType::class)
@@ -242,9 +229,6 @@ class GestionarArticulosController extends AbstractController
 
 
             }
-
-
-
 
             return $this->render('gestionar_articulos/editar.html.twig', [
                 'formEditar' =>$formEditar -> createView(),

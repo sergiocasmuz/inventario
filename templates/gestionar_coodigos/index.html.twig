@@ -39,6 +39,9 @@
   </div>
 </div>
 
+
+
+
 <section class="container">
 
 <div class="jumbotron">
@@ -71,8 +74,12 @@
         <tr>
             <td>{{ numeros.nroArticulo }}</td>
             <td>
-              <a href="/gestionar/borrarNro/{{ numeros.id  }}/{{articulo.id}}" class="borrar">
+              <a href="/gestionar/borrarNro/{{ numeros.id  }}/{{articulo.id}}" class="Borrar">
                 <img src="/imagenes/borrar.png">
+              </a>
+              &nbsp &nbsp
+              <a href="/imprimir/codigo/{{ numeros.id  }}"   target="_blank" class="Imprimir">
+                <img src="/imagenes/impresora.png">
               </a>
             </td>
         </tr>
@@ -80,10 +87,23 @@
     </table>
   </section>
 
-  <section class="col-6 alert alert-info" >
+  <section class="col-6  alert alert-info" >
+
+
+
       {{ form_start(formNumero) }}
-      {{ form_widget(formNumero) }}
+      {{ form_widget(formNumero.nroArticulo) }}
+      <br>
+      {{ form_widget(formNumero.Guardar) }}
       {{ form_end(formNumero) }}
+
+
+
+      <a href="/crear/codigo/{{articulo.id}}">
+        <button class="btn btn-danger" style="float:right;  margin-top:-40px;">Crear código aleatorio</button>
+      </a>
+
+
   </section>
 
 

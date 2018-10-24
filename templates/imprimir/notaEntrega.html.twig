@@ -26,18 +26,18 @@
     })
 
 
-    $("#btnCerrar").click(function(){
-      parent.window.close();
-    })
-
-
     $("#circulo").mouseenter(function(){
       $("#btns").css("opacity","1");
 
-        $("#btns").mouseleave(function(){
+        $(".close").click(function(){
               $("#btns").css("opacity","0");
             });
     });
+
+
+
+
+
 
   })
 
@@ -82,18 +82,30 @@ body{background:rgb(71, 88, 87) ;}
           position: fixed;
           z-index: 1;
           float: left;
-          margin-top:15%;
+          margin-top:5%;
           margin-left: 3%;
           background: #000;
-          width: 250px;
-          height: 200px;
-          text-align: center;
-          padding-top: 50px;
+          width: 260px;
+          height: 700px;
+          padding-top: 10px;
           color:#fff;
           opacity: 0;
           border-radius:10px;
           transition: opacity .5s;
           }
+
+    #btns label, legend{  margin-left:10px;}
+
+    #btns input, select{
+                background-color: #000;
+                color:#fff;
+                margin-left:10px;
+                width: 90%;
+                }
+
+      .imp, #form_guardar{margin-left:10px;
+      width: 90%;}
+
 
       #circulo{
               position: absolute;
@@ -110,7 +122,6 @@ body{background:rgb(71, 88, 87) ;}
 
 
 
-  #btnImprimir, #btnCerrar{ width: 90px;}
 
 
   @media print {
@@ -168,9 +179,22 @@ body{background:rgb(71, 88, 87) ;}
 </section>
 
 <section id="btns">
-  <p>Selecciones una opción para la orden # {{cabecera.id}}</p>
-  <buttom id="btnImprimir" class="btn btn-primary">Imprimir</buttom>
-  <buttom id="btnCerrar" class="btn btn-info">Cerrar</buttom>
+
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Opciones</h5>
+    <button type="button" class="close" >
+      <span aria-hidden="true" style="color:#fff;">&times;</span>
+    </button>
+
+  </div>
+  <br>
+
+  {{ form_start(cabeForm)}}
+  {{ form_widget(cabeForm)}}
+  {{ form_end(cabeForm)}}
+
+<hr style="background:#aaa; width:90%;">
+  <button id="btnImprimir" class="btn btn-primary imp">Imprimir</button>
 </section>
 
 <div class="container">
@@ -201,11 +225,8 @@ body{background:rgb(71, 88, 87) ;}
         <h5 id="ticket">REF: TICKET {{  cabecera.nroTicket }}</h5>
     </section>
 
-
-    <p id = "nota">Por medio de la presente se deja constancia de la entrega a <b>{{ cabecera.destino }}</b> de los bienes detallados a continuación:</p>
-
+    <p id = "nota">Por medio de la presente se deja constancia de la entrega a <b>{{ cabecera.recibe }}</b> del area de <b>{{ cabecera.destino }}</b> de los bienes detallados a continuación:</p>
   </div>
-
 
 <br>
   <div>
@@ -224,9 +245,9 @@ body{background:rgb(71, 88, 87) ;}
     {% for lineas in lineas %}
     <tr>
       <td>{{lineas.articulo}}</td>
-      <td>{{lineas.familia}}</td>
-      <td>{{lineas.modelo}}</td>
       <td>{{lineas.marca}}</td>
+      <td>{{lineas.modelo}}</td>
+      <td>{{lineas.familia}}</td>
       <td>{{lineas.nroSerie}}</td>
 
     </tr>
@@ -236,14 +257,12 @@ body{background:rgb(71, 88, 87) ;}
 </table>
 <br>
 <footer >
-<p>Recibido: .....................................</p>
+<p>FIrma: .....................................</p>
 <br>
 <p>Aclaración: ...................................</p>
 <br>
 <p>Legajo: .......................................</p>
 <footer>
-
-
 
 
 </div>

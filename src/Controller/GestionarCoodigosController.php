@@ -95,5 +95,21 @@ class GestionarCoodigosController extends AbstractController
     }
 
 
+    /**
+     * @Route("/imprimir/codigo/{idCod}", name="imp_coodigos")
+     */
+    public function imp($idCod)
+    {
+
+      $em = $this -> getDoctrine() -> getManager();
+      $Nro = $em -> getRepository(NrosIdentificacion::class) -> find($idCod);
+
+
+      return $this->render('imprimir/codigo.html.twig', [
+        'cod' => $Nro->getNroArticulo()
+      ]);
+    }
+
+
 
 }
