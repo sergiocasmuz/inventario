@@ -114,13 +114,13 @@ class IAgregarController extends AbstractController
             $arRep = $em -> getRepository(Articulos::class) -> findAll();
             $cantArt = count($arRep);
 
+
+
             for($f=0; $f < $cantArt; $f++){
 
               $ilRep = $em -> getRepository(ILineas::class);
 
                 $iLineas = new ILineas();
-
-
 
                 $iLineas->setOrden($orden);
                 $iLineas->setIdArticulo($respuesta["idArticulo".$f]);
@@ -133,11 +133,18 @@ class IAgregarController extends AbstractController
 
                 $idArt = $respuesta["idArticulo".$f];
 
-                $query = $em -> createQuery("SELECT u FROM App\Entity\ILineas u WHERE u.orden = '$orden' and u.idArticulo= '$idArt' ");
+                //$query = $em -> createQuery("SELECT u FROM App\Entity\ILineas u WHERE u.orden = '$orden' and u.idArticulo= '$idArt' ");
 
-                $rtaDQL = $query->getResult();
+                $query = $em -> getRepository(ILineas::class)->findBy(array(
+                                                                      		'orden' => $orden,
+                                                                      		'idArticulo' => $idArt
+                                                                      	));
 
-                $existencia = count($rtaDQL);
+              //  $rtaDQL = $query->getResult();
+
+                $existencia = count($query);
+
+
 
                 if($existencia == 0){
 
@@ -145,16 +152,17 @@ class IAgregarController extends AbstractController
 
                             $em->persist($iLineas);
                             $em->flush();
-                            return $this->redirect("/ingreso/articulos/{$orden}");
+
                         }
                 }
                 else{
+
                         if($respuesta["cantidad".$f] != 0){
 
-                            $ilRep2 = $em -> getRepository(ILineas::class)->find($rtaDQL[0] -> getId());
+                            $ilRep2 = $em -> getRepository(ILineas::class)->find($query[0] -> getId());
                             $ilRep2 -> setCantidad($respuesta["cantidad".$f]);
                             $em->flush();
-                            return $this->redirect("/ingreso/articulos/{$orden}");
+
                         }
                 }
 
@@ -162,7 +170,7 @@ class IAgregarController extends AbstractController
             }
 
 
-
+              return $this->redirect("/ingreso/articulos/{$orden}");
 
         }
 

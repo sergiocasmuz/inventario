@@ -31,7 +31,7 @@ class EntregaController extends AbstractController
       $em = $this -> getDoctrine() -> getManager();
 
         $formularioCabecera = $this->createFormBuilder()
-            ->add('fecha', DateType::class,array('widget' => 'single_text', 'format' => 'yyyy-MM-dd','attr' => array("value" => date("Y-m-d") )))
+            ->add('fecha', DateType::class,array('widget' => 'single_text','attr' => array("value" => date("Y-m-d") )))
             ->add('nroDetTicket', IntegerType::class)
             ->add('dependenciaDeDestino', TextType::class)
             ->add('recibe', HiddenType::class)
@@ -68,6 +68,6 @@ class EntregaController extends AbstractController
     }
 
 
-  
+
 
 }

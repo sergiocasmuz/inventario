@@ -24,7 +24,6 @@ class ArticuloController extends AbstractController
         return $this->render('articulo/art_list.html.twig', ['art' => $art]);
     }
 
-
     /**
      * @Route("/articulo/n", name="articulo_n")
      */
@@ -35,7 +34,6 @@ class ArticuloController extends AbstractController
         $articulos = new Articulos();
 
         $formulario = $this->createFormBuilder($articulos);
-
         $formulario->add('familia',TextType::class);
         $formulario->add('articulo',TextType::class);
         $formulario->add('marca',TextType::class);
