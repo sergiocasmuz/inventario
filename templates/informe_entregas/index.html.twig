@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+
+  <div class="container">
+
+    <br>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+      Modificar parámetros
+    </button>
+    <br>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Seleccione un periodo</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            {{ form_start(formulario) }}
+            {{ form_widget(formulario) }}
+            {{ form_end(formulario) }}
+          </div>
+        
+        </div>
+      </div>
+    </div>
+
+
+    {% for orden in orden %}
+
+    <br>
+      <div class="alert alert-primary">
+
+        <div class="row">
+
+          <div class="col-6">
+            <h4> Orden #{{ orden["orden"] }} </h4>
+            <p>Fecha {{ orden["fecha"]|date("d-m-Y") }}</p>
+          </div>
+
+
+          <div class="col-6">
+            <p> <b>Destino</b> | {{ orden["destino"] }}</p>
+            <p> <b>Recibe</b> | {{ orden["recibe"] }}</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <table class="table">
+
+        <tr>
+          <th>Artículo</th>
+          <th>Familia</th>
+          <th>Marca</th>
+          <th>Modelo</th>
+          <th>Nro. Serie</th>
+        </tr>
+
+      {% for line in orden["lin"] %}
+
+        <tr>
+          <td> {{ line["articulo"] }} </td>
+          <td> {{ line["familia"] }} </td>
+          <td> {{ line["marca"] }} </td>
+          <td> {{ line["modelo"] }} </td>
+          <td> {{ line["nroSerie"] }} </td>
+      </tr>
+
+      {% endfor %}
+    </table>
+    <br><br><br>
+
+
+    {% endfor %}
+
+    {{ form_start(formulario) }}
+    {{ form_widget(formulario) }}
+    {{ form_end(formulario) }}
+
+  </div>
+
+
+{% endblock %}

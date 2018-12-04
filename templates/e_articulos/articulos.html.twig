@@ -7,6 +7,8 @@
     <br>
     {% set fecha = cabecera.fecha.date | split(' ') %}
 
+
+
     <div class="container">
 
 
@@ -61,7 +63,7 @@
           <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h3 class="modal-title" id="exampleModalLabel"> Orden de recepción # {{ orden }} </h3>
+                <h3 class="modal-title" id="exampleModalLabel"> Orden de entrega # {{ orden }} </h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -73,7 +75,7 @@
                   <div class="alert alert-info" role="alert">
                       <br>
                       <h5>Fecha: {{ fecha[0]|date("m/d/Y") }} </h5>
-                      <h5 style="float: left;">Preoveedor: {{ cabecera.destino }}</h5>
+                      <h5 style="float: left;">Destino: {{ cabecera.destino }}</h5>
                       <br><br><br>
                   </div>
 
@@ -120,10 +122,20 @@
                 <span class="badge badge-{{ tipoBTN }}" style="font-size: 16px; vertical-align:super; ">{{ estado }}</span>
             </h6>
 
+
+            <!-- Button volver -->
+            <a href="/ordenEntrega" class="linkVolver"  style="text-decoration:none; float:right; margin-left:20px; background:rgb(94, 103, 125); border-radius:4px; padding:5.5px 10px 5.5px 10px; color:#fff;">
+                Ver ordenes  <img src="/imagenes/listaBlanca.png" style="margin-left:5px;"/>
+            </a>
+
             <!-- Button trigger modal -->
             <button type="button" {{ act }} class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="float:right; ">
-                Terminar Orden
+                Vista preliminar
             </button>
+
+
+
+
             <br>
             <br>
             <br>

@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class StockController extends AbstractController
 {
 	/**
-    * @Route("/stock", name="stock")
+    * @Route("/", name="stock")
     */
 
 	public function list(Request $request)
@@ -45,9 +45,7 @@ class StockController extends AbstractController
 															$error = "1"; ////NO SE ENCONTRARON ARTICULOS	ARTICULOS
 															$art = $repository->getRepository(stock::class)->findAll();
 															}
-
 				}
-
 
 
         return $this->render('stock/stock.html.twig', [

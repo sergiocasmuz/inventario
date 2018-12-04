@@ -45,11 +45,33 @@
             clear: left;}
 
         .detalle, .imp{display:none;
-                            cursor:pointer;}
+                      cursor:pointer;}
+
+
           .impNeg{visibility:hidden;}
 
-        tr:hover .detalle{ display:block; }
-        tr:hover .imp{ display:block; }
+        tr:hover .detalle{ display:block;
+                            background: #000;
+                            opacity: .7;
+                            padding: 7px;
+                            text-align: center;
+                            color:#fff;
+                            border-radius:5px;
+                          }
+
+
+
+
+        tr:hover .imp{ display:block;
+                            background: #000;
+                            opacity: .7;
+                            padding: 7px;
+                            text-align: center;
+                            color:#fff;
+                            border-radius:5px; }
+
+        .detalle:link{text-decoration: none;}
+        .imp:link{text-decoration: none;}
 
         .btn{width:155px;}
 
@@ -183,13 +205,15 @@
 
                        <table class="table table-hover">
                            <tr>
-                              <th></th>
-                              <th style="width:5px;"></th>
+
+
                                <th style="text-align:center;">Orden</th>
                                <th style="width:150px;">Fecha</th>
                                <th style="text-align:center;">Destino</th>
                                <th style="text-align:center;">Estado</th>
-                               <th style="text-align:center;"></th>
+                               <th style="text-align:center; width:150px;">Acciones</th>
+                               <th style="text-align:center;width:150px;">...</th>
+                               <th style="text-align:center;width:150px;">...</th>
 
                            </tr>
 
@@ -239,18 +263,6 @@
 
                                <tr>
 
-                                   <td style=" width:50px;">
-                                     <a href="/agregar/agregar/{{orden.id}}" >
-                                      <img src="/imagenes/ojo.png"  id="{{ orden.id }}" class="detalle" title="Ver detalle">
-                                    </a>
-                                   </td>
-
-                                   <td style=" width:50px;">
-                                     <a href="/imprimir/{{orden.id}}"  target="_blank">
-                                       <img src="/imagenes/impresora.png"  id="{{ orden.id }}" class="{{imp}}" title="Imprimir Nota">
-                                     </a>
-                                   </td>
-
                                    <td style="text-align:center; font-weight: bold;">
                                       # {{ orden.id }}
                                     </td>
@@ -271,6 +283,16 @@
                                         {{ form_widget(formularioEstado["btnA"~ orden.id]) }}
                                         {{ form_widget(formularioEstado[ "btnB"~ orden.id]) }}
                                    </td>
+
+                                   <td>
+                                     <a href="/agregar/agregar/{{orden.id}}" class="detalle" >Ver orden <img src="/imagenes/ojoBlanco.png"></a>
+                                   </td>
+
+                                   <td >
+                                     <a href="/imprimir/{{orden.id}}"  target="_blank" class="imp" id="{{ orden.id }}">  Imprimir <img src="/imagenes/impresoraBlanca.png"></a>
+                                   </td>
+
+
                                </tr>
 
                            {% endfor %}

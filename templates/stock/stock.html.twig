@@ -62,6 +62,24 @@
   .box2{margin-left:100px;
           margin-top:50px;}
 
+
+
+          .editar:link, .editar:visited {
+
+        color: #000;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        }
+
+
+        .editar:hover, .editar:active {
+          color:rgb(115, 139, 119) ;
+      }
+</style>
+
+  }
+
 </style>
 
 <br>
@@ -84,7 +102,6 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-dismiss="modal" id="cerrarError">Cerrar</button>
-
       </div>
     </div>
   </div>
@@ -95,23 +112,6 @@
    <div class="container">
 
     <div class="row">
-        <div class="col-lg-6">
-            <div class="card">
-              <section class="GRbox" >
-                  <div class="box1 card-body">
-                      <h5 class="card-title">Entrega de artículos</h5>
-                      <p class="card-text">Iniciá el proceso de entrega de artículos</p>
-                      <a href="solicitud" class="btn btn-danger">Crear Orden</a>
-                  </div>
-
-                  <section class="box2">
-                      <img src="/imagenes/entrega.png">
-                  </section>
-                </section>
-
-            </div>
-        </div>
-
 
 
         <div class="col-lg-6">
@@ -120,7 +120,8 @@
                   <div class="box1 card-body" >
                       <h5 class="card-title">Recibir artículos</h5>
                       <p class="card-text">Incrementá el stock existente.</p>
-                      <a href="/ordenIngreso" class="btn btn-primary">Agregar</a>
+                      <a href="/ordenIngreso" class="btn btn-primary">Crear orden</a>
+                      <a href="/ordenes" class="btn btn-info">Ver ordenes de recepción</a>
                   </div>
 
                   <section class="box2">
@@ -129,6 +130,25 @@
 
               </section>
 
+
+            </div>
+        </div>
+
+
+        <div class="col-lg-6">
+            <div class="card">
+              <section class="GRbox" >
+                  <div class="box1 card-body">
+                      <h5 class="card-title">Entregar artículos</h5>
+                      <p class="card-text">Iniciá el proceso de entrega de artículos</p>
+                      <a href="solicitud" class="btn btn-danger">Crear orden </a>
+                      <a href="/ordenEntrega" class="btn btn-info">Ver ordenes de entrega</a>
+                  </div>
+
+                  <section class="box2">
+                      <img src="/imagenes/entrega.png">
+                  </section>
+                </section>
 
             </div>
         </div>
@@ -159,14 +179,14 @@
                 <th>
                   <a href="/stock/familia">
                     <img src="/imagenes/{{familia}}.png" id="familia" class="ord">
-                    Familia
+                    Artículo
                   </a>
                 </th>
 
                 <th>
                   <a href="/stock/articulo">
                     <img src="/imagenes/{{articulo}}.png" id="articulo" class="ord">
-                    Artículo
+                    Familia
                   </a>
                 </th>
 
@@ -193,9 +213,10 @@
             </tr>
 
             {% for art in art %}
-                <tr>
+             <tr>
+
+                    <td><a href="/gestionar/articuloEditar/{{ art.idArticulo}}" title="Editar" class="editar"> {{ art.articulo }} </a></td>
                     <td>{{ art.familia }}</td>
-                    <td>{{ art.articulo }}</td>
                     <td>{{ art.marca }}</td>
                     <td>{{ art.modelo }}</td>
                     <td>{{ art.cantidad }}</td>

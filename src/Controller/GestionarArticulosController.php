@@ -28,7 +28,7 @@ class GestionarArticulosController extends AbstractController
       $familia ="";
 
       $em = $this -> getDoctrine() -> getManager();
-      $articulos = $em -> getRepository(Articulos::class)->findAll();
+      $articulos = $em -> getRepository(Articulos::class)->findBy(array(), array('articulo' => "ASC"));
 
       $familia = $em -> getRepository(Familia::class) -> findBy(array(), array('familia' => "ASC") );
 

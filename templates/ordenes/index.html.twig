@@ -43,6 +43,18 @@
 
 
         tr:hover .detalle{ visibility: visible;}
+
+
+        tr:hover .detalle{ display:block;
+                            background: #000;
+                            opacity: .7;
+                            padding: 7px;
+                            text-align: center;
+                            color:#fff;
+                            border-radius:5px;
+                          }
+
+
     </style>
  <div class="container  ">
      <br>
@@ -107,11 +119,13 @@
 
                          <table class="table table-hover">
                              <tr>
-                                 <th style="width:50px;"></th>
+
                                  <th style="width:150px;">Fecha</th>
                                  <th style="text-align:center;">Proveedor</th>
                                  <th style="text-align:center;">Nro de orden</th>
                                  <th style="text-align:center;">Estado</th>
+                                 <th style="text-align:center;width:150px;">...</th>
+                                 <th style="text-align:center;width:150px;">...</th>
 
                              </tr>
 
@@ -140,10 +154,6 @@
 
                                  <tr>
 
-                                     <td>
-                                             <img src="/imagenes/ojo.png"  id="{{ orden.id }}" class="detalle" title="Ver detalle">
-
-                                     </td>
 
                                      <td>{{ f[0]|date("m/d/Y") }}</td>
                                      <td style="text-align:center;">{{ orden.proveedor }}</td>
@@ -159,6 +169,12 @@
 
                                          {{ form_widget(formularioEstado[orden.id]) }}
                                      </td>
+
+                                     <td>
+                                       <a href="/agregar/agregar/{{orden.id}}" style="text-decoration:none;" class="detalle" >Ver orden <img src="/imagenes/ojoBlanco.png" id="{{ orden.id }}" ></a>
+                                     </td>
+
+
 
                                  </tr>
 
