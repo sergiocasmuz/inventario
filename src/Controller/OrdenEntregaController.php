@@ -101,7 +101,7 @@ function borrarOrden($orden,$em){
                                 array("label" => 'Confirmar entrega',
                                 'attr' => array('class' => ' btn-success' )) );
 
-                                $formularioEstado -> add("btnB".$a->getId(), SubmitType::class,
+                                $formularioEstado -> add("btnB".$a->getId(), HiddenType::class,
                                 array("label" => 'Eliminar',
                                 'attr' => array('class' => ' btn-primary' )) );
 

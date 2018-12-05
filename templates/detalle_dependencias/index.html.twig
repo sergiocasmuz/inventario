@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+<style>
+
+</style>
+
+<div class="container">
+
+  <br>
+  <table class="table">
+    <tr>
+      <th>Orden</th>
+      <th>Fecha</th>
+      <th>Artículo</th>
+      <th>Familia</th>
+    </tr>
+    {% for detalle in dependencia %}
+    <tr>
+      <td> #{{detalle["orden"]}}</td>
+      <td> {{detalle["fecha"]}}</td>
+      <td> {{detalle["articulo"]}}</td>
+      <td> {{detalle["familia"]}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+</div>
+{% endblock %}

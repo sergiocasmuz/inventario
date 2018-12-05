@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+<style>
+
+</style>
+
+<div class="container">
+
+
+
+
+  <table class="table">
+
+    <tr>
+      <th>Dependencia</th>
+      <th>Familia</th>
+      <th>Cantidad</th>
+    </tr>
+
+    {% for d1,d2,suma in array %}
+      <tr>
+        <td>{{d1}}</td>
+          {% for d in d2 %} <!-- agrega columnas -->
+            <td>{{d}}</td>
+          {% endfor %}
+
+      </tr>
+    {% endfor %}
+  </table>
+
+</div>
+{% endblock %}

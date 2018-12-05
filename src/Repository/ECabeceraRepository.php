@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\ECabecera;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\ORM\Query\Expr\Join;
+
 
 /**
  * @method ECabecera|null find($id, $lockMode = null, $lockVersion = null)
@@ -38,15 +40,5 @@ class ECabeceraRepository extends ServiceEntityRepository
     }
 
 
-    /*
-    public function findOneBySomeField($value): ?ECabecera
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+
 }
