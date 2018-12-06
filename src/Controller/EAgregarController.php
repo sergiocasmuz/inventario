@@ -47,7 +47,7 @@ class EAgregarController extends AbstractController
                   if(count($buscar) != 0 ){
                   $listaArticulos = $em -> getRepository(Articulos::class)->find($buscar[0]->getIdArticulo());
 
-                  $stock_check = $em -> getRepository(stock::class) -> findByIdArticulo($articulo->getId());
+                  $stock_check = $em -> getRepository(stock::class) -> findByIdArticulo($listaArticulos->getId());
 
                   $cantidad = $stock_check[0]->getCantidad();
 
