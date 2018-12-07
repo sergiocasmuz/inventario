@@ -10,18 +10,27 @@
 
 <div class="container">
 
+  <div class="jumbotron">
+    <h1 class="display-4">Reporte de entregas</h1>
+    <hr class="my-4">
+    <p>Periodo comprendido.</p>
+    <a class="btn btn-primary btn-lg" href="#" role="button">Modificar fecha</a>
+  </div>
+
   <div class="row">
     <div class="col-6">
     <table class="table"  style="text-align:center;">
       <tr>
         <th>Dependencia</th>
         <th>Artículos</th>
+        <th>Última entrega</th>
         <th>...</th>
       </tr>
       {% for dep,sum in array %}
         <tr>
           <td>{{ dep }}</td>
           <td>{{ sum }}</td>
+          <td>2018/12/6</td>
           <td><a href="/detalle/dependencias/{{ dep }}"> Ver detalles </a></td>
         </tr>
       {% endfor %}

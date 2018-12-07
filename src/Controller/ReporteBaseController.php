@@ -7,21 +7,26 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 use Doctrine\DBAL\Driver\Connection;
+use Symfony\Component\HttpFoundation\Request;
 
 class ReporteBaseController extends AbstractController
 {
     /**
      * @Route("/reporte/base", name="reporte_base")
      */
-    public function index(Connection $connection)
+    public function index(Connection $connection, Request $request)
     {
 
-      $em = $this-> getDoctrine() -> getManager();
+        $em = $this-> getDoctrine() -> getManager();
 
+        $formulario = $em -> createFormBuilder()
+        -> add("desde", DateType::class)
+        -> add("hasta", DateType::calss)
+        -> add("Consultar", SubmitType)
+        ->getForm()
+        ->handleRequest();
 
-
-
-
+        if ($formulario->isSubmitted() && $formulario->isValid()) {  }
 
         $i=0;
 

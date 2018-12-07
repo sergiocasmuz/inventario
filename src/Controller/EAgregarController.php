@@ -26,8 +26,6 @@ class EAgregarController extends AbstractController
 
     public function linea(Request $request ,$orden)
     {
-
-
               $validacion = 0;
               $em = $this -> getDoctrine() -> getManager();
               $ecabe = $em -> getRepository(ECabecera::class) -> find($orden);
@@ -82,7 +80,13 @@ class EAgregarController extends AbstractController
 
                   $cantidad = $stock_check[0]->getCantidad();
 
-                  if($cantidad <= 0){ $label = "Sin stock"; $act = true;} else{$label = "Agregar linea";$act = false;}
+                  if($cantidad <= 0){
+                                      $label = "Sin stock";
+                                      $act = true;
+                                    }
+                  else{ $label = "Agregar linea";
+                        $act = false;}
+
 
                   $form = $this-> createFormBuilder();
                   $form->add('idArticulo', HiddenType::class, array( 'label' => 'idArticulo', 'attr' => array('value' =>  $articulo->getId()  )  ));
