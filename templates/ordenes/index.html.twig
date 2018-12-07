@@ -38,21 +38,23 @@
             clear: left;}
 
 
-        .detalle{visibility:hidden;
-                cursor:pointer;}
+            .detalle{ display:block;
+                               background: #fff;
+                               opacity: .7;
+                               padding: 7px;
+                               text-align: center;
+                               color:#000;
+                               border:1px solid #ababab  ;
+                               border-radius:5px;
+                               transition: background 0.7s;
+                               transition: color 1s;
+                             }
+
+           .detalle:hover{background: #ababab;
+                           color:#fff;}
 
 
-        tr:hover .detalle{ visibility: visible;}
 
-
-        tr:hover .detalle{ display:block;
-                            background: #000;
-                            opacity: .7;
-                            padding: 7px;
-                            text-align: center;
-                            color:#fff;
-                            border-radius:5px;
-                          }
 
 
     </style>
@@ -171,7 +173,7 @@
                                      </td>
 
                                      <td>
-                                       <a href="/ingreso/articulos/{{orden.id}}" style="text-decoration:none;" class="detalle" >Ver orden <img src="/imagenes/ojoBlanco.png" id="{{ orden.id }}" ></a>
+                                       <a href="/ingreso/articulos/{{orden.id}}" style="text-decoration:none;" class="detalle" >Ver</a>
                                      </td>
 
 

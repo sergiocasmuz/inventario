@@ -20,6 +20,9 @@ class ReporteBaseController extends AbstractController
 
 
 
+
+
+
         $i=0;
 
         $sql_1 = "SELECT destino from ECabecera order by destino desc";

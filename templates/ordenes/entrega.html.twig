@@ -50,25 +50,37 @@
 
           .impNeg{visibility:hidden;}
 
-        tr:hover .detalle{ display:block;
-                            background: #000;
+         .detalle{ display:block;
+                            background: #fff;
                             opacity: .7;
                             padding: 7px;
                             text-align: center;
-                            color:#fff;
+                            color:#000;
+                            border:1px solid #ababab  ;
                             border-radius:5px;
+                            transition: background 0.7s;
+                            transition: color 1s;
                           }
 
+        .detalle:hover{background: #ababab;
+                        color:#fff;}
 
 
-
-        tr:hover .imp{ display:block;
-                            background: #000;
+        tr .imp{ display:block;
+                            background: #fff;
                             opacity: .7;
                             padding: 7px;
                             text-align: center;
-                            color:#fff;
-                            border-radius:5px; }
+                            color:#000;
+                            border:1px solid #ababab  ;
+                            border-radius:5px;
+                            transition: background 0.7s;
+                            transition: color 1s;
+                            }
+
+        .imp:hover{background: #ababab;
+                        color:#fff;}
+
 
         .detalle:link{text-decoration: none;}
         .imp:link{text-decoration: none;}
@@ -288,11 +300,11 @@
                                    </td>
 
                                    <td>
-                                     <a href="/agregar/agregar/{{orden.id}}" class="detalle" >Ver orden <img src="/imagenes/ojoBlanco.png"></a>
+                                     <a href="/agregar/agregar/{{orden.id}}" class="detalle" >Ver</a>
                                    </td>
 
                                    <td >
-                                     <a href="/imprimir/{{orden.id}}"  target="_blank" class="imp" id="{{ orden.id }}">  Imprimir <img src="/imagenes/impresoraBlanca.png"></a>
+                                     <a href="/imprimir/{{orden.id}}"  target="_blank" class="imp" id="{{ orden.id }}">  Imprimir</a>
                                    </td>
 
 
