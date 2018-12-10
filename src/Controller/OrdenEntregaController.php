@@ -192,12 +192,13 @@ function borrarOrden($orden,$em){
 
                   case 4:
                         if($bot=="btnA"){
-
-                                          $eCabe -> setEstado(5); ///////finalizar
-                                          $emLines->flush();
-                                          return $this->redirect("/ordenEntrega");
+                                          return $this->redirect("/validar/orden/entrega/".$orden);
                                         }
 
+                        elseif($bot=="btnB"){
+                                          $eCabe -> setEstado(6); ///////en tránsito
+                                          $emLines->flush();
+                                        }
                         break;
 
 
