@@ -5,7 +5,9 @@
 
 {% block body %}
 
+
 <script>
+
 $(document).ready(function(){
 
     var val = "{{validacion}}";
@@ -223,10 +225,7 @@ $(document).ready(function(){
                                       <td>  {{form_label(forms.marca)}}  </td>
                                       <td>  {{form_label(forms.modelo)}}  </td>
                                       <td>  {{form_widget(forms.nroArticulo)}}  </td>
-
-                                      <td>  {{form_widget(forms.save)}}  </td>
-
-
+                                      <td>  {{form_widget(forms.save)}} </td>
 
                                     </tr>
                                   {{form_end(forms)}}

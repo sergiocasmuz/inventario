@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+
+    <br>
+    {% set fecha = cabecera.fecha.date | split(' ') %}
+
+
+
+    <div class="container">
+
+
+        <br>
+        <section id="tabs">
+
+            {% set tipoBTN = "primary" %}
+
+            {% if cabecera.estado == 0 %}
+                {% set estado = "En proceso"  %}
+                {% set tipoBTN = "light" %}
+
+            {% elseif cabecera.estado == 1 %}
+                {% set estado = "Pendiente"  %}
+                {% set tipoBTN = "danger" %}
+
+            {% elseif cabecera.estado == 2 %}
+                {% set estado = "Aprobado"  %}
+                {% set tipoBTN = "primary" %}
+
+            {% elseif cabecera.estado == 3 %}
+                {% set estado = "Rechazado"  %}
+                {% set tipoBTN = "danger" %}
+
+            {% elseif cabecera.estado == 4 %}
+                {% set estado = "En tránsito"  %}
+                {% set tipoBTN = "warning" %}
+
+            {% elseif cabecera.estado == 5 %}
+                {% set estado = "Finalizado"  %}
+                {% set tipoBTN = "success" %}
+
+            {% elseif cabecera.estado == 6 %}
+                {% set estado = "En espera"  %}
+                {% set tipoBTN = "secondary " %}
+
+            {% endif %}
+
+            {% set act = "" %}
+
+            {% if cabecera.estado == 1 %}
+                {% set act = "disabled" %}
+
+            {% elseif cabecera. estado == 2 %}
+                {% set act = "disabled" %}
+            {% endif %}
+
+
+            {% set fecha = cabecera.fecha.date | split(' ') %}
+
+
+
+            <div class="jumbotron">
+
+
+            <h6 class="section-title h1" style="float:left;">
+                Orden de entrega # {{ orden }}
+                <span class="badge badge-{{ tipoBTN }}" style="font-size: 16px; vertical-align:super; ">{{ estado }}</span>
+            </h6>
+
+
+            <!-- Button volver -->
+            <a href="/ordenes" class="linkVolver"  style="text-decoration:none; float:right; margin-left:20px; background:rgb(94, 103, 125); border-radius:4px; padding:5.5px 10px 5.5px 10px; color:#fff;">
+                Ver ordenes  <img src="/imagenes/listaBlanca.png" style="margin-left:5px;"/>
+            </a>
+
+
+              <br><br>
+
+          </div>
+                <div class="col-lg-12 ">
+
+
+                          <table class="table">
+                              <tr>
+                                  <th>Artículo</th>
+                                  <th>Marca</th>
+                                  <th>Modelo</th>
+                                  <th style="width:100px;">Cantidad</th>
+                              </tr>
+
+
+                              {% for linea in lineas %}
+                                  <tr>
+                                      <td>{{ linea.articulo }}</td>
+                                      <td>{{ linea.marca }}</td>
+                                      <td>{{ linea.modelo }}</td>
+                                      <td>{{ linea.cantidad }}</td>
+
+                                  </tr>
+                              {% endfor %}
+                          </table>
+
+                </div>
+
+        </section>
+
+
+    </div>
+
+
+
+{% endblock %}

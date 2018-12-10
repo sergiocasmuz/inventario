@@ -9,6 +9,11 @@
 
 {% for orden in ordenes %}
 
+
+
+
+
+
     {% if orden.estado == 0 %}
         {% set conProceso = conProceso +1  %}
 
@@ -153,6 +158,13 @@
                                          {% set btn = "success" %}
 
                                  {% endif %}
+                                 {% if orden.estado == 1 or orden.estado == 2 %}
+                                  {% set link = '/ver/ingreso/' ~ orden.id  %}
+                                 {% else  %}
+                                  {% set link = '/ingreso/articulos/' ~ orden.id  %}
+
+                                 {% endif %}
+
 
                                  <tr>
 
@@ -173,7 +185,7 @@
                                      </td>
 
                                      <td>
-                                       <a href="/ingreso/articulos/{{orden.id}}" style="text-decoration:none;" class="detalle" >Ver</a>
+                                       <a href="{{link}}" style="text-decoration:none;" class="detalle" >Ver</a>
                                      </td>
 
 

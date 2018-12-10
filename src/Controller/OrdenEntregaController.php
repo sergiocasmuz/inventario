@@ -26,7 +26,7 @@ function borrarOrden($orden,$em){
             //////////////////////borrar articulos relacionados
             foreach ($eL as $e) {
                                 $em->remove($e);
-                                print_r($e);
+                              //  print_r($e);
                                 }
                         $em -> flush();
 
@@ -42,10 +42,10 @@ function borrarOrden($orden,$em){
         $em = $this -> getDoctrine() -> getManager();
         $ecabecera = $em -> getRepository(ECabecera::class) -> findBy(array(),array('id'=>'DESC'));
 
+
         $formularioEstado = $this -> createFormBuilder();
 
         foreach ($ecabecera as $a){
-
             $formularioEstado -> add('nombreForm', HiddenType::class, array('attr' => array("value" => 'estadoForm' )) );
             $formularioEstado -> add('id_'.$a->getId(), HiddenType::class, array('attr' => array("value" => $a->getId(),  )));
 
@@ -193,14 +193,11 @@ function borrarOrden($orden,$em){
                   case 4:
                         if($bot=="btnA"){
 
-                                          return $this->redirect("/validar/orden/entrega/".$orden);
-
-                                        }
-
-                        elseif($bot=="btnB"){
-                                          $eCabe -> setEstado(6); ///////en tránsito
+                                          $eCabe -> setEstado(5); ///////finalizar
                                           $emLines->flush();
+                                          return $this->redirect("/ordenEntrega");
                                         }
+
                         break;
 
 
@@ -225,7 +222,8 @@ function borrarOrden($orden,$em){
 
         return $this->render('ordenes/entrega.html.twig', [
             'ordenes' => $ecabecera,
-            'formularioEstado' => $formularioEstado -> createView()
+            'formularioEstado' => $formularioEstado -> createView(),
+
         ]);
     }
 }

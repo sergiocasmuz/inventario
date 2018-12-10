@@ -235,6 +235,13 @@
                            {{ form_start(formularioEstado) }}
                            {% for orden in ordenes %}
 
+                           {% if orden.estado == 2 or orden.estado == 4 or orden.estado == 5  %}
+                            {% set link = '/ver/entrega/' ~ orden.id  %}
+                          {% else  %}
+                            {% set link = '/agregar/agregar/' ~ orden.id  %}
+
+                           {% endif %}
+
                                {% set f = orden.fecha.date | split(" ") %}
 
                                {% set estado = "..." %}
@@ -280,6 +287,7 @@
 
                                    <td style="text-align:center; font-weight: bold;">
                                       # {{ orden.id }}
+
                                     </td>
 
                                    <td>
@@ -300,7 +308,7 @@
                                    </td>
 
                                    <td>
-                                     <a href="/agregar/agregar/{{orden.id}}" class="detalle" >Ver</a>
+                                     <a href="{{link}}" class="detalle" >Ver</a>
                                    </td>
 
                                    <td >

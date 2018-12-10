@@ -29,7 +29,7 @@ class EAgregarController extends AbstractController
               $validacion = 0;
               $em = $this -> getDoctrine() -> getManager();
               $ecabe = $em -> getRepository(ECabecera::class) -> find($orden);
-              if($ecabe->getEstado() == 0 || $ecabe->getEstado() == 3 ){$act = false; }else{ $act = true;}  ///////corrobora el estado  2 = aprobado
+              if($ecabe->getEstado() == 0 || $ecabe->getEstado() == 1 || $ecabe->getEstado() == 3 ){$nulo = false; }else{ $nulo = true;}  ///////corrobora el estado  2 = aprobado
 
               $formBuscar = $this -> createFormBuilder()
               ->add('buscar', TextType::class)
@@ -37,7 +37,7 @@ class EAgregarController extends AbstractController
               ->getForm()
               ->handleRequest($request);
 
-              if ( $formBuscar->isSubmitted() && $formBuscar->isValid() ) {
+              if ( $formBuscar->isSubmitted() && $formBuscar->isValid() && $nulo == false) {
 
                   $forms = [];
                   $rta = $formBuscar -> getData();
@@ -49,7 +49,14 @@ class EAgregarController extends AbstractController
 
                   $cantidad = $stock_check[0]->getCantidad();
 
-                  if($cantidad <= 0){ $label = "Sin stock"; $act = true;} else{$label = "Agregar linea";$act = false;}
+                  if($cantidad <= 0){
+                                      $label = "Sin stock";
+                                      $act = true;
+                                      $etiqueta = "etiqueta";
+                                    }
+                  else{ $label = "Agregar linea";
+                        $act = false;
+                        $etiqueta = "btn btn-rojo";}
 
                   $form = $this-> createFormBuilder();
                   $form->add('idArticulo', HiddenType::class, array( 'label' => 'idArticulo', 'attr' => array('value' =>  $listaArticulos->getId()  )  ));
@@ -58,7 +65,7 @@ class EAgregarController extends AbstractController
                   $form->add('marca', HiddenType::class, array('label' => $listaArticulos->getMarca(), 'attr' =>array( 'value' => $listaArticulos->getMarca() )  ));
                   $form->add('modelo', HiddenType::class, array('label' => $listaArticulos->getModelo(), 'attr' => array('value' => $listaArticulos->getModelo() )  ));
                   $form->add('nroArticulo', TextType::class, array( 'attr' => array('autofocus' => 'autofocus' )  )  );
-                  $form->add('save', SubmitType::class, array('label' => $label, 'attr' => array("disabled" => $act)  ));
+                  $form->add('save', SubmitType::class, array('label' =>$label, 'attr' => array('class' => $etiqueta, 'disabled'=> $act)));
                   $form = $form -> getForm();
                   $form = $form -> handleRequest($request);
 
@@ -83,9 +90,13 @@ class EAgregarController extends AbstractController
                   if($cantidad <= 0){
                                       $label = "Sin stock";
                                       $act = true;
+                                      $etiqueta = "etiqueta";
                                     }
                   else{ $label = "Agregar linea";
-                        $act = false;}
+                        $act = false;
+                        $etiqueta = "btn btn-rojo";}
+
+
 
 
                   $form = $this-> createFormBuilder();
@@ -95,12 +106,12 @@ class EAgregarController extends AbstractController
                   $form->add('marca', HiddenType::class, array('label' => $articulo->getMarca(), 'attr' =>array( 'value' => $articulo->getMarca() )  ));
                   $form->add('modelo', HiddenType::class, array('label' => $articulo->getModelo(), 'attr' => array('value' => $articulo->getModelo() )  ));
                   $form->add('nroArticulo', TextType::class, array( 'attr' => array('autofocus' => 'autofocus' )  )  );
-                  $form->add('save', SubmitType::class, array('label' => $label, 'attr' => array("disabled" => $act)  ));
+                  $form->add('save', SubmitType::class, array('label' =>$label, 'attr' => array('class' => $etiqueta, 'disabled'=> $act)));
                   $form = $form -> getForm();
                   $form = $form -> handleRequest($request);
 
           ///////////////////////////////////////////////////////////////////
-                  if (   $form -> isSubmitted() && $form -> isValid() ) {
+                  if (   $form -> isSubmitted() && $form -> isValid()  && $nulo == false) {
 
                     $rtaBTN = $form -> getData();
 
@@ -151,7 +162,7 @@ class EAgregarController extends AbstractController
 
               /* *************** RESPUESTA DE "FORMULARIO DE CABECERA" ***************** */
 
-              if ( $editarCabecera->isSubmitted() && $editarCabecera->isValid() && $act == false ) {
+              if ( $editarCabecera->isSubmitted() && $editarCabecera->isValid() && $nulo == false ) {
 
                   $rta = $editarCabecera->getData();
 
