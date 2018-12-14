@@ -40,12 +40,12 @@ class GestionarFamiliasController extends AbstractController
 
               return $this->redirect("articulos");
 
-
       }
 
         return $this->render('gestionar_familias/index.html.twig', [
         		'formFamilia' =>$formFamilia -> createView(),
         		'familia' => $familia
+
         ]);
     }
 

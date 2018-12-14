@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+
+{% block body %}
+    <script>
+        $(document).ready(function(){
+
+        });
+    </script>
+
+    <style>
+      .borrar, .editar{visibility:hidden;}
+      tr:hover .editar{visibility: visible;}
+      tr:hover .borrar{visibility: visible;}
+    </style>
+
+    <br>
+    <div class="container">
+
+        <br>
+        <section id="tabs">
+
+            <h6 class="section-title h1" style="float:left;">
+                Gestión de dependencias
+            </h6>
+            <br><br><br>
+
+
+                <br>
+            <div class="row">
+                <div class="col-lg-12 ">
+                    <nav>
+                      <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                          <a class="nav-item nav-link" id="nav-vistaPrevia-tab" href="/gestionar/articulos" role="tab" aria-controls="nav-vistaPrevia" aria-selected="false">Artículos</a>
+                          <a class="nav-item nav-link" id="nav-cabecera-tab"  href="/gestionar/familias" aria-controls="nav-cabecera" aria-selected="false">Familias</a>
+                          <a class="nav-item nav-link" id="nav-editarList-tab"  href="/gestionar/marcas" role="tab" aria-controls="nav-editarList" aria-selected="false">Marcas</a>
+                          <a class="nav-item nav-link active" id="nav-editarList-tab"  href="/gestionar/marcas" role="tab" aria-controls="nav-editarList" aria-selected="true">Dependencias</a>
+                      </div>
+                    </nav>
+
+                    <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                        <!-------------------------- tab 1 ---------------------->
+                        <div class="tab-pane fade show active" id="nav-vistaPrevia" role="tabpanel" aria-labelledby="nav-vistaPrevia-tab">
+
+                        <div class="row row justify-content-between">
+
+                          <div class="col-6">
+
+                            <br>
+                            <h4>Lista de dependencias</h4>
+                            <br>
+                            <table class="table">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Dependencia</th>
+                                </tr>
+
+                                {% for dependencia in dependencias %}
+                                  <tr>
+                                    <td>{{ dependencia.id }}</td>
+                                    <td>{{ dependencia.dependencia }}</td>
+
+                                    <td style="text-align:right; width:115px;">
+
+                                      <a href="/gestionar/dependenciasBorrar/{{ dependencia.id }}" class="borrar" >
+                                        <img src="/imagenes/borrar.png">
+                                      </a>
+
+                                      <a href="/gestionar/dependenciasEditar/{{ dependencia.id }}" class="editar">
+                                        <img src="/imagenes/editar.png"  >
+                                      </a>
+                                    </td>
+                                  </tr>
+                                {% endfor %}
+
+                            </table>
+                          </div>
+
+                          <div class="col-6"  >
+                            <br>
+                            <h4> Dependencias existentes {{ dependencias|length }}</h4>
+                            <br>
+
+                            <div class="alert alert-info " >
+
+                              {{ form_start(formulario) }}
+                              {{ form_widget(formulario) }}
+                              {{ form_end(formulario) }}
+
+                            </div>
+                        </div>
+                      </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+
+{% endblock %}

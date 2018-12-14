@@ -6,6 +6,7 @@ use App\Entity\Articulos;
 use App\Entity\ECabecera;
 use App\Entity\ELineas;
 use App\Entity\stock;
+use App\Entity\Dependencias;
 use App\Form\ElineasType;
 use App\Entity\NrosIdentificacion;
 
@@ -16,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityRepository;
@@ -29,11 +31,18 @@ class EntregaController extends AbstractController
     {
 
       $em = $this -> getDoctrine() -> getManager();
+      $dependencias = $em -> getRepository(Dependencias::class) -> findAll();
+
+      $list = array();
+      $list[""]="";
+      foreach ($dependencias as $dep) {
+        $list[$dep -> getDependencia()] = $dep -> getDependencia();
+      }
 
         $formularioCabecera = $this->createFormBuilder()
             ->add('fecha', DateType::class,array('widget' => 'single_text','attr' => array("value" => date("Y-m-d") )))
             ->add('nroDetTicket', IntegerType::class)
-            ->add('dependenciaDeDestino', TextType::class)
+            ->add('dependenciaDeDestino', ChoiceType::class, array('choices' => array('Seleccioná una Dependencia' => $list) ) )
             ->add('recibe', HiddenType::class)
             ->add('legajo', HiddenType::class)
             ->add('save', SubmitType::class, array('label' => 'Siguiente'))
