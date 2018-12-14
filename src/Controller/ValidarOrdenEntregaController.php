@@ -42,11 +42,12 @@ class ValidarOrdenEntregaController extends AbstractController
       $em = $this -> getDoctrine() -> getManager();
       $cab = $em -> getRepository(ECabecera::class) -> find($orden);
       $dependencias = $em -> getRepository(Dependencias::class) -> findBy(array(), array('dependencia' => 'ASC'));
-      $dependencia = $em -> getRepository(Dependencias::class) -> find($orden);
 
-  
+
+
 
       $list = array();
+      $list[$cab->getDestino()] = $cab->getDestino();
       foreach ($dependencias as $dep) {
         $list[$dep -> getDependencia()] = $dep -> getDependencia();
       }
@@ -55,7 +56,7 @@ class ValidarOrdenEntregaController extends AbstractController
 
       $editarCabecera ->add('nombreForm', HiddenType::class,array('attr' => array('value' => 'editarCabecera')));
       $editarCabecera ->add('fecha', DateType::class,array('widget' => 'single_text', 'format' => 'dd-mm-yyyy','attr' => array("value" => date("d-m-Y") )));
-      $editarCabecera ->add('destino', ChoiceType::class, array('attr' => array('value' => $dependencia-> getDependencia() ))  );
+      $editarCabecera ->add('destino', ChoiceType::class, array('choices' => array('Seleccioná una Dependencia' => $list) ) );
       $editarCabecera ->add('recibe', TextType::class, array('attr' => array('value'=>  $cab->getRecibe(), "autofocus" => true )) );
       $editarCabecera ->add('legajo', IntegerType::class, array('attr' => array('value'=>  $cab->getLegajo())) );
 
