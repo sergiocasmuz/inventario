@@ -42,7 +42,7 @@ class ECabecera
     private $estado;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="integer")
      */
     private $nroTicket;
 
@@ -111,7 +111,7 @@ class ECabecera
         return $this;
     }
 
-    public function getNroTicket(): ?string
+    public function getNroTicket(): ?int
     {
         return $this->nroTicket;
     }
