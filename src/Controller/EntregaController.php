@@ -41,7 +41,7 @@ class EntregaController extends AbstractController
 
         $formularioCabecera = $this->createFormBuilder()
             ->add('fecha', DateType::class,array('widget' => 'single_text','attr' => array("value" => date("Y-m-d") )))
-            ->add('nroDetTicket', IntegerType::class)
+            ->add('nroDeTicket', IntegerType::class)
             ->add('dependenciaDeDestino', ChoiceType::class, array('choices' => array('Seleccioná una Dependencia' => $list) ) )
             ->add('recibe', HiddenType::class)
             ->add('legajo', HiddenType::class)
@@ -54,10 +54,14 @@ class EntregaController extends AbstractController
 
             $cabe = $formularioCabecera->getData();
 
+            print_r($cabe["fecha"]);
+
+          //echo date("Y-m-d");
+
             $formCabe = new ECabecera();
 
             $formCabe -> setFecha($cabe["fecha"]);
-            $formCabe -> setNroTicket($cabe["nroDetTicket"]);
+            $formCabe -> setNroTicket($cabe["nroDeTicket"]);
             $formCabe -> setDestino($cabe["dependenciaDeDestino"]);
             $formCabe -> setRecibe("...");
             $formCabe -> setLegajo(0);

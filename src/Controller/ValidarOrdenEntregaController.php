@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\ECabecera;
+use App\Entity\Dependencias;
 use App\Entity\ELineas;
 use App\Entity\stock;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityRepository;
@@ -39,12 +41,21 @@ class ValidarOrdenEntregaController extends AbstractController
       /* *************** FORMULARIO DE CABECERA ******************************** */
       $em = $this -> getDoctrine() -> getManager();
       $cab = $em -> getRepository(ECabecera::class) -> find($orden);
+      $dependencias = $em -> getRepository(Dependencias::class) -> findBy(array(), array('dependencia' => 'ASC'));
+      $dependencia = $em -> getRepository(Dependencias::class) -> find($orden);
+
+  
+
+      $list = array();
+      foreach ($dependencias as $dep) {
+        $list[$dep -> getDependencia()] = $dep -> getDependencia();
+      }
 
       $editarCabecera = $this->createFormBuilder();
 
       $editarCabecera ->add('nombreForm', HiddenType::class,array('attr' => array('value' => 'editarCabecera')));
       $editarCabecera ->add('fecha', DateType::class,array('widget' => 'single_text', 'format' => 'dd-mm-yyyy','attr' => array("value" => date("d-m-Y") )));
-      $editarCabecera ->add('destino', TextType::class, array('attr' => array('value'=> $cab->getDestino())) );
+      $editarCabecera ->add('destino', ChoiceType::class, array('attr' => array('value' => $dependencia-> getDependencia() ))  );
       $editarCabecera ->add('recibe', TextType::class, array('attr' => array('value'=>  $cab->getRecibe(), "autofocus" => true )) );
       $editarCabecera ->add('legajo', IntegerType::class, array('attr' => array('value'=>  $cab->getLegajo())) );
 
