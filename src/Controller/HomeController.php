@@ -3,8 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\stock;
+use App\Entity\ECabecera;
+use App\Entity\ELineas;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\HttpFoundation\Request;
 
 
 use Doctrine\DBAL\Driver\Connection;
@@ -14,38 +19,64 @@ class HomeController extends AbstractController
     /**
      * @Route("/estadisticas", name="home")
      */
-    public function index(Connection $connection)
+    public function index(Request $request, Connection $connection)
     {
 
         $em = $this -> getDoctrine() -> getManager();
-        $art = $em -> getRepository(stock::class) -> findAll();
-
-        $sql ="SELECT *, sum(cantidad) as total from stock stk group by familia";
-        $sql2 ="SELECT *, sum(cantidad) as total from stock stk group by articulo";
 
 
 
-        $stm = $connection -> prepare($sql);
-        $stm2 = $connection -> prepare($sql2);
+        $formulario = $this -> createFormBuilder()
+        -> add("filtro", ChoiceType::class, array('choices' => array('----' =>
+                                                                              array('Dependencias' => 'destino',
+                                                                                    'Artículos' => 'articulo',
+                                                                                    'Familias' => 'familia') ) ) )
+
+        -> getForm()
+        -> handleRequest($request);
+
+        $rta = array();
+
+        $filtro = "";
+        if ($formulario->isSubmitted() && $formulario->isValid()) {
+
+          $resp = $formulario -> getData();
+
+          switch ($resp["filtro"]) {
+            case 'destino':
+                      $sql = "SELECT destino as fil, sum(cantidad) as total from ELineas li
+                     left join ECabecera ca on li.orden = ca.id group by destino";
+              break;
+
+            case 'articulo':
+                    $sql = "SELECT articulo as fil, sum(cantidad) as total from ELineas li
+                     left join ECabecera ca on li.orden = ca.id group by articulo";
+              break;
+
+            case 'familia':
+                    $sql = "SELECT familia as fil, sum(cantidad) as total from ELineas li
+                     left join ECabecera ca on li.orden = ca.id group by familia";
+              break;
+
+              $filtro = $resp["filtro"];
+
+          }
 
 
-        $stm -> execute();
-        $stm2 -> execute();
-        $rta = $stm -> fetchAll();
-        $rta2 = $stm2 -> fetchAll();
 
-        foreach ($rta as $stk) {
-          if($stk["total"] > 0){  $stkFamilias[$stk["familia"]] = $stk["total"];  }
+          $stm = $connection -> prepare($sql);
+
+          $stm -> execute();
+          $rta = $stm -> fetchAll();
+
+
+
         }
-
-        foreach ($rta2 as $stk2) {
-          if($stk2["total"] > 0){  $stkArticulos[$stk2["articulo"]] = $stk2["total"];  }
-        }
-
 
         return $this->render('home/index.html.twig', [
-          'familias' => $stkFamilias,
-          'articulos' => $stkArticulos
+          'filtro' => $filtro,
+          'array' => $rta,
+          'formulario' => $formulario -> createView()
         ]);
     }
 }

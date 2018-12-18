@@ -2,9 +2,49 @@
 
 {% block body %}
 
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+   <script type="text/javascript">
+     google.charts.load("current", {packages:["corechart"]});
+     google.charts.setOnLoadCallback(drawChart);
+     function drawChart() {
+       var data = google.visualization.arrayToDataTable([
+         ['Task', 'Hours per Day'],
+         {% for a in array %}
+          [ '{{a.fil}}',  {{a.total}} ],
+         {% endfor %}
+       ]);
+
+       var options = {
+         legend:'none',
+         title: 'Filtros',
+         pieHole: 0.6,
+       };
+
+       var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+       chart.draw(data, options);
+     }
+   </script>
+<script>
+  $(document).ready(function(){
+
+      $("#form_filtro").change(function(){
+        $("form").submit();
+      });
+
+  });
+
+</script>
 <div class="container">
     <div class="jumbotron">
         <h1 class="display-4">Estadísticas</h1>
+         <p class="lead">Resultados sobre ordenes de entrega</p>
+        <hr>
+
+
+        <div class="col-3">
+
+      </div>
     </div>
 
     <div class="row">
@@ -12,35 +52,34 @@
     </div>
 
     <div class="row">
-      <div class="col-6">
-        <table class="table">
-          <th>Familia</th>
-          <th>Cantidad</th>
-
-          {% for familia, cantidad in familias %}
-            <tr>
-              <td>{{ familia }}</td>
-              <td>{{ cantidad }}</td>
-            </tr>
-          {% endfor %}
-        </table>
-      </div>
 
 
       <div class="col-6">
         <table class="table">
-          <th>Artículos</th>
-          <th>Cantidad</th>
+          <th style="width:300px;">
 
-          {% for articulo, cantidad in articulos %}
+          {{ form_start(formulario) }}
+          {{ form_widget(formulario["filtro"]) }}
+          {{ form_end(formulario) }}
+
+        </th>
+          <th style="text-align:center; vertical-align:bottom;">Cantidad</th>
+
+          {% for articulo in array %}
+
             <tr>
-              <td>{{ articulo }}</td>
-              <td>{{ cantidad }}</td>
+              <td>{{ articulo.fil }}</td>
+              <td style="text-align:center;">{{ articulo.total }}</td>
             </tr>
+
           {% endfor %}
         </table>
       </div>
+
+      <div class="col-6"  id="donutchart"></div>
+
     </div>
+
 
 </div>
 
