@@ -21,9 +21,4 @@ class StockRepository extends ServiceEntityRepository
         parent::__construct($registry, stock::class);
     }
 
-
-
-
-
-
 }

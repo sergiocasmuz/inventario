@@ -1,84 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
-
-
-
 {% block body %}
 
-    <style>
-        #top_x_div{
-                    width:500px;
-                    height: 300px;
-
-                }
-
-    </style>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
-    <script>
-
-
-        google.charts.load('current', {'packages':['bar']});
-        google.charts.load('current', {packages: ['corechart', 'bar']});
-             google.charts.setOnLoadCallback(drawStuff);
-
-
-        /*****************************GRÁFICO DCE BARRAS ******************************/
-        function drawStuff() {
-            var data = new google.visualization.arrayToDataTable([
-
-                ['Artículo', 'Cantidad'],
-                {% for art in art %}
-                    ['{{ art.articulo }}', {{ art.cantidad }}],
-                {% endfor %}
-            ]);
-
-            var options = {
-
-
-                title: 'Cantidad de artículos disponibles',
-                width: 900,
-                height: 400,
-                legend: { position: 'none' },
-                chart: { title: 'Cantidad de artículos disponibles',
-                    subtitle: 'Stock actual',
-                },
-                bars: 'horizontal', // Required for Material Bar Charts.
-
-                axes: {
-           x: {
-             0: { side: 'top', label: 'Unidades'} // Top x-axis.
-           }
-         },
-         bar: { groupWidth: "90%" }
-
-
-
-            };
-
-
-
-            var chart = new google.charts.Bar(document.getElementById('top_x_div'));
-            chart.draw(data, options);
-        }
-
-
-    </script>
-
+<div class="container">
     <div class="jumbotron">
         <h1 class="display-4">Estadísticas</h1>
     </div>
 
     <div class="row">
-
-
         <div id="top_x_div" class="col" ></div>
-
-
     </div>
 
+    <div class="row">
+      <div class="col-6">
+        <table class="table">
+          <th>Familia</th>
+          <th>Cantidad</th>
+
+          {% for familia, cantidad in familias %}
+            <tr>
+              <td>{{ familia }}</td>
+              <td>{{ cantidad }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
 
 
+      <div class="col-6">
+        <table class="table">
+          <th>Artículos</th>
+          <th>Cantidad</th>
+
+          {% for articulo, cantidad in articulos %}
+            <tr>
+              <td>{{ articulo }}</td>
+              <td>{{ cantidad }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+
+</div>
 
 {% endblock %}

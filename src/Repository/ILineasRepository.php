@@ -13,6 +13,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method ILineas[]    findLineas($idArt, $orden)
  * @method ILineas[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
+ 
 class ILineasRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
