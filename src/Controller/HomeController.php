@@ -2,9 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\stock;
-use App\Entity\ECabecera;
-use App\Entity\ELineas;
+
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -44,8 +43,8 @@ class HomeController extends AbstractController
 
           switch ($resp["filtro"]) {
             case 'destino':
-                      $sql = "SELECT destino as fil, sum(cantidad) as total from ELineas li
-                     left join ECabecera ca on li.orden = ca.id group by destino";
+                      $sql = "SELECT destino as fil, sum(cantidad) as total from elineas li
+                     left join ecabecera ca on li.orden = ca.id group by destino";
               break;
 
             case 'articulo':
