@@ -58,19 +58,14 @@ class HomeController extends AbstractController
                      left join ECabecera ca on li.orden = ca.id group by familia";
               break;
 
-              $filtro = $resp["filtro"];
-
           }
 
-
+          $filtro = $resp["filtro"];
 
           $stm = $connection -> prepare($sql);
 
           $stm -> execute();
           $rta = $stm -> fetchAll();
-
-
-
         }
 
         return $this->render('home/index.html.twig', [
