@@ -48,13 +48,13 @@ class HomeController extends AbstractController
               break;
 
             case 'articulo':
-                    $sql = "SELECT articulo as fil, sum(cantidad) as total from ELineas li
-                     left join ECabecera ca on li.orden = ca.id group by articulo";
+                    $sql = "SELECT articulo as fil, sum(cantidad) as total from elineas li
+                     left join ecabecera ca on li.orden = ca.id group by articulo";
               break;
 
             case 'familia':
-                    $sql = "SELECT familia as fil, sum(cantidad) as total from ELineas li
-                     left join ECabecera ca on li.orden = ca.id group by familia";
+                    $sql = "SELECT familia as fil, sum(cantidad) as total from elineas li
+                     left join ecabecera ca on li.orden = ca.id group by familia";
               break;
 
           }
