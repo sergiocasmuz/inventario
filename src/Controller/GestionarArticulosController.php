@@ -34,7 +34,6 @@ class GestionarArticulosController extends AbstractController
 
       $marca = $em -> getRepository(Marca::class) -> findBy(array(), array('marca' => "ASC") );
 
-
       $cFamilia = count($familia);
 
       $listaFamilia[""] = false;
@@ -177,8 +176,8 @@ class GestionarArticulosController extends AbstractController
       ) )
 
 
-      -> add('modelo', TextType::class, array( 'attr' => array( 'value' => $articuloList[0]->getModelo() ) ))
-      -> add('detalle', TextType::class, array( 'attr' => array( 'value' => $articuloList[0]->getDetalle() ) ))
+      -> add('modelo', TextType::class, array( 'attr' => array( 'value' => $articulo -> getModelo() ) ))
+      -> add('detalle', TextAreaType::class, array( 'data' =>  $articulo -> getDetalle()  ))
       -> add('save', SubmitType::class, array('label' => 'Guardar'));
 
       $formEditar = $formEditar->getForm();

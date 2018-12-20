@@ -80,10 +80,11 @@ class EAgregarController extends AbstractController
                 $forms = [];
 
                 $listaArticulos = $em -> getRepository(Articulos::class)->findAll();
-
+            
                 foreach ($listaArticulos as $articulo) {
 
                   $stock_check = $em -> getRepository(stock::class) -> findByIdArticulo($articulo->getId());
+
 
                   $cantidad = $stock_check[0]->getCantidad();
 
