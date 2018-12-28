@@ -35,7 +35,6 @@ class ImprimirController extends AbstractController
       -> add('destino', TextType::class, array( 'attr' => array('value' => $ECabecera->getDestino())  ))
       -> add('recibe', TextType::class, array( 'attr' => array('value' => $ECabecera->getRecibe())  ))
       -> add('legajo', IntegerType::class, array( 'attr' => array('value' => $ECabecera->getLegajo())  ))
-      -> add('guardar', SubmitType::class)
       -> getForm()
       -> handleRequest($request);
 

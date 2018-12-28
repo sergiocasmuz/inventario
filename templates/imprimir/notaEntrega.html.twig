@@ -22,6 +22,7 @@
 
 
     $("#btnImprimir").click(function(){
+      $("form").submit();
       window.print();
     })
 
@@ -36,7 +37,17 @@
 
 
 
+    $("input").keyup(function(){
 
+          $(".guardar").removeAttr("disabled");
+          $(".imp").attr("disabled", "disabled");
+
+    });
+
+
+    $(".guardar").click(function(){
+      $("form").submit();
+    });
 
 
   })
@@ -103,7 +114,7 @@ body{background:rgb(71, 88, 87) ;}
                 width: 90%;
                 }
 
-      .imp, #form_guardar{margin-left:10px;
+      .imp, .guardar{margin-left:10px;
       width: 90%;}
 
 
@@ -192,9 +203,10 @@ body{background:rgb(71, 88, 87) ;}
   {{ form_start(cabeForm)}}
   {{ form_widget(cabeForm)}}
   {{ form_end(cabeForm)}}
-
+<button id="btnguardar" class="btn btn-danger guardar" disabled>Guardar</button>
 <hr style="background:#aaa; width:90%;">
-  <button id="btnImprimir" class="btn btn-primary imp">Imprimir</button>
+  <button id="btnImprimir" class="btn btn-info imp" >Imprimir</button>
+
 </section>
 
 <div class="container">
@@ -257,11 +269,11 @@ body{background:rgb(71, 88, 87) ;}
 </table>
 <br>
 <footer >
-<p>Firma: .....................................</p>
+<p>Firma: ............................................</p>
 <br>
 <p>Aclaración: ...................................</p>
 <br>
-<p>Legajo: .......................................</p>
+<p>Legajo: ...........................................</p>
 <footer>
 
 
