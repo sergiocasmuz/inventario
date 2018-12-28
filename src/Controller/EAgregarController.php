@@ -26,6 +26,8 @@ class EAgregarController extends AbstractController
 
     public function linea(Request $request ,$orden)
     {
+            
+
               $validacion = 0;
               $em = $this -> getDoctrine() -> getManager();
               $ecabe = $em -> getRepository(ECabecera::class) -> find($orden);
@@ -80,7 +82,7 @@ class EAgregarController extends AbstractController
                 $forms = [];
 
                 $listaArticulos = $em -> getRepository(Articulos::class)->findAll();
-            
+
                 foreach ($listaArticulos as $articulo) {
 
                   $stock_check = $em -> getRepository(stock::class) -> findByIdArticulo($articulo->getId());
@@ -118,6 +120,13 @@ class EAgregarController extends AbstractController
 
                     $elineas = new ELineas();
 
+                    $rtaBTN["nroArticulo"];
+
+                    $igual = $em -> getRepository(ELineas::class) -> findByNroSerie($rtaBTN["nroArticulo"]);
+
+                    if(count($igual) > 0){ $mensaje = "no";}
+                    else{
+
                     $elineas->setOrden($orden);
                     $elineas->setIdArticulo($rtaBTN["idArticulo"]);
                     $elineas->setCantidad(1);
@@ -130,7 +139,11 @@ class EAgregarController extends AbstractController
                     $em -> persist($elineas);
                     $em -> flush();
 
-                    return $this->redirect("/agregar/agregar/{$orden}");
+                    $mensaje = "si";
+
+                  }
+
+                    return $this->redirect("/agregar/agregar/{$orden}/{$mensaje}");
 
                     }
           ///////////////////////////////////////////////////////////////////
@@ -226,7 +239,7 @@ class EAgregarController extends AbstractController
           'lineas' => $lineas,
           'formBuscar' => $formBuscar -> createView(),
           'formularioOrden' => $formularioOrden -> createView(),
-          'validacion' => $validacion
+          'validacion' => $validacion,
 
                ]);
 

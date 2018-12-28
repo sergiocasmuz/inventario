@@ -238,7 +238,7 @@
                            {% if orden.estado == 2 or orden.estado == 4 or orden.estado == 5  %}
                             {% set link = '/ver/entrega/' ~ orden.id  %}
                           {% else  %}
-                            {% set link = '/agregar/agregar/' ~ orden.id  %}
+                            {% set link = '/agregar/agregar/' ~ orden.id ~ '/0'  %}
 
                            {% endif %}
 

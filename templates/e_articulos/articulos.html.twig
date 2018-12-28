@@ -134,19 +134,24 @@
             </button>
 
 
+            <br>
+            <br>
+            <br>
+            <br>
 
-
-            <br>
-            <br>
-            <br>
-            <br>
+            {% if mensaje == "no" %}
+              {% set msj = "Error: el nro de serie ingresado se encuentra en uso" %}
+              <div class="alert alert-danger" role="alert">
+                {{msj}}
+              </div>
+            {% endif %}
 
             <div class="row">
                 <div class="col-lg-12 ">
                     <nav>
                         <!-------------------------- titulos de tabs ---------------------->
                         <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link active" id="nav-vistaPrevia-tab"   href="/agregar/agregar/{{orden}}" role="tab" aria-controls="nav-vistaPrevia" aria-selected="true">Artículos</a>
+                            <a class="nav-item nav-link active" id="nav-vistaPrevia-tab"   href="/agregar/agregar/{{orden}}/0" role="tab" aria-controls="nav-vistaPrevia" aria-selected="true">Artículos</a>
                             <a class="nav-item nav-link" id="nav-cabecera-tab"  href="/agregar/articulos/{{orden}}" role="tab" aria-controls="nav-cabecera" aria-selected="false">Agregar artículos</a>
                         </div>
                     </nav>

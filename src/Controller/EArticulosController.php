@@ -16,10 +16,10 @@ use Doctrine\ORM\EntityRepository;
 class EArticulosController extends AbstractController
 {
     /**
-     * @Route("/agregar/agregar/{orden}", name="agregar_articulos")
+     * @Route("/agregar/agregar/{orden}/{mensaje}", name="agregar_articulos")
      */
 
-    public function linea(Request $request ,$orden)
+    public function linea(Request $request ,$orden, $mensaje)
     {
       $em = $this -> getDoctrine() -> getManager();
       /* *************** FORMULARIO QUITAR LINEAS ****************************** */
@@ -88,6 +88,7 @@ class EArticulosController extends AbstractController
           'orden' => $orden,
           'cabecera' => $ecabe,
           'lineas' => $lineas,
+          'mensaje' => $mensaje,
           'formPedido' => $formPedido -> createView(),
           'formularioOrden' => $formularioOrden -> createView()
 
