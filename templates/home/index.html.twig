@@ -19,7 +19,6 @@
          legend:'none',
          title: 'Filtros',
          pieHole: 0.6,
-       };
 
        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
        chart.draw(data, options);
@@ -27,21 +26,46 @@
    </script>
 <script>
   $(document).ready(function(){
-
-      $("#form_filtro").change(function(){
+      $("#filtrar").click(function(){
         $("form").submit();
       });
-
   });
 
 </script>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Parámetros</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{ form_start(formulario) }}
+        {{ form_widget(formulario) }}
+        {{ form_end(formulario) }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="filtrar">Filtrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="container">
     <div class="jumbotron">
         <h1 class="display-4">Estadísticas</h1>
          <p class="lead">Resultados sobre ordenes de entrega</p>
         <hr>
 
-
+        <!-- Button trigger modal -->
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Modificar parámetros
+          </button>
         <div class="col-3">
 
       </div>
@@ -56,14 +80,6 @@
 
       <div class="col-6">
         <table class="table">
-          <th style="width:300px;">
-
-          {{ form_start(formulario) }}
-          {{ form_widget(formulario["filtro"]) }}
-          {{ form_end(formulario) }}
-
-        </th>
-          <th style="text-align:center; vertical-align:bottom;">Cantidad</th>
 
           {% for articulo in array %}
 
