@@ -30,10 +30,10 @@ class InformeEntregasController extends AbstractController
 
         $cabe = $em -> getRepository(ECabecera::class) -> findMes($desde,$hasta);
 
+        $or = "";
 
         foreach ($cabe as $orden) {
           $nrOrden = $orden->getId();
-
 
           $elineas = $em -> getRepository(ELineas::class)->findByOrden($nrOrden);
 
@@ -64,8 +64,6 @@ class InformeEntregasController extends AbstractController
             -> handleRequest($request);
 
             if ($formulario->isSubmitted() && $formulario->isValid()) {  }
-
-
 
         return $this->render('informe_entregas/index.html.twig', [
             'formulario' => $formulario -> createView(),
