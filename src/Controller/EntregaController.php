@@ -72,7 +72,7 @@ class EntregaController extends AbstractController
 
             ///////el nro de orden corresponde con el id de la cabecera
             $orden = $formCabe->getId();
-            return $this->redirect("/agregar/agregar/{$orden}");
+            return $this->redirect("/agregar/agregar/{$orden}/0");
         }
 
         return $this->render('entrega/entr_cabecera.html.twig',
