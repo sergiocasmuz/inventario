@@ -26,7 +26,7 @@ class EAgregarController extends AbstractController
 
     public function linea(Request $request ,$orden)
     {
-            
+
 
               $validacion = 0;
               $em = $this -> getDoctrine() -> getManager();
@@ -51,7 +51,7 @@ class EAgregarController extends AbstractController
 
                   $cantidad = $stock_check[0]->getCantidad();
 
-                  if($cantidad <= 0){
+                  if($cantidad <= 0 ){
                                       $label = "Sin stock";
                                       $act = true;
                                       $etiqueta = "etiqueta";
@@ -124,7 +124,7 @@ class EAgregarController extends AbstractController
 
                     $igual = $em -> getRepository(ELineas::class) -> findByNroSerie($rtaBTN["nroArticulo"]);
 
-                    if(count($igual) > 0){ $mensaje = "no";}
+                    if(count($igual) > 1 && $rtaBTN["nroArticulo"] != 0){ $mensaje = "no";}
                     else{
 
                     $elineas->setOrden($orden);
