@@ -54,7 +54,7 @@ class EArticulosController extends AbstractController
           $em->flush();
 
           $activar = "quitar";
-          return $this->redirect("/agregar/agregar/{$orden}");
+          return $this->redirect("/agregar/agregar/{$orden}/si");
       }
 
 

@@ -99,9 +99,6 @@ class EAgregarController extends AbstractController
                         $act = false;
                         $etiqueta = "btn btn-rojo";}
 
-
-
-
                   $form = $this-> createFormBuilder();
                   $form->add('idArticulo', HiddenType::class, array( 'label' => 'idArticulo', 'attr' => array('value' =>  $articulo->getId()  )  ));
                   $form->add('articulo', HiddenType::class, array('label' => $articulo->getArticulo(), 'attr' => array('value' =>  $articulo->getArticulo()  )  ));
