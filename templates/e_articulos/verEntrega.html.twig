@@ -84,6 +84,7 @@
 
                           <table class="table">
                               <tr>
+                                  <th>Orden/suministro</th>
                                   <th>Artículo</th>
                                   <th>Marca</th>
                                   <th>Modelo</th>
@@ -91,8 +92,10 @@
                               </tr>
 
 
+
                               {% for linea in lineas %}
                                   <tr>
+                                      <td>{{ linea.suministro ? linea.suministro.suministro:"--" }}</td>
                                       <td>{{ linea.articulo }}</td>
                                       <td>{{ linea.marca }}</td>
                                       <td>{{ linea.modelo }}</td>
