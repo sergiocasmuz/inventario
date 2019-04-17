@@ -63,8 +63,6 @@ class ELineas
     private $nroSerie;
 
 
-/////////////////////////////////////
-
 
 
     public function getArticulo()
@@ -124,6 +122,11 @@ class ELineas
      */
     private $cantidad;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\ICabecera", inversedBy="eLineas")
+     */
+    private $suministro;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -176,6 +179,18 @@ class ELineas
     public function setNroSerie($nroSerie): self
     {
         $this->nroSerie = $nroSerie;
+
+        return $this;
+    }
+
+    public function getSuministro(): ?ICabecera
+    {
+        return $this->suministro;
+    }
+
+    public function setSuministro(?ICabecera $suministro): self
+    {
+        $this->suministro = $suministro;
 
         return $this;
     }

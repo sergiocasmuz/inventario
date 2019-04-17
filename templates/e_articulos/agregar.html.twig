@@ -212,6 +212,7 @@ $(document).ready(function(){
                                     <th>Familia</th>
                                     <th>Marca</th>
                                     <th>Modelo</th>
+                                    <th>Orden/Suministro</th>
                                     <th>Nro de serie</th>
                                     <th style="width:100px;"></th>
                                 </tr>
@@ -226,6 +227,7 @@ $(document).ready(function(){
                                       <td>  {{form_label(forms.familia)}}  </td>
                                       <td>  {{form_label(forms.marca)}}  </td>
                                       <td>  {{form_label(forms.modelo)}}  </td>
+                                      <td>  {{form_widget(forms.sumi,{'attr':{'novalidate':'novalidate'}})}}  </td>
                                       <td>  {{form_widget(forms.nroArticulo)}}  </td>
                                       <td>  {{form_widget(forms.save)}} </td>
 

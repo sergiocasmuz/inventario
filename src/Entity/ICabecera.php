@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -100,6 +102,16 @@ class ICabecera
      */
     private $estado;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ELineas", mappedBy="suministro")
+     */
+    private $eLineas;
+
+    public function __construct()
+    {
+        $this->eLineas = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -140,6 +152,37 @@ class ICabecera
     public function setEstado(string $estado): self
     {
         $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ELineas[]
+     */
+    public function getELineas(): Collection
+    {
+        return $this->eLineas;
+    }
+
+    public function addELinea(ELineas $eLinea): self
+    {
+        if (!$this->eLineas->contains($eLinea)) {
+            $this->eLineas[] = $eLinea;
+            $eLinea->setSuministro($this);
+        }
+
+        return $this;
+    }
+
+    public function removeELinea(ELineas $eLinea): self
+    {
+        if ($this->eLineas->contains($eLinea)) {
+            $this->eLineas->removeElement($eLinea);
+            // set the owning side to null (unless already changed)
+            if ($eLinea->getSuministro() === $this) {
+                $eLinea->setSuministro(null);
+            }
+        }
 
         return $this;
     }

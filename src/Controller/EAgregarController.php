@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Articulos;
 use App\Entity\ECabecera;
+use App\Entity\ICabecera;
 use App\Entity\NrosIdentificacion;
 use App\Entity\ELineas;
 use App\Entity\stock;
 use App\Form\ElineasType;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -107,6 +109,13 @@ class EAgregarController extends AbstractController
                   $form->add('modelo', HiddenType::class, array('label' => $articulo->getModelo(), 'attr' => array('value' => $articulo->getModelo() )  ));
                   $form->add('nroArticulo', TextType::class, array( 'attr' => array('autofocus' => 'autofocus' )  )  );
                   $form->add('save', SubmitType::class, array('label' =>$label, 'attr' => array('class' => $etiqueta, 'disabled'=> $act)));
+                  $form-> add('sumi', EntityType::class, [
+                        'class' => ICabecera::class,
+                        'choice_label'=>'suministro',
+                        'placeholder' =>"Selecciona",
+                        'required'   => false,
+                        'empty_data' => NULL,
+                  ]);
                   $form = $form -> getForm();
                   $form = $form -> handleRequest($request);
 
@@ -132,6 +141,7 @@ class EAgregarController extends AbstractController
                     $elineas->setModelo($rtaBTN["modelo"]);
                     $elineas->setNroSerie($rtaBTN["nroArticulo"]);
                     $elineas->setFamilia($rtaBTN["familia"]);
+                    $elineas->setSuministro($rtaBTN["sumi"]);
 
                     $em -> persist($elineas);
                     $em -> flush();

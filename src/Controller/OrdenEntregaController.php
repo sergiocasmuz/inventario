@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\ECabecera;
 use App\Entity\ELineas;
+use App\Entity\ICabecera;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

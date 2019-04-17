@@ -237,9 +237,8 @@ body{background:rgb(71, 88, 87) ;}
         <h5 id="ticket">REF: TICKET {{  cabecera.nroTicket }}</h5>
     </section>
 
-    <p id = "nota">Por medio de la presente se deja constancia de la entrega a <b>{{ cabecera.recibe }}</b> del area de <b>{{ cabecera.destino }}</b> de los bienes detallados a continuación:</p>
+    <p id = "nota">Por medio de la presente se deja constancia de la entrega a <b>{{ cabecera.recibe }}</b> del área de <b>{{ cabecera.destino }}</b> de los bienes detallados a continuación:</p>
 
-  
 
   </div>
 
@@ -251,6 +250,7 @@ body{background:rgb(71, 88, 87) ;}
 
 <table class="table">
     <tr>
+      <th>Orden/Suministro</th>
       <th>Artículo</th>
       <th>Marca</th>
       <th>Modelo</th>
@@ -258,8 +258,11 @@ body{background:rgb(71, 88, 87) ;}
       <th>Nro de Serie</th>
     </tr>
 
+  {{ dump(lineas) }}
+
     {% for lineas in lineas %}
     <tr>
+      <td>{{lineas.suministro ?:"Sin detallar"}}</td>
       <td>{{lineas.articulo}}</td>
       <td>{{lineas.marca}}</td>
       <td>{{lineas.modelo}}</td>
