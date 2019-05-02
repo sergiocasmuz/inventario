@@ -172,6 +172,7 @@
                                   <th>Artículo</th>
                                   <th>Marca</th>
                                   <th>Modelo</th>
+                                  <th>Patrimonio</th>
                                   <th>Nro Serie</th>
                               </tr>
                               {{ form_start(formPedido) }}
@@ -183,6 +184,7 @@
                                       <td>{{ linea.articulo }}</td>
                                       <td>{{ linea.marca }}</td>
                                       <td>{{ linea.modelo }}</td>
+                                      <td>{{ linea.patrimonio }}</td>
                                       <td>{{ linea.nroSerie }}</td>
                                       <td>{{ form_row(formPedido[linea.id]) }}</td>
                                   </tr>

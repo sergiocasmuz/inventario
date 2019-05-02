@@ -127,6 +127,11 @@ class ELineas
      */
     private $suministro;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $patrimonio;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -191,6 +196,18 @@ class ELineas
     public function setSuministro(?ICabecera $suministro): self
     {
         $this->suministro = $suministro;
+
+        return $this;
+    }
+
+    public function getPatrimonio(): ?string
+    {
+        return $this->patrimonio;
+    }
+
+    public function setPatrimonio(?string $patrimonio): self
+    {
+        $this->patrimonio = $patrimonio;
 
         return $this;
     }

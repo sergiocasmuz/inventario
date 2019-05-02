@@ -51,6 +51,11 @@ class ILineas
      */
     private $familia;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $patrimonio;
+
 
     public function getId(): ?int
     {
@@ -138,6 +143,18 @@ class ILineas
     public function setFamilia(string $familia): self
     {
         $this->familia = $familia;
+
+        return $this;
+    }
+
+    public function getPatrimonio(): ?string
+    {
+        return $this->patrimonio;
+    }
+
+    public function setPatrimonio(?string $patrimonio): self
+    {
+        $this->patrimonio = $patrimonio;
 
         return $this;
     }

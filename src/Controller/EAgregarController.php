@@ -68,6 +68,7 @@ class EAgregarController extends AbstractController
                   $form->add('familia', HiddenType::class, array('label' => $listaArticulos->getFamilia(), 'attr' =>array( 'value' => $listaArticulos->getFamilia() )  ));
                   $form->add('marca', HiddenType::class, array('label' => $listaArticulos->getMarca(), 'attr' =>array( 'value' => $listaArticulos->getMarca() )  ));
                   $form->add('modelo', HiddenType::class, array('label' => $listaArticulos->getModelo(), 'attr' => array('value' => $listaArticulos->getModelo() )  ));
+                  $form->add('patrimonio', TextType::class);
                   $form->add('nroArticulo', TextType::class, array( 'attr' => array('autofocus' => 'autofocus' )  )  );
                   $form->add('save', SubmitType::class, array('label' =>$label, 'attr' => array('class' => $etiqueta, 'disabled'=> $act)));
                   $form = $form -> getForm();
@@ -108,6 +109,7 @@ class EAgregarController extends AbstractController
                   $form->add('marca', HiddenType::class, array('label' => $articulo->getMarca(), 'attr' =>array( 'value' => $articulo->getMarca() )  ));
                   $form->add('modelo', HiddenType::class, array('label' => $articulo->getModelo(), 'attr' => array('value' => $articulo->getModelo() )  ));
                   $form->add('nroArticulo', TextType::class, array( 'attr' => array('autofocus' => 'autofocus' )  )  );
+                  $form->add('patrimonio', TextType::class);
                   $form->add('save', SubmitType::class, array('label' =>$label, 'attr' => array('class' => $etiqueta, 'disabled'=> $act)));
                   $form-> add('sumi', EntityType::class, [
                         'class' => ICabecera::class,
@@ -139,6 +141,7 @@ class EAgregarController extends AbstractController
                     $elineas->setArticulo($rtaBTN["articulo"]);
                     $elineas->setMarca($rtaBTN["marca"]);
                     $elineas->setModelo($rtaBTN["modelo"]);
+                    $elineas->setPatrimonio($rtaBTN["patrimonio"]);
                     $elineas->setNroSerie($rtaBTN["nroArticulo"]);
                     $elineas->setFamilia($rtaBTN["familia"]);
                     $elineas->setSuministro($rtaBTN["sumi"]);
