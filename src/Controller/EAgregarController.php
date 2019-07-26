@@ -68,7 +68,7 @@ class EAgregarController extends AbstractController
                   $form->add('familia', HiddenType::class, array('label' => $listaArticulos->getFamilia(), 'attr' =>array( 'value' => $listaArticulos->getFamilia() )  ));
                   $form->add('marca', HiddenType::class, array('label' => $listaArticulos->getMarca(), 'attr' =>array( 'value' => $listaArticulos->getMarca() )  ));
                   $form->add('modelo', HiddenType::class, array('label' => $listaArticulos->getModelo(), 'attr' => array('value' => $listaArticulos->getModelo() )  ));
-                  $form->add('sumi', HiddenType::class, array('label' => $listaArticulos->getModelo(), 'attr' => array('value' => $listaArticulos->getSuministro() )  ));
+                  $form->add('sumi', TextType::class);
                   $form->add('patrimonio', TextType::class);
                   $form->add('nroArticulo', TextType::class, array( 'attr' => array('autofocus' => 'autofocus' )  )  );
                   $form->add('save', SubmitType::class, array('label' =>$label, 'attr' => array('class' => $etiqueta, 'disabled'=> $act)));
