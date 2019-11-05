@@ -24,8 +24,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/ordenes/entrega.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="110">
-              <caret line="289" column="16" selection-start-line="289" selection-start-column="16" selection-end-line="289" selection-end-column="16" />
+            <state relative-caret-position="319">
+              <caret line="225" column="78" selection-start-line="225" selection-start-column="78" selection-end-line="225" selection-end-column="78" />
             </state>
           </provider>
         </entry>
@@ -483,12 +483,12 @@
       <workItem from="1567690264648" duration="86000" />
       <workItem from="1568386905603" duration="1483000" />
       <workItem from="1568641686608" duration="258000" />
-      <workItem from="1572974626245" duration="1929000" />
+      <workItem from="1572974626245" duration="2431000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="399787000" />
+    <option name="totallyTimeSpent" value="400289000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
@@ -871,8 +871,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/ordenes/entrega.html.twig">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="289" column="16" selection-start-line="289" selection-start-column="16" selection-end-line="289" selection-end-column="16" />
+        <state relative-caret-position="319">
+          <caret line="225" column="78" selection-start-line="225" selection-start-column="78" selection-end-line="225" selection-end-column="78" />
         </state>
       </provider>
     </entry>
