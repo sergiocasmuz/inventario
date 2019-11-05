@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d1a3874b-3d45-45de-8fa5-70af9b7f205b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/EntregaController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/EntregaController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/ordenes/entrega.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/ordenes/entrega.html.twig" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -27,7 +25,7 @@
         <entry file="file://$PROJECT_DIR$/templates/ordenes/entrega.html.twig">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="257">
-              <caret line="293" column="55" selection-start-line="293" selection-start-column="55" selection-end-line="293" selection-end-column="55" />
+              <caret line="293" column="43" selection-start-line="293" selection-start-column="43" selection-end-line="293" selection-end-column="43" />
             </state>
           </provider>
         </entry>
@@ -485,12 +483,12 @@
       <workItem from="1567690264648" duration="86000" />
       <workItem from="1568386905603" duration="1483000" />
       <workItem from="1568641686608" duration="258000" />
-      <workItem from="1572974626245" duration="227000" />
+      <workItem from="1572974626245" duration="897000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="398085000" />
+    <option name="totallyTimeSpent" value="398755000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
@@ -843,13 +841,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.env">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="15" column="38" selection-start-line="15" selection-start-column="38" selection-end-line="15" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Controller/GestionarMarcasController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="114">
@@ -871,10 +862,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="15" column="38" selection-start-line="15" selection-start-column="38" selection-end-line="15" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/ordenes/entrega.html.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="257">
-          <caret line="293" column="55" selection-start-line="293" selection-start-column="55" selection-end-line="293" selection-end-column="55" />
+          <caret line="293" column="43" selection-start-line="293" selection-start-column="43" selection-end-line="293" selection-end-column="43" />
         </state>
       </provider>
     </entry>
