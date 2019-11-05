@@ -223,7 +223,7 @@
 
 
                                <th style="text-align:center;">Orden</th>
-                               <th style="width:150px;">Fechaasdasdasdasdasdsa</th>
+                               <th style="width:150px;">Fecha</th>
                                <th style="text-align:center;">Destino</th>
                                <th style="text-align:center;">Estado</th>
                                <th style="text-align:center; width:150px;">Acciones</th>
@@ -233,6 +233,8 @@
                            </tr>
 
                            {{ form_start(formularioEstado) }}
+
+                            {{  dump(ordenes) }}
                            {% for orden in ordenes %}
 
                            {% if orden.estado == 2 or orden.estado == 4 or orden.estado == 5  %}

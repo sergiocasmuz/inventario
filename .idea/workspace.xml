@@ -24,8 +24,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/ordenes/entrega.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="319">
-              <caret line="225" column="78" selection-start-line="225" selection-start-column="78" selection-end-line="225" selection-end-column="78" />
+            <state relative-caret-position="395">
+              <caret line="235" lean-forward="true" selection-start-line="235" selection-end-line="236" selection-end-column="48" />
             </state>
           </provider>
         </entry>
@@ -100,7 +100,7 @@
         <entry file="file://$PROJECT_DIR$/.env">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="285">
-              <caret line="15" column="38" selection-start-line="15" selection-start-column="38" selection-end-line="15" selection-end-column="38" />
+              <caret line="15" column="29" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -189,7 +189,6 @@
         <option value="$PROJECT_DIR$/templates/ingreso/ingr_linea.html.twig" />
         <option value="$PROJECT_DIR$/templates/stock/stock.html.twig" />
         <option value="$PROJECT_DIR$/src/Controller/OrdenesController.php" />
-        <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/src/Entity/ELineas.php" />
         <option value="$PROJECT_DIR$/src/Controller/IngresoController.php" />
         <option value="$PROJECT_DIR$/src/Controller/OrdenEntregaController.php" />
@@ -201,6 +200,7 @@
         <option value="$PROJECT_DIR$/src/Controller/EAgregarController.php" />
         <option value="$PROJECT_DIR$/src/Controller/EntregaController.php" />
         <option value="$PROJECT_DIR$/templates/ordenes/index.html.twig" />
+        <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/templates/ordenes/entrega.html.twig" />
       </list>
     </option>
@@ -483,12 +483,12 @@
       <workItem from="1567690264648" duration="86000" />
       <workItem from="1568386905603" duration="1483000" />
       <workItem from="1568641686608" duration="258000" />
-      <workItem from="1572974626245" duration="2431000" />
+      <workItem from="1572974626245" duration="3531000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="400289000" />
+    <option name="totallyTimeSpent" value="401389000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
@@ -848,13 +848,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.env">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="15" column="38" selection-start-line="15" selection-start-column="38" selection-end-line="15" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/ordenes/index.html.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="257">
@@ -869,10 +862,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="15" column="29" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/ordenes/entrega.html.twig">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="225" column="78" selection-start-line="225" selection-start-column="78" selection-end-line="225" selection-end-column="78" />
+        <state relative-caret-position="395">
+          <caret line="235" lean-forward="true" selection-start-line="235" selection-end-line="236" selection-end-column="48" />
         </state>
       </provider>
     </entry>
